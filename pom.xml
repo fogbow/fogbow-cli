@@ -55,11 +55,13 @@
 			<artifactId>reflections</artifactId>
 			<version>0.9.9-RC1</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.fogbowcloud</groupId>
-			<artifactId>manager</artifactId>
+			<groupId>fogbow</groupId>
+			<artifactId>fogbow-manager-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>		
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
