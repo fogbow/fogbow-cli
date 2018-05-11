@@ -1,41 +1,43 @@
 package org.fogbowcloud.cli;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.fogbowcloud.manager.core.plugins.identity.exceptions.TokenCreationException;
 import org.fogbowcloud.manager.core.plugins.identity.exceptions.UnauthorizedException;
 
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 
 public class Main {
-
+	
+	CommandToken commandToken = new CommandToken();
+	JCommander jCommander;
+	
 	public static void main(String[] args) {
 
-		configureLog4j();
-
-		CommandToken commandToken = new CommandToken();
-
-		JCommander jCommander = JCommander.newBuilder().addCommand("token", commandToken).build();
-		jCommander.parse(args);
-
-		if (jCommander.getParsedCommand().equals("token")) {
-			try {
-				String output = commandToken.run();
-				System.out.println(output);
-			} catch (ReflectiveOperationException | UnauthorizedException | TokenCreationException e) {
-				System.out.println(e);
-				System.out.println(e.getMessage());
-				System.out.println(e.getCause());
-			}
+		Main main = new Main();
+		main.commandToken = new CommandToken();
+		main.jCommander = JCommander.newBuilder().addCommand("token", main.commandToken).build();
+		
+		try {
+			main.jCommander.parse(args);
+			main.run();
+		} catch (ParameterException e) {
+			System.out.println(e);
 		}
 
 	}
-
-	private static void configureLog4j() {
-		ConsoleAppender console = new ConsoleAppender();
-		console.setThreshold(Level.OFF);
-		console.activateOptions();
-		Logger.getRootLogger().addAppender(console);
+	
+	private void run () {
+		try {
+			if (jCommander.getParsedCommand().equals("token")) {
+					String output = commandToken.run();
+					System.out.println(output);
+			}
+		} catch (ReflectiveOperationException | UnauthorizedException | TokenCreationException e ) {
+			System.out.println(e);
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		} catch (ParameterException e) {
+			System.out.println(e);
+		}
 	}
 }

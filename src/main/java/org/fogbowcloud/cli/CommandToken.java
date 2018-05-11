@@ -1,7 +1,6 @@
 package org.fogbowcloud.cli;
 
 import java.lang.reflect.Constructor;
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -28,7 +27,7 @@ public class CommandToken {
 
 	@Parameter(names = { "--type", "-t" }, description = "Identity plugin type", required = true)
 	private String identityPluginType = null;
-	
+
 	@DynamicParameter(names = "-D", description = "Dynamic parameters")
 	Map<String, String> credentials = new HashMap<String, String>();
 
@@ -39,36 +38,47 @@ public class CommandToken {
 		return null;
 	}
 
-	private Class<? extends IdentityPlugin> getIdentityPluginClassByTypeName(String typeName) {
+	private Class<? extends IdentityPlugin> getIdentityPluginClassByTypeName(String typeName)
+			throws TokenCreationException {
 		Reflections reflections = new Reflections(ClasspathHelper.forPackage(PLUGIN_PACKAGE), new SubTypesScanner());
-		Set<Class<? extends IdentityPlugin>> allClasses = reflections.getSubTypesOf(IdentityPlugin.class);
+		Set<Class<? extends IdentityPlugin>> allIdentityPluginClasses = reflections.getSubTypesOf(IdentityPlugin.class);
 
-		for (Class<? extends IdentityPlugin> currentClass : allClasses) {
-			if (currentClass.getName().contains(typeName)) {
-				return currentClass;
+		for (Class<? extends IdentityPlugin> eachClass : allIdentityPluginClasses) {
+			String identityPluginName = getIdentityPluginName(eachClass);
+			if (identityPluginName.equals(typeName)) {
+				return eachClass;
 			}
 		}
 
-		throw new InvalidParameterException("Token type [" + typeName + "] is not valid.");
+		throw new TokenCreationException("Token type [" + typeName + "] is not valid.");
 	}
-	
-	private IdentityPlugin getIdentityPlugin() throws ReflectiveOperationException {
+
+	private IdentityPlugin getIdentityPlugin() throws ReflectiveOperationException, TokenCreationException {
 		Class<? extends IdentityPlugin> identityPluginClass = getIdentityPluginClassByTypeName(this.identityPluginType);
 		Constructor<?> constructor = identityPluginClass.getConstructor(Properties.class);
 		IdentityPlugin identityPlugin = (IdentityPlugin) constructor.newInstance(new Properties());
 		return identityPlugin;
 	}
-	
+
 	private String createToken() throws ReflectiveOperationException, UnauthorizedException, TokenCreationException {
-		
+
 		IdentityPlugin identityPlugin = getIdentityPlugin();
 		Map<String, String> userCredentials = new HashMap<String, String>();
-		
-		for (String key: this.credentials.keySet()) {
+
+		for (String key : this.credentials.keySet()) {
 			userCredentials.put(key, this.credentials.get(key));
 		}
-		
+
 		String accessId = identityPlugin.createToken(userCredentials).getAccessId();
 		return accessId;
 	}
+
+	private String getIdentityPluginName(Class<? extends IdentityPlugin> classObject) {
+		String packageName = classObject.getName();
+		String className = packageName.substring(packageName.lastIndexOf(".") + 1);
+		String identityPluginName = className.replace("IdentityPlugin", "");
+		identityPluginName = identityPluginName.toLowerCase();
+		return identityPluginName;
+	}
+
 }
