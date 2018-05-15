@@ -29,7 +29,7 @@ public class CommandToken {
 	private String identityPluginType = null;
 
 	@DynamicParameter(names = "-D", description = "Dynamic parameters")
-	Map<String, String> credentials = new HashMap<String, String>();
+	private Map<String, String> credentials = new HashMap<String, String>();
 
 	public String run() throws ReflectiveOperationException, UnauthorizedException, TokenCreationException {
 		if (isCreation) {
@@ -53,7 +53,7 @@ public class CommandToken {
 		throw new TokenCreationException("Token type [" + typeName + "] is not valid.");
 	}
 
-	private IdentityPlugin getIdentityPlugin() throws ReflectiveOperationException, TokenCreationException {
+	protected IdentityPlugin getIdentityPlugin() throws ReflectiveOperationException, TokenCreationException {
 		Class<? extends IdentityPlugin> identityPluginClass = getIdentityPluginClassByTypeName(this.identityPluginType);
 		Constructor<?> constructor = identityPluginClass.getConstructor(Properties.class);
 		IdentityPlugin identityPlugin = (IdentityPlugin) constructor.newInstance(new Properties());
@@ -81,4 +81,16 @@ public class CommandToken {
 		return identityPluginName;
 	}
 
+	protected void setIdentityPluginType(String identityPluginType) {
+		this.identityPluginType = identityPluginType;
+	}
+
+	protected void setIsCreation(Boolean isCreation) {
+		this.isCreation = isCreation;
+	}
+	
+	protected void addCredential(String value, String key) {
+		credentials.put(value,  key);
+	}
+	
 }
