@@ -10,7 +10,7 @@ public class Main {
 
 	private CommandToken commandToken; 
 	private JCommander jCommander;
-
+	
 	public Main() {
 		this.commandToken = new CommandToken();
 	}
@@ -19,7 +19,7 @@ public class Main {
 		
 		Main main = new Main();
 		main.commandToken = new CommandToken();
-		main.jCommander = JCommander.newBuilder().addCommand("token", main.commandToken).build();
+		main.jCommander = JCommander.newBuilder().addCommand(CommandToken.NAME, main.commandToken).build();
 
 		try {
 			main.jCommander.parse(args);
@@ -32,7 +32,7 @@ public class Main {
 
 	private void run() {
 		try {
-			if (jCommander.getParsedCommand().equals("token")) {
+			if (jCommander.getParsedCommand().equals(CommandToken.NAME)) {
 				String output = commandToken.run();
 				System.out.println(output);
 			}

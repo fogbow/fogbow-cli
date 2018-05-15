@@ -19,7 +19,9 @@ import com.beust.jcommander.Parameters;
 
 @Parameters(separators = "=", commandDescription = "Token manipulation")
 public class CommandToken {
-
+	
+	public static final String NAME = "token";
+	
 	private static final String PLUGIN_PACKAGE = "org.fogbowcloud.manager.core.plugins.identity";
 
 	@Parameter(names = { "--create", "-c" }, description = "Create a new token", required = true)
@@ -76,7 +78,8 @@ public class CommandToken {
 	private String getIdentityPluginName(Class<? extends IdentityPlugin> classObject) {
 		String packageName = classObject.getName();
 		String className = packageName.substring(packageName.lastIndexOf(".") + 1);
-		String identityPluginName = className.replace("IdentityPlugin", "");
+		String identityPluginSuffix = "IdentityPlugin";
+		String identityPluginName = className.replace(identityPluginSuffix, "");
 		identityPluginName = identityPluginName.toLowerCase();
 		return identityPluginName;
 	}
