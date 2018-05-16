@@ -1,5 +1,9 @@
 package org.fogbowcloud.cli;
 
+import java.io.IOException;
+
+import org.fogbowcloud.cli.compute.CommandCompute;
+import org.fogbowcloud.cli.token.CommandToken;
 import org.fogbowcloud.manager.core.plugins.identity.exceptions.TokenCreationException;
 import org.fogbowcloud.manager.core.plugins.identity.exceptions.UnauthorizedException;
 
@@ -9,6 +13,8 @@ import com.beust.jcommander.ParameterException;
 public class Main {
 
 	private CommandToken commandToken; 
+	private CommandCompute commandCompute;
+	
 	private JCommander jCommander;
 	
 	public Main() {
@@ -16,10 +22,13 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		
 		Main main = new Main();
 		main.commandToken = new CommandToken();
-		main.jCommander = JCommander.newBuilder().addCommand(CommandToken.NAME, main.commandToken).build();
+		main.commandCompute = new CommandCompute();
+		main.jCommander = JCommander.newBuilder()
+				.addCommand(CommandToken.NAME, main.commandToken)
+				.addCommand(CommandCompute.NAME, main.commandCompute)
+				.build();
 
 		try {
 			main.jCommander.parse(args);
@@ -32,11 +41,17 @@ public class Main {
 
 	private void run() {
 		try {
-			if (jCommander.getParsedCommand().equals(CommandToken.NAME)) {
-				String output = commandToken.run();
-				System.out.println(output);
+			String output = null;
+			switch (jCommander.getParsedCommand()) {
+				case CommandToken.NAME:
+					output = commandToken.run();
+					break;
+				case CommandCompute.NAME:
+					output = commandCompute.run();
+					break;
 			}
-		} catch (ReflectiveOperationException | UnauthorizedException | TokenCreationException e) {
+			System.out.println(output);
+		} catch (ReflectiveOperationException | UnauthorizedException | TokenCreationException | IOException e) {
 			System.out.println(e);
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());

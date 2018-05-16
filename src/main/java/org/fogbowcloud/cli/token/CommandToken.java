@@ -1,4 +1,4 @@
-package org.fogbowcloud.cli;
+package org.fogbowcloud.cli.token;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;

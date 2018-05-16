@@ -1,4 +1,4 @@
-package org.fogbowcloud.cli;
+package org.fogbowcloud.cli.token;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
