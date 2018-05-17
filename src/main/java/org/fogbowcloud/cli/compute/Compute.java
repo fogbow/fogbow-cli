@@ -19,7 +19,7 @@ public class Compute {
 	@Parameter(names = { "--memory", "-m" }, description = "Memory")
 	private String memory = null;	
 	
-	@Parameter(names = { "--disk", "-d" }, description = "Disk", required = true)
+	@Parameter(names = { "--disk", "-d" }, description = "Disk")
 	private String disk = null;
 	
 }

@@ -35,6 +35,7 @@ public class Main {
 			main.run();
 		} catch (ParameterException e) {
 			System.out.println(e);
+			main.jCommander.usage();
 		}
 
 	}
@@ -42,13 +43,17 @@ public class Main {
 	private void run() {
 		try {
 			String output = null;
-			switch (jCommander.getParsedCommand()) {
-				case CommandToken.NAME:
-					output = commandToken.run();
-					break;
-				case CommandCompute.NAME:
-					output = commandCompute.run();
-					break;
+			if (jCommander.getParsedCommand() == null) {
+				throw new ParameterException("command is empty");
+			} else {
+				switch (jCommander.getParsedCommand()) {
+					case CommandToken.NAME:
+						output = this.commandToken.run();
+						break;
+					case CommandCompute.NAME:
+						output = this.commandCompute.run();
+						break;
+				}
 			}
 			System.out.println(output);
 		} catch (ReflectiveOperationException | UnauthorizedException | TokenCreationException | IOException e) {
@@ -57,6 +62,14 @@ public class Main {
 			System.out.println(e.getCause());
 		} catch (ParameterException e) {
 			System.out.println(e);
+			this.jCommander.usage();
+		} catch (Exception e) {
+			System.out.println(e);
+			this.jCommander.usage();
+			System.out.println(jCommander.getParsedCommand());
 		}
+
 	}
+	
+
 }
