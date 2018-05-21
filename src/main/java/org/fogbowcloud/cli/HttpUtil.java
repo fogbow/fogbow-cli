@@ -11,8 +11,20 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 public class HttpUtil {
 
-	private static HttpClient httpClient = HttpClientBuilder.create().build();
-	private static final String FEDERATED_TOKEN_HEADER = "accessid";
+	private static HttpClient httpClient;
+	public static final String FEDERATED_TOKEN_HEADER = "accessId";
+	
+	private static HttpClient getHttpClient() {
+		if (HttpUtil.httpClient == null) {
+			return HttpUtil.httpClient = HttpClientBuilder.create().build();
+		} else {
+			return HttpUtil.httpClient;
+		}
+	}
+	
+	public static void setHttpClient(HttpClient httpClient) {
+		HttpUtil.httpClient = httpClient;
+	}
 	
 	public static HttpResponse post(String url, String json, String federatedToken)
 			throws ClientProtocolException, IOException {	
@@ -20,7 +32,7 @@ public class HttpUtil {
 		post.setEntity(new StringEntity(json));
 		post.setHeader(FEDERATED_TOKEN_HEADER, federatedToken);
 		post.setHeader("Content-type", "application/json");
-		HttpResponse response = httpClient.execute(post);
+		HttpResponse response = HttpUtil.getHttpClient().execute(post);
 		return response;
 	}
 }

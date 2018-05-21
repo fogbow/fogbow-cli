@@ -21,9 +21,6 @@ public class CommandCompute {
 	@Parameter(names = { "--federated-token", "-ft" }, description = "User's Token", required = true)
 	private String federatedToken = null;
 	
-	@Parameter(names = { "--local-token", "-lt" }, description = "Local token")
-	private String localToken = null;
-	
 	@Parameter(names = { "--url", "-url" }, description = "Url")
 	private String url = null;
 	
