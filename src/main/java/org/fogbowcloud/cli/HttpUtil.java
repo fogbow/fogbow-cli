@@ -7,6 +7,8 @@ import javax.mail.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -31,11 +33,27 @@ public class HttpUtil {
 	
 	public static HttpResponse post(String url, String json, String federatedToken)
 			throws ClientProtocolException, IOException {	
-		HttpPost post = new HttpPost(url);
-		post.setEntity(new StringEntity(json));
-		post.setHeader(FEDERATED_TOKEN_HEADER, federatedToken);
-		post.setHeader(JSONHeader.getName(), JSONHeader.getValue());
-		HttpResponse response = HttpUtil.getHttpClient().execute(post);
+		HttpPost request = new HttpPost(url);
+		request.setEntity(new StringEntity(json));
+		request.setHeader(FEDERATED_TOKEN_HEADER, federatedToken);
+		request.setHeader(JSONHeader.getName(), JSONHeader.getValue());
+		HttpResponse response = HttpUtil.getHttpClient().execute(request);
+		return response;
+	}
+	
+	public static HttpResponse get(String url, String federatedToken) 
+			throws ClientProtocolException, IOException {
+		HttpGet request = new HttpGet(url);
+		request.setHeader(FEDERATED_TOKEN_HEADER, federatedToken);
+		HttpResponse response = HttpUtil.getHttpClient().execute(request);
+		return response;
+	}
+	
+	public static HttpResponse delete(String url, String federatedToken) 
+			throws ClientProtocolException, IOException {
+		HttpDelete request = new HttpDelete(url);
+		request.setHeader(FEDERATED_TOKEN_HEADER, federatedToken);
+		HttpResponse response = HttpUtil.getHttpClient().execute(request);
 		return response;
 	}
 }

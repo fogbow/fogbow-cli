@@ -43,10 +43,10 @@ public class Main {
 	private void run() {
 		try {
 			String output = null;
-			if (jCommander.getParsedCommand() == null) {
+			if (this.jCommander.getParsedCommand() == null) {
 				throw new ParameterException("command is empty");
 			} else {
-				switch (jCommander.getParsedCommand()) {
+				switch (this.jCommander.getParsedCommand()) {
 					case CommandToken.NAME:
 						output = this.commandToken.run();
 						break;
@@ -66,7 +66,7 @@ public class Main {
 		} catch (Exception e) {
 			System.out.println(e);
 			this.jCommander.usage();
-			System.out.println(jCommander.getParsedCommand());
+			System.out.println(this.jCommander.getParsedCommand());
 		}
 
 	}

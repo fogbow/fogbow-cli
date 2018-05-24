@@ -25,7 +25,7 @@ public class CommandToken {
 	private static final String PLUGIN_PACKAGE = "org.fogbowcloud.manager.core.plugins.identity";
 
 	@Parameter(names = { "--create", "-c" }, description = "Create a new token", required = true)
-	private Boolean isCreation = false;
+	private Boolean isCreate = false;
 
 	@Parameter(names = { "--type", "-t" }, description = "Identity plugin type", required = true)
 	private String identityPluginType = null;
@@ -34,7 +34,7 @@ public class CommandToken {
 	private Map<String, String> credentials = new HashMap<String, String>();
 
 	public String run() throws ReflectiveOperationException, UnauthorizedException, TokenCreationException {
-		if (isCreation) {
+		if (this.isCreate) {
 			return createToken();
 		}
 		return null;
@@ -89,11 +89,10 @@ public class CommandToken {
 	}
 
 	protected void setIsCreation(Boolean isCreation) {
-		this.isCreation = isCreation;
+		this.isCreate = isCreation;
 	}
 	
 	protected void addCredential(String value, String key) {
-		credentials.put(value,  key);
-	}
-	
+		this.credentials.put(value,  key);
+	}	
 }
