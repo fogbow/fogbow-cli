@@ -1,48 +1,61 @@
 package org.fogbowcloud.cli;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.http.Header;
+import org.apache.http.ParseException;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
 import org.mockito.ArgumentMatcher;
 
 public class HttpPostRequestMatcher extends ArgumentMatcher<HttpPost> {
 
-	private HttpPost postRequest;
+	private HttpPost actualPostRequest;
+	private HttpPost comparedPostRequest;
 
 	public HttpPostRequestMatcher(HttpPost post) {
-		this.postRequest = post;
+		this.actualPostRequest = post;
 	}
 
 	public boolean matches(Object object) {
 
-		HttpPost comparedPostRequest = (HttpPost) object;
-		if (!this.postRequest.getURI().equals(comparedPostRequest.getURI())) {
+		this.comparedPostRequest = (HttpPost) object;
+
+		if (checkEntity() && checkURI() && checkHeaders()) {
+			return true;
+		} else {
 			return false;
 		}
-		if (!checkHeaders(comparedPostRequest.getAllHeaders())) {
-			return false;
-		}
-		if (!this.postRequest.getEntity().equals(comparedPostRequest.getEntity())) {
-			return false;
-		}
-		return true;
 	}
 
-	public boolean checkHeaders(Header[] comparedHeaders) {
-		for (Header header: this.postRequest.getAllHeaders()) {
-			boolean found = false;
-			for (Header comparedHeader: comparedHeaders) {
-				if (header.getName().equals(comparedHeader.getName())) {
-					if (header.getValue().equals(comparedHeader.getValue())) {
-						found = true;
-					} else {
-						return false;
-					}
-				}
-			}
-			if (!found) {
-				return false;
-			}
+	private boolean checkHeaders() {
+
+		Map<String, String> actualHeaders = Arrays.asList(this.actualPostRequest.getAllHeaders()).stream()
+				.collect(Collectors.toMap(Header::getName, Header::getValue));
+
+		Map<String, String> comparedHeaders = Arrays.asList(this.comparedPostRequest.getAllHeaders()).stream()
+				.collect(Collectors.toMap(Header::getName, Header::getValue));
+		
+		return actualHeaders.equals(comparedHeaders);
+
+	}
+	
+	private boolean checkURI() {
+		return this.actualPostRequest.getURI().equals(this.comparedPostRequest.getURI());
+	}
+	
+	private boolean checkEntity() {
+		try {
+			String comparedEntity = EntityUtils.toString(this.comparedPostRequest.getEntity());
+			String actualEntity = EntityUtils.toString(this.actualPostRequest.getEntity());
+
+			return comparedEntity.equals(actualEntity);
+			
+		} catch (ParseException | IOException e) {
+			return false;
 		}
-		return true;
 	}
 }

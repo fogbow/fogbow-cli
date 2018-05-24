@@ -83,10 +83,10 @@ public class CommandComputeTest {
 		stringBuilder.add("--url");
 		stringBuilder.add(url);
 		
-		Whitebox.setInternalState(this.compute, "providingMember", "providingMember");
-		Whitebox.setInternalState(this.compute, "publicKey", "publicKey");
-		Whitebox.setInternalState(this.compute, "imageName", "imageName");
-		Whitebox.setInternalState(this.compute, "vCPU", "vCPU");
+		Whitebox.setInternalState(this.compute, "providingMember", "providingmember");
+		Whitebox.setInternalState(this.compute, "publicKey", "publickey");
+		Whitebox.setInternalState(this.compute, "imageName", "imagename");
+		Whitebox.setInternalState(this.compute, "vCPU", "vcpu");
 		Whitebox.setInternalState(this.compute, "memory", "memory");
 		Whitebox.setInternalState(this.compute, "disk", "disk");
 		Whitebox.setInternalState(commandCompute, "compute", compute);
@@ -105,14 +105,190 @@ public class CommandComputeTest {
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATED_TOKEN_HEADER, federatedToken);
-		post.setHeader("Content-type", "\"application/json\"");
-		
+		post.setHeader(HttpUtil.JSONHeader.getName(), HttpUtil.JSONHeader.getValue());
+
 		HttpPostRequestMatcher expectedPostRequest = new HttpPostRequestMatcher(post);
 		
 		Main.main(stringBuilder.stream().toArray(String[]::new));
 		
 		Mockito.verify(httpClient).execute(Mockito.argThat(expectedPostRequest));
-		
 	}
+	
+	@Test(expected = AssertionError.class)
+	public void testCreateComputeWhenWrongHeaders() throws ClientProtocolException, IOException {
+		String url = "http://localhost/";
+		String correctFederatedToken = "federatedToken";
+		String wrongFederatedToken = "federatedTokenWrong";
+		
+		ArrayList<String> stringBuilder = new ArrayList<String>();
+		stringBuilder.add("compute");
+		stringBuilder.add("--create");
+		stringBuilder.add("--federated-token");
+		stringBuilder.add(correctFederatedToken);
+		stringBuilder.add("--providing-member");
+		stringBuilder.add("providingmember");
+		stringBuilder.add("--public-key");
+		stringBuilder.add("publickey");
+		stringBuilder.add("--image-name");
+		stringBuilder.add("imagename");
+		stringBuilder.add("--vcpu");
+		stringBuilder.add("vcpu");
+		stringBuilder.add("--memory");
+		stringBuilder.add("memory");
+		stringBuilder.add("--disk");
+		stringBuilder.add("disk");
+		stringBuilder.add("--url");
+		stringBuilder.add(url);
+		
+		Whitebox.setInternalState(this.compute, "providingMember", "providingmember");
+		Whitebox.setInternalState(this.compute, "publicKey", "publickey");
+		Whitebox.setInternalState(this.compute, "imageName", "imagename");
+		Whitebox.setInternalState(this.compute, "vCPU", "vcpu");
+		Whitebox.setInternalState(this.compute, "memory", "memory");
+		Whitebox.setInternalState(this.compute, "disk", "disk");
+		Whitebox.setInternalState(commandCompute, "compute", compute);
+		
+		String computeJson = commandCompute.computeToJson();
+		
+		HttpClient httpClient = Mockito.mock(HttpClient.class);
+		
+		HttpResponseFactory factory = new DefaultHttpResponseFactory();
+		HttpResponse response = factory.newHttpResponse(
+				new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_NO_CONTENT, "Return Irrelevant"), null);
+		Mockito.when(httpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
+		
+		HttpUtil.setHttpClient(httpClient);
+		
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity(computeJson));
+		post.setHeader(HttpUtil.FEDERATED_TOKEN_HEADER, wrongFederatedToken);
+		post.setHeader(HttpUtil.JSONHeader.getName(), HttpUtil.JSONHeader.getValue());
+		
+		HttpPostRequestMatcher expectedPostRequest = new HttpPostRequestMatcher(post);
+		
+		Main.main(stringBuilder.stream().toArray(String[]::new));
+		
+		
+		Mockito.verify(httpClient).execute(Mockito.argThat(expectedPostRequest));
+	}
+	
+	@Test(expected = AssertionError.class)
+	public void testCreateComputeWhenWrongURI() throws ClientProtocolException, IOException {
+		
+		String correctUrl = "http://localhost/";
+		String wrongUrl = "http://localhostwrong/";
+		
+		String federatedToken = "federatedToken";
+		
+		ArrayList<String> stringBuilder = new ArrayList<String>();
+		stringBuilder.add("compute");
+		stringBuilder.add("--create");
+		stringBuilder.add("--federated-token");
+		stringBuilder.add(federatedToken);
+		stringBuilder.add("--providing-member");
+		stringBuilder.add("providingmember");
+		stringBuilder.add("--public-key");
+		stringBuilder.add("publickey");
+		stringBuilder.add("--image-name");
+		stringBuilder.add("imagename");
+		stringBuilder.add("--vcpu");
+		stringBuilder.add("vcpu");
+		stringBuilder.add("--memory");
+		stringBuilder.add("memory");
+		stringBuilder.add("--disk");
+		stringBuilder.add("disk");
+		stringBuilder.add("--url");
+		stringBuilder.add(correctUrl);
+		
+		Whitebox.setInternalState(this.compute, "providingMember", "providingmember");
+		Whitebox.setInternalState(this.compute, "publicKey", "publickey");
+		Whitebox.setInternalState(this.compute, "imageName", "imagename");
+		Whitebox.setInternalState(this.compute, "vCPU", "vcpu");
+		Whitebox.setInternalState(this.compute, "memory", "memory");
+		Whitebox.setInternalState(this.compute, "disk", "disk");
+		Whitebox.setInternalState(commandCompute, "compute", compute);
+		
+		String computeJson = commandCompute.computeToJson();
+		
+		HttpClient httpClient = Mockito.mock(HttpClient.class);
+		
+		HttpResponseFactory factory = new DefaultHttpResponseFactory();
+		HttpResponse response = factory.newHttpResponse(
+				new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_NO_CONTENT, "Return Irrelevant"), null);
+		Mockito.when(httpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
+		
+		HttpUtil.setHttpClient(httpClient);
+		
+		HttpPost post = new HttpPost(wrongUrl);
+		post.setEntity(new StringEntity(computeJson));
+		post.setHeader(HttpUtil.FEDERATED_TOKEN_HEADER, federatedToken);
+		post.setHeader(HttpUtil.JSONHeader.getName(), HttpUtil.JSONHeader.getValue());
+		
+		HttpPostRequestMatcher expectedPostRequest = new HttpPostRequestMatcher(post);
+		
+		Main.main(stringBuilder.stream().toArray(String[]::new));
+		
+		
+		Mockito.verify(httpClient).execute(Mockito.argThat(expectedPostRequest));
+	}
+	
+	@Test(expected = AssertionError.class)
+	public void testCreateComputeWhenWrongEntityJson() throws ClientProtocolException, IOException {
+		String url = "http://localhost/";
+		String federatedToken = "federatedToken";
+		
+		String wrongProvidingMember = "providingmemberwrong";
+		String correctProvidingMember = "providingmember";
+		
+		ArrayList<String> stringBuilder = new ArrayList<String>();
+		stringBuilder.add("compute");
+		stringBuilder.add("--create");
+		stringBuilder.add("--federated-token");
+		stringBuilder.add(federatedToken);
+		stringBuilder.add("--providing-member");
+		stringBuilder.add(correctProvidingMember);
+		stringBuilder.add("--public-key");
+		stringBuilder.add("publickey");
+		stringBuilder.add("--image-name");
+		stringBuilder.add("imagename");
+		stringBuilder.add("--vcpu");
+		stringBuilder.add("vcpu");
+		stringBuilder.add("--memory");
+		stringBuilder.add("memory");
+		stringBuilder.add("--disk");
+		stringBuilder.add("disk");
+		stringBuilder.add("--url");
+		stringBuilder.add(url);
+		
+		Whitebox.setInternalState(this.compute, "providingMember", wrongProvidingMember);
+		Whitebox.setInternalState(this.compute, "publicKey", "publickey");
+		Whitebox.setInternalState(this.compute, "imageName", "imagename");
+		Whitebox.setInternalState(this.compute, "vCPU", "vcpu");
+		Whitebox.setInternalState(this.compute, "memory", "memory");
+		Whitebox.setInternalState(this.compute, "disk", "disk");
+		Whitebox.setInternalState(commandCompute, "compute", compute);
+		
+		String computeJson = commandCompute.computeToJson();
+		
+		HttpClient httpClient = Mockito.mock(HttpClient.class);
+		
+		HttpResponseFactory factory = new DefaultHttpResponseFactory();
+		HttpResponse response = factory.newHttpResponse(
+				new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_NO_CONTENT, "Return Irrelevant"), null);
+		Mockito.when(httpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
+		
+		HttpUtil.setHttpClient(httpClient);
+		
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity(computeJson));
+		post.setHeader(HttpUtil.FEDERATED_TOKEN_HEADER, federatedToken);
+		post.setHeader(HttpUtil.JSONHeader.getName(), HttpUtil.JSONHeader.getValue());
 
+		HttpPostRequestMatcher expectedPostRequest = new HttpPostRequestMatcher(post);
+		
+		Main.main(stringBuilder.stream().toArray(String[]::new));
+		
+		Mockito.verify(httpClient).execute(Mockito.argThat(expectedPostRequest));
+	}
+	
 }
