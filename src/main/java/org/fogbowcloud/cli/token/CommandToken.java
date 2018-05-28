@@ -87,16 +87,4 @@ public class CommandToken {
 		identityPluginName = identityPluginName.toLowerCase();
 		return identityPluginName;
 	}
-
-	protected void setIdentityPluginType(String identityPluginType) {
-		this.identityPluginName = identityPluginType;
-	}
-
-	protected void setIsCreation(Boolean isCreation) {
-		this.isCreate = isCreation;
-	}
-
-	protected void addCredential(String value, String key) {
-		this.credentials.put(value, key);
-	}
 }
