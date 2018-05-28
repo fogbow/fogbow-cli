@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.fogbowcloud.manager.core.plugins.IdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.identity.exceptions.TokenCreationException;
-import org.fogbowcloud.manager.core.plugins.identity.exceptions.UnauthorizedException;
+import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
+import org.fogbowcloud.manager.core.manager.plugins.FederationIdentityPlugin;
+import org.fogbowcloud.manager.core.manager.plugins.identity.exceptions.TokenValueCreationException;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
@@ -19,63 +19,67 @@ import com.beust.jcommander.Parameters;
 
 @Parameters(separators = "=", commandDescription = "Token manipulation")
 public class CommandToken {
-	
+
 	public static final String NAME = "token";
-	
-	private static final String PLUGIN_PACKAGE = "org.fogbowcloud.manager.core.plugins.identity";
+
+	private static final String PLUGIN_PACKAGE = "org.fogbowcloud.manager.core.manager.plugins.identity";
 
 	@Parameter(names = { "--create", "-c" }, description = "Create a new token", required = true)
 	private Boolean isCreate = false;
 
 	@Parameter(names = { "--type", "-t" }, description = "Identity plugin type", required = true)
-	private String identityPluginType = null;
+	private String identityPluginName = null;
 
 	@DynamicParameter(names = "-D", description = "Dynamic parameters")
 	private Map<String, String> credentials = new HashMap<String, String>();
 
-	public String run() throws ReflectiveOperationException, UnauthorizedException, TokenCreationException {
+	public String run() throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
 		if (this.isCreate) {
 			return createToken();
 		}
 		return null;
 	}
 
-	private Class<? extends IdentityPlugin> getIdentityPluginClassByTypeName(String typeName)
-			throws TokenCreationException {
-		Reflections reflections = new Reflections(ClasspathHelper.forPackage(PLUGIN_PACKAGE), new SubTypesScanner());
-		Set<Class<? extends IdentityPlugin>> allIdentityPluginClasses = reflections.getSubTypesOf(IdentityPlugin.class);
+	private String createToken()
+			throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
 
-		for (Class<? extends IdentityPlugin> eachClass : allIdentityPluginClasses) {
-			String identityPluginName = getIdentityPluginName(eachClass);
-			if (identityPluginName.equals(typeName)) {
-				return eachClass;
-			}
-		}
-
-		throw new TokenCreationException("Token type [" + typeName + "] is not valid.");
-	}
-
-	protected IdentityPlugin getIdentityPlugin() throws ReflectiveOperationException, TokenCreationException {
-		Class<? extends IdentityPlugin> identityPluginClass = getIdentityPluginClassByTypeName(this.identityPluginType);
-		Constructor<?> constructor = identityPluginClass.getConstructor(Properties.class);
-		IdentityPlugin identityPlugin = (IdentityPlugin) constructor.newInstance(new Properties());
-		return identityPlugin;
-	}
-
-	private String createToken() throws ReflectiveOperationException, UnauthorizedException, TokenCreationException {
-
-		IdentityPlugin identityPlugin = getIdentityPlugin();
+		FederationIdentityPlugin identityPlugin = getFederationIdentityPlugin();
 		Map<String, String> userCredentials = new HashMap<String, String>();
 
 		for (String key : this.credentials.keySet()) {
 			userCredentials.put(key, this.credentials.get(key));
 		}
 
-		String accessId = identityPlugin.createToken(userCredentials).getAccessId();
+		String accessId = identityPlugin.createFederationTokenValue(userCredentials);
 		return accessId;
 	}
 
-	private String getIdentityPluginName(Class<? extends IdentityPlugin> classObject) {
+	protected FederationIdentityPlugin getFederationIdentityPlugin()
+			throws ReflectiveOperationException, TokenValueCreationException {
+		Class<? extends FederationIdentityPlugin> federationIdentityPluginClass = getFederationIdentityPluginClass(
+				this.identityPluginName);
+		Constructor<?> constructor = federationIdentityPluginClass.getConstructor(Properties.class);
+		FederationIdentityPlugin identityPlugin = (FederationIdentityPlugin) constructor.newInstance(new Properties());
+		return identityPlugin;
+	}
+
+	private Class<? extends FederationIdentityPlugin> getFederationIdentityPluginClass(String typeName)
+			throws TokenValueCreationException {
+		Reflections reflections = new Reflections(ClasspathHelper.forPackage(PLUGIN_PACKAGE), new SubTypesScanner());
+		Set<Class<? extends FederationIdentityPlugin>> allFederationIdentityPluginClasses = reflections
+				.getSubTypesOf(FederationIdentityPlugin.class);
+
+		for (Class<? extends FederationIdentityPlugin> eachClass : allFederationIdentityPluginClasses) {
+			String federationIdentityPluginName = getFederationIdentityPluginName(eachClass);
+			if (federationIdentityPluginName.equals(typeName)) {
+				return eachClass;
+			}
+		}
+
+		throw new TokenValueCreationException("Token type [" + typeName + "] is not valid.");
+	}
+
+	private String getFederationIdentityPluginName(Class<? extends FederationIdentityPlugin> classObject) {
 		String packageName = classObject.getName();
 		String className = packageName.substring(packageName.lastIndexOf(".") + 1);
 		String identityPluginSuffix = "IdentityPlugin";
@@ -85,14 +89,14 @@ public class CommandToken {
 	}
 
 	protected void setIdentityPluginType(String identityPluginType) {
-		this.identityPluginType = identityPluginType;
+		this.identityPluginName = identityPluginType;
 	}
 
 	protected void setIsCreation(Boolean isCreation) {
 		this.isCreate = isCreation;
 	}
-	
+
 	protected void addCredential(String value, String key) {
-		this.credentials.put(value,  key);
-	}	
+		this.credentials.put(value, key);
+	}
 }

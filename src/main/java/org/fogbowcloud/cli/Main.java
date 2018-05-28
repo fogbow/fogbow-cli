@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.fogbowcloud.cli.compute.CommandCompute;
 import org.fogbowcloud.cli.token.CommandToken;
-import org.fogbowcloud.manager.core.plugins.identity.exceptions.TokenCreationException;
-import org.fogbowcloud.manager.core.plugins.identity.exceptions.UnauthorizedException;
+import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
+import org.fogbowcloud.manager.core.manager.plugins.identity.exceptions.TokenValueCreationException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -56,7 +56,7 @@ public class Main {
 				}
 			}
 			System.out.println(output);
-		} catch (ReflectiveOperationException | UnauthorizedException | TokenCreationException | IOException e) {
+		} catch (ReflectiveOperationException | UnauthenticatedException | TokenValueCreationException | IOException e) {
 			System.out.println(e);
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());
@@ -68,8 +68,5 @@ public class Main {
 			this.jCommander.usage();
 			System.out.println(this.jCommander.getParsedCommand());
 		}
-
 	}
-	
-
 }
