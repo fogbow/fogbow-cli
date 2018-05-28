@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
+import org.fogbowcloud.manager.api.local.http.ComputeOrdersController;
+
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
@@ -13,32 +15,32 @@ import com.google.gson.Gson;
 
 @Parameters(separators = "=", commandDescription = "Compute manipulation")
 public class CommandCompute {
-	
+
 	public static final String NAME = "compute";
-	
-	@Parameter(names = {"--create"}, description = "Create a new compute")
+
+	@Parameter(names = { "--create" }, description = "Create a new compute")
 	private Boolean isCreate = false;
-	
-	@Parameter(names = {"--delete"}, description = "Delete a compute")
+
+	@Parameter(names = { "--delete" }, description = "Delete a compute")
 	private Boolean isDelete = false;
-	
-	@Parameter(names = {"--get"}, description = "Get a specific compute")
+
+	@Parameter(names = { "--get" }, description = "Get a specific compute")
 	private Boolean isGet = false;
-	
-	@Parameter(names = { "--federated-token", "-ft" }, description = "User's Token", required = true)
-	private String federatedToken = null;
-	
+
+	@Parameter(names = { "--federation-token", "-ft" }, description = "User's Token", required = true)
+	private String federationToken = null;
+
 	@Parameter(names = { "--url" }, description = "Url")
 	private String url = null;
-	
+
 	@Parameter(names = { "--id" }, description = "Compute id")
 	private String id = null;
-	
+
 	@ParametersDelegate
-	private Compute compute = new Compute(); 
-	
-	public static final String ENDPOINT = "/compute";
-	
+	private Compute compute = new Compute();
+
+	public static final String ENDPOINT = ComputeOrdersController.COMPUTE_ENDPOINT;
+
 	public String run() throws ClientProtocolException, IOException {
 		if (this.isCreate) {
 			return createCompute();
@@ -52,22 +54,22 @@ public class CommandCompute {
 
 	private String createCompute() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT;
-		HttpResponse httpResponse = HttpUtil.post(fullUrl, computeToJson(), this.federatedToken);
+		HttpResponse httpResponse = HttpUtil.post(fullUrl, computeToJson(), this.federationToken);
 		return httpResponse.getStatusLine().toString();
 	}
-	
+
 	private String deleteCompute() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT + "/" + this.id;
-		HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federatedToken);
+		HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federationToken);
 		return httpResponse.getStatusLine().toString();
 	}
-	
+
 	private String getCompute() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT + "/" + this.id;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federatedToken);
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
 		return httpResponse.getStatusLine().toString();
 	}
-	
+
 	protected String computeToJson() {
 		Gson gson = new Gson();
 		String computeJson = gson.toJson(this.compute);

@@ -12,15 +12,15 @@ import com.beust.jcommander.ParameterException;
 
 public class Main {
 
-	private CommandToken commandToken; 
+	private CommandToken commandToken;
 	private CommandCompute commandCompute;
-	
+
 	private JCommander jCommander;
-	
+
 	public Main() {
 		this.commandToken = new CommandToken();
 	}
-	
+
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.commandToken = new CommandToken();
@@ -47,16 +47,17 @@ public class Main {
 				throw new ParameterException("command is empty");
 			} else {
 				switch (this.jCommander.getParsedCommand()) {
-					case CommandToken.NAME:
-						output = this.commandToken.run();
-						break;
-					case CommandCompute.NAME:
-						output = this.commandCompute.run();
-						break;
+				case CommandToken.NAME:
+					output = this.commandToken.run();
+					break;
+				case CommandCompute.NAME:
+					output = this.commandCompute.run();
+					break;
 				}
 			}
 			System.out.println(output);
-		} catch (ReflectiveOperationException | UnauthenticatedException | TokenValueCreationException | IOException e) {
+		} catch (ReflectiveOperationException | UnauthenticatedException | TokenValueCreationException
+				| IOException e) {
 			System.out.println(e);
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());
