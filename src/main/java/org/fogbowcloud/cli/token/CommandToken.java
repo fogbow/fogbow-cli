@@ -7,8 +7,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
-import org.fogbowcloud.manager.core.manager.plugins.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.manager.plugins.identity.exceptions.TokenValueCreationException;
+import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
+import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;

@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.fogbowcloud.cli.compute.CommandCompute;
 import org.fogbowcloud.cli.token.CommandToken;
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
-import org.fogbowcloud.manager.core.manager.plugins.identity.exceptions.TokenValueCreationException;
+import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;

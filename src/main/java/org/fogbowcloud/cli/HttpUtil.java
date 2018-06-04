@@ -2,8 +2,6 @@ package org.fogbowcloud.cli;
 
 import java.io.IOException;
 
-import javax.mail.Header;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -12,12 +10,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.fogbowcloud.manager.utils.HttpRequestUtil;
 
 public class HttpUtil {
 
 	private static HttpClient httpClient;
 	public static final String FEDERATION_TOKEN_VALUE_HEADER_KEY = "federationTokenValue";
-	public static final Header JSONHeader = new Header("Content-Type", "application/json");
 
 	private static HttpClient getHttpClient() {
 		if (HttpUtil.httpClient == null) {
@@ -36,7 +34,7 @@ public class HttpUtil {
 		HttpPost request = new HttpPost(url);
 		request.setEntity(new StringEntity(json));
 		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
-		request.setHeader(JSONHeader.getName(), JSONHeader.getValue());
+		request.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
 		HttpResponse response = HttpUtil.getHttpClient().execute(request);
 		return response;
 	}

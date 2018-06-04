@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
-import org.fogbowcloud.manager.core.manager.plugins.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.manager.plugins.identity.exceptions.TokenCreationException;
-import org.fogbowcloud.manager.core.manager.plugins.identity.exceptions.TokenValueCreationException;
-import org.fogbowcloud.manager.core.manager.plugins.identity.exceptions.UnauthorizedException;
-import org.fogbowcloud.manager.core.manager.plugins.identity.ldap.LdapIdentityPlugin;
+import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
+import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.ldap.LdapIdentityPlugin;
+import org.fogbowcloud.manager.core.plugins.exceptions.TokenCreationException;
+import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
+import org.fogbowcloud.manager.core.plugins.exceptions.UnauthorizedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
