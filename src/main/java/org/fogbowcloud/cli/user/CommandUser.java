@@ -33,18 +33,14 @@ public class CommandUser {
 
     public String run() throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
         if (this.isGetUser) {
-            FederationUser federationUser = getUserInfo();
-
-            Gson gson = new Gson();
-            String jsonString = gson.toJson(federationUser);
-
-            return jsonString;
+            FederationUser federationUser = getFederationUser();
+            return userToJson(federationUser);
         }
 
         return null;
     }
 
-    private FederationUser getUserInfo()
+    private FederationUser getFederationUser()
             throws TokenValueCreationException, ReflectiveOperationException, UnauthenticatedException {
 
         FederationIdentityPlugin identityPlugin = getFederationIdentityPlugin();
@@ -84,5 +80,12 @@ public class CommandUser {
         String identityPluginName = className.replace(identityPluginSuffix, "");
         identityPluginName = identityPluginName.toLowerCase();
         return identityPluginName;
+    }
+
+    protected String userToJson(FederationUser federationUser) {
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(federationUser);
+
+        return jsonString;
     }
 }
