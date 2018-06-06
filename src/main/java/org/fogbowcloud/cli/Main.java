@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.fogbowcloud.cli.compute.CommandCompute;
 import org.fogbowcloud.cli.token.CommandToken;
+import org.fogbowcloud.cli.user.CommandUser;
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 
@@ -14,6 +15,7 @@ public class Main {
 
 	private CommandToken commandToken;
 	private CommandCompute commandCompute;
+	private CommandUser commandUser;
 
 	private JCommander jCommander;
 
@@ -25,9 +27,12 @@ public class Main {
 		Main main = new Main();
 		main.commandToken = new CommandToken();
 		main.commandCompute = new CommandCompute();
+		main.commandUser = new CommandUser();
+
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.commandToken)
 				.addCommand(CommandCompute.NAME, main.commandCompute)
+				.addCommand(CommandUser.NAME, main.commandUser)
 				.build();
 
 		try {
@@ -52,6 +57,9 @@ public class Main {
 					break;
 				case CommandCompute.NAME:
 					output = this.commandCompute.run();
+					break;
+				case CommandUser.NAME:
+					output = this.commandUser.run();
 					break;
 				}
 			}
