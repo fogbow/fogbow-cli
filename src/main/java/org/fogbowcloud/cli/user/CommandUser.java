@@ -1,5 +1,6 @@
 package org.fogbowcloud.cli.user;
 
+import com.beust.jcommander.DynamicParameter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.google.gson.Gson;
@@ -12,6 +13,9 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -30,6 +34,9 @@ public class CommandUser {
 
     @Parameter(names = { "--federation-token-value", "-f" }, description = "Federation token value", required = true)
     private String federationTokenValue = null;
+
+    @DynamicParameter(names = "-D", description = "Dynamic parameters")
+    private Map<String, String> properties = new HashMap<>();
 
     public String run() throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
         if (this.isGetUser) {
@@ -53,7 +60,13 @@ public class CommandUser {
         Class<? extends FederationIdentityPlugin> federationIdentityPluginClass = getFederationIdentityPluginClass(
                 this.identityPluginName);
         Constructor<?> constructor = federationIdentityPluginClass.getConstructor(Properties.class);
-        FederationIdentityPlugin identityPlugin = (FederationIdentityPlugin) constructor.newInstance(new Properties());
+
+        Properties properties = new Properties();
+        for (Entry<String, String> credEntry : this.properties.entrySet()) {
+            properties.put(credEntry.getKey(), credEntry.getValue());
+        }
+
+        FederationIdentityPlugin identityPlugin = (FederationIdentityPlugin) constructor.newInstance(properties);
         return identityPlugin;
     }
 

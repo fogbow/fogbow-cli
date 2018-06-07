@@ -32,7 +32,7 @@ public class CommandUserTest {
 
         FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
 
-        long fakeId = 10;
+        String fakeId = "fake-id";
         FederationUser federationUser = new FederationUser(fakeId, new HashMap<>());
         Mockito.when(federationIdentityPlugin.getFederationUser(Mockito.anyString())).thenReturn(federationUser);
 
