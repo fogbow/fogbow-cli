@@ -1,4 +1,4 @@
-package org.fogbowcloud.cli.user;
+package org.fogbowcloud.cli.authentication.user;
 
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.models.token.FederationUser;
@@ -46,18 +46,6 @@ public class CommandUserTest {
         String result = spyCommandUser.userToJson(federationUser);
 
         assertEquals(result, spyCommandUser.run());
-    }
-
-    @Test
-    public void testIdentityPluginType() throws ReflectiveOperationException, TokenValueCreationException {
-        Whitebox.setInternalState(this.commandUser, "identityPluginName", "ldap");
-        assertTrue(this.commandUser.getFederationIdentityPlugin() instanceof LdapIdentityPlugin);
-    }
-
-    @Test(expected = TokenValueCreationException.class)
-    public void testWrongIdentityPluginType() throws ReflectiveOperationException, TokenValueCreationException {
-        Whitebox.setInternalState(this.commandUser, "identityPluginName", "ldab");
-        this.commandUser.getFederationIdentityPlugin();
     }
 
     @Test

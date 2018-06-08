@@ -1,14 +1,7 @@
-package org.fogbowcloud.cli.token;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
+package org.fogbowcloud.cli.authentication.token;
 
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.ldap.LdapIdentityPlugin;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenCreationException;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 import org.fogbowcloud.manager.core.plugins.exceptions.UnauthorizedException;
@@ -19,6 +12,12 @@ import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CommandTokenTest {
 
@@ -46,24 +45,12 @@ public class CommandTokenTest {
 
 		Whitebox.setInternalState(spyCommandToken, "isCreate", true);
 
-		Map<String, String> credentials = new HashMap<String, String>();
+		Map<String, String> credentials = new HashMap<>();
 		credentials.put("Dkey", "value");
 
 		Whitebox.setInternalState(spyCommandToken, "credentials", credentials);
 
 		assertEquals(accessId, spyCommandToken.run());
-	}
-
-	@Test
-	public void testIdentityPluginType() throws ReflectiveOperationException, TokenValueCreationException {
-		Whitebox.setInternalState(this.commandToken, "identityPluginName", "ldap");
-		assertTrue(this.commandToken.getFederationIdentityPlugin() instanceof LdapIdentityPlugin);
-	}
-
-	@Test(expected = TokenValueCreationException.class)
-	public void testWrongIdentityPluginType() throws ReflectiveOperationException, TokenValueCreationException {
-		Whitebox.setInternalState(this.commandToken, "identityPluginName", "ldab");
-		this.commandToken.getFederationIdentityPlugin();
 	}
 
 	@Test

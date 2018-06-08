@@ -1,15 +1,14 @@
 package org.fogbowcloud.cli;
 
-import java.io.IOException;
-
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import org.fogbowcloud.cli.compute.CommandCompute;
-import org.fogbowcloud.cli.token.CommandToken;
-import org.fogbowcloud.cli.user.CommandUser;
+import org.fogbowcloud.cli.authentication.token.CommandToken;
+import org.fogbowcloud.cli.authentication.user.CommandUser;
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
+import java.io.IOException;
 
 public class Main {
 
@@ -25,6 +24,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Main main = new Main();
+
 		main.commandToken = new CommandToken();
 		main.commandCompute = new CommandCompute();
 		main.commandUser = new CommandUser();
@@ -42,7 +42,6 @@ public class Main {
 			System.out.println(e);
 			main.jCommander.usage();
 		}
-
 	}
 
 	private void run() {
