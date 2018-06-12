@@ -22,12 +22,9 @@ public class Main {
 
 	private JCommander jCommander;
 	
+	private static PrintStream outputStream;			
 	private static final String LOG_FILE_NAME = "log.txt";
 	
-	public Main() {
-		this.commandToken = new CommandToken();
-	}
-
 	public static void main(String[] args) throws IOException {
 		
 		Main.initDefaultOutput();
@@ -43,15 +40,21 @@ public class Main {
 				.addCommand(CommandCompute.NAME, main.commandCompute)
 				.addCommand(CommandUser.NAME, main.commandUser)
 				.build();
-
-		
-		main.jCommander.parse(args);
-		main.run();
+		try {
+			main.jCommander.parse(args);
+			main.run();
+		} catch (ParameterException e) {
+			Main.printToConsole(e);
+			
+			StringBuilder out = new StringBuilder();
+			main.jCommander.usage(out);
+			Main.printToConsole(out);
+		}
 	}
 
 	private void run() {
 		
-		try(PrintStream outputStream = new PrintStream(new FileOutputStream(FileDescriptor.out))){
+		try {
 			String output = null;
 			
 			if (this.jCommander.getParsedCommand() == null) {
@@ -70,23 +73,21 @@ public class Main {
 				}
 			}
 			
-			outputStream.println(output);
+			Main.printToConsole(output);
 		} catch (ReflectiveOperationException | UnauthenticatedException | TokenValueCreationException
 				| IOException e) {
-			System.out.println(e);
-			System.out.println(e.getMessage());
-			System.out.println(e.getCause());
-		} catch (ParameterException e) {
-			System.out.println(e);
-			this.jCommander.usage();
-		} catch (Exception e) {
-			System.out.println(e);
-			this.jCommander.usage();
-			System.out.println(this.jCommander.getParsedCommand());
+			Main.printToConsole(e);
+			Main.printToConsole(e.getMessage());
+			Main.printToConsole(e.getCause());
 		} 
 	}
 	
 	private static void initDefaultOutput() throws IOException {
 		System.setOut(new PrintStream(new FileOutputStream(LOG_FILE_NAME)));
+		Main.outputStream = new PrintStream(new FileOutputStream(FileDescriptor.out));
+	}
+	
+	private static void printToConsole(Object s) {
+		Main.outputStream.println(s.toString());
 	}
 }
