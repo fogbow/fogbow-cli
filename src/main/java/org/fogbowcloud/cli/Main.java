@@ -1,6 +1,6 @@
 package org.fogbowcloud.cli;
 
-import java.io.File;	
+import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -21,12 +21,17 @@ public class Main {
 	private CommandUser commandUser;
 
 	private JCommander jCommander;
-
+	
+	private static final String LOG_FILE_NAME = "log.txt";
+	
 	public Main() {
 		this.commandToken = new CommandToken();
 	}
 
 	public static void main(String[] args) throws IOException {
+		
+		Main.initDefaultOutput();
+		
 		Main main = new Main();
 		
 		main.commandToken = new CommandToken();
@@ -46,10 +51,7 @@ public class Main {
 
 	private void run() {
 		
-		try (PrintStream ps = new PrintStream(new FileOutputStream(File.createTempFile("tempfile", ".tmp")))) {
-			
-			System.setOut(ps);
-			ps.println("entrou");
+		try(PrintStream outputStream = new PrintStream(new FileOutputStream(FileDescriptor.out))){
 			String output = null;
 			
 			if (this.jCommander.getParsedCommand() == null) {
@@ -67,12 +69,10 @@ public class Main {
 					break;
 				}
 			}
-			ps.println(output);
-			//ps.println(output);
 			
+			outputStream.println(output);
 		} catch (ReflectiveOperationException | UnauthenticatedException | TokenValueCreationException
 				| IOException e) {
-			
 			System.out.println(e);
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());
@@ -83,9 +83,10 @@ public class Main {
 			System.out.println(e);
 			this.jCommander.usage();
 			System.out.println(this.jCommander.getParsedCommand());
-			
-		} finally {
-			
-		}
+		} 
+	}
+	
+	private static void initDefaultOutput() throws IOException {
+		System.setOut(new PrintStream(new FileOutputStream(LOG_FILE_NAME)));
 	}
 }
