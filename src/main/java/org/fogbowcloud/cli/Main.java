@@ -26,15 +26,11 @@ public class Main {
 	private static final String LOG_FILE_NAME = "log.txt";
 	
 	public static void main(String[] args) throws IOException {
-		
 		Main.initDefaultOutput();
-		
 		Main main = new Main();
-		
 		main.commandToken = new CommandToken();
 		main.commandCompute = new CommandCompute();
 		main.commandUser = new CommandUser();
-
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.commandToken)
 				.addCommand(CommandCompute.NAME, main.commandCompute)
@@ -84,6 +80,7 @@ public class Main {
 	
 	private static void initDefaultOutput() throws IOException {
 		System.setOut(new PrintStream(new FileOutputStream(LOG_FILE_NAME)));
+		System.setErr(new PrintStream(new FileOutputStream(LOG_FILE_NAME)));
 		Main.outputStream = new PrintStream(new FileOutputStream(FileDescriptor.out));
 	}
 	
