@@ -202,7 +202,7 @@ public class CommandComputeTest {
 	}
 
 	@Test
-	public void testCommandComputeWithoutCommandName() {
+	public void testCommandComputeWithoutCommandName() throws IOException {
 		ArrayList<String> stringBuilder = new ArrayList<String>();
 		stringBuilder.add(CommandCompute.NAME);
 		stringBuilder.add(CommandCompute.FEDERATION_TOKEN_COMMAND_KEY);

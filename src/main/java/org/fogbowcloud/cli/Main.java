@@ -1,14 +1,18 @@
 package org.fogbowcloud.cli;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
-import org.fogbowcloud.cli.compute.CommandCompute;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.authentication.user.CommandUser;
+import org.fogbowcloud.cli.compute.CommandCompute;
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 
-import java.io.IOException;
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 
 public class Main {
 
@@ -17,14 +21,16 @@ public class Main {
 	private CommandUser commandUser;
 
 	private JCommander jCommander;
-
-	public Main() {
-		this.commandToken = new CommandToken();
-	}
-
-	public static void main(String[] args) {
+	
+	private static PrintStream outputStream;			
+	private static final String LOG_FILE_NAME = "log.txt";
+	
+	public static void main(String[] args) throws IOException {
+		
+		Main.initDefaultOutput();
+		
 		Main main = new Main();
-
+		
 		main.commandToken = new CommandToken();
 		main.commandCompute = new CommandCompute();
 		main.commandUser = new CommandUser();
@@ -34,19 +40,23 @@ public class Main {
 				.addCommand(CommandCompute.NAME, main.commandCompute)
 				.addCommand(CommandUser.NAME, main.commandUser)
 				.build();
-
 		try {
 			main.jCommander.parse(args);
 			main.run();
 		} catch (ParameterException e) {
-			System.out.println(e);
-			main.jCommander.usage();
+			Main.printToConsole(e);
+			
+			StringBuilder out = new StringBuilder();
+			main.jCommander.usage(out);
+			Main.printToConsole(out);
 		}
 	}
 
 	private void run() {
+		
 		try {
 			String output = null;
+			
 			if (this.jCommander.getParsedCommand() == null) {
 				throw new ParameterException("command is empty");
 			} else {
@@ -62,19 +72,22 @@ public class Main {
 					break;
 				}
 			}
-			System.out.println(output);
+			
+			Main.printToConsole(output);
 		} catch (ReflectiveOperationException | UnauthenticatedException | TokenValueCreationException
 				| IOException e) {
-			System.out.println(e);
-			System.out.println(e.getMessage());
-			System.out.println(e.getCause());
-		} catch (ParameterException e) {
-			System.out.println(e);
-			this.jCommander.usage();
-		} catch (Exception e) {
-			System.out.println(e);
-			this.jCommander.usage();
-			System.out.println(this.jCommander.getParsedCommand());
-		}
+			Main.printToConsole(e);
+			Main.printToConsole(e.getMessage());
+			Main.printToConsole(e.getCause());
+		} 
+	}
+	
+	private static void initDefaultOutput() throws IOException {
+		System.setOut(new PrintStream(new FileOutputStream(LOG_FILE_NAME)));
+		Main.outputStream = new PrintStream(new FileOutputStream(FileDescriptor.out));
+	}
+	
+	private static void printToConsole(Object s) {
+		Main.outputStream.println(s.toString());
 	}
 }
