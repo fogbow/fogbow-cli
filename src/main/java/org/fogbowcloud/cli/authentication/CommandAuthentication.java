@@ -4,8 +4,6 @@ import com.beust.jcommander.Parameter;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ClasspathHelper;
 
 import java.lang.reflect.Constructor;
 import java.util.Set;
@@ -13,7 +11,6 @@ import java.util.Set;
 public class CommandAuthentication {
 
     private static final String ENV_VAR_NAME = "FOGBOW_CONF_PATH";
-    private static final String PLUGIN_PACKAGE = "org.fogbowcloud.manager.core.manager.plugins.identity";
 
     @Parameter(names = { "--conf-path", "-p" }, description = "Configuration file path")
     private String confPath = null;
@@ -23,28 +20,27 @@ public class CommandAuthentication {
 
     public FederationIdentityPlugin getFederationIdentityPlugin()
             throws ReflectiveOperationException, TokenValueCreationException {
-        Class<? extends FederationIdentityPlugin> federationIdentityPluginClass = getFederationIdentityPluginClass(
-                this.identityPluginName);
+        Class<? extends FederationIdentityPlugin> federationIdentityPluginClass = getFederationIdentityPluginClass();
         Constructor<?> constructor = federationIdentityPluginClass.getConstructor();
 
         FederationIdentityPlugin identityPlugin = (FederationIdentityPlugin) constructor.newInstance();
         return identityPlugin;
     }
 
-    private Class<? extends FederationIdentityPlugin> getFederationIdentityPluginClass(String typeName)
+    private Class<? extends FederationIdentityPlugin> getFederationIdentityPluginClass()
             throws TokenValueCreationException {
-        Reflections reflections = new Reflections(ClasspathHelper.forPackage(PLUGIN_PACKAGE), new SubTypesScanner());
+        Reflections reflections = new Reflections();
         Set<Class<? extends FederationIdentityPlugin>> allFederationIdentityPluginClasses = reflections
                 .getSubTypesOf(FederationIdentityPlugin.class);
 
         for (Class<? extends FederationIdentityPlugin> eachClass : allFederationIdentityPluginClasses) {
             String federationIdentityPluginName = getFederationIdentityPluginName(eachClass);
-            if (federationIdentityPluginName.equals(typeName)) {
+            if (federationIdentityPluginName.equals(this.identityPluginName)) {
                 return eachClass;
             }
         }
 
-        throw new TokenValueCreationException("Token type [" + typeName + "] is not valid.");
+        throw new TokenValueCreationException("Token type [" + this.identityPluginName + "] is not valid.");
     }
 
     private String getFederationIdentityPluginName(Class<? extends FederationIdentityPlugin> classObject) {

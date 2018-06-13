@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
-import java.io.File;
-
 import static org.junit.Assert.assertTrue;
 
 public class CommandAuthenticationTest {
@@ -24,10 +22,7 @@ public class CommandAuthenticationTest {
 
     @Test
     public void testIdentityPluginType() throws ReflectiveOperationException, TokenValueCreationException {
-        File file = new File(CONF_PATH);
-        String path = file.getAbsolutePath();
-
-        HomeDir.getInstance().setPath(path);
+        HomeDir.getInstance().setPath(CONF_PATH);
 
         Whitebox.setInternalState(this.commandAuthentication, "identityPluginName", "ldap");
 
