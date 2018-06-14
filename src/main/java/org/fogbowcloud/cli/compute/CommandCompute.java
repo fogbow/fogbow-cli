@@ -30,7 +30,7 @@ public class CommandCompute {
 	@Parameter(names = { GET_COMMAND_KEY }, description = "Get a specific compute")
 	private Boolean isGet = false;
 	
-	public static final String FEDERATION_TOKEN_COMMAND_KEY =  "--federation-token";
+	public static final String FEDERATION_TOKEN_COMMAND_KEY =  "--federation-token-value";
 	@Parameter(names = { FEDERATION_TOKEN_COMMAND_KEY }, description = "User's Token", required = true)
 	private String federationToken = null;
 	
