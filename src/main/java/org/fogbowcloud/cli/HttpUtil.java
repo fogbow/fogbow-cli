@@ -3,6 +3,7 @@ package org.fogbowcloud.cli;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -10,6 +11,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.fogbowcloud.manager.utils.HttpRequestUtil;
 
 public class HttpUtil {
@@ -51,5 +53,11 @@ public class HttpUtil {
 		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
 		HttpResponse response = HttpUtil.getHttpClient().execute(request);
 		return response;
+	}
+	
+	public static String getHttpEntityAsString(HttpResponse httpResponse) throws ParseException, IOException {
+		String responseJson = EntityUtils.toString(httpResponse.getEntity());
+		EntityUtils.consume(httpResponse.getEntity());
+		return responseJson;
 	}
 }
