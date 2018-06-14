@@ -20,6 +20,8 @@ import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
 import org.fogbowcloud.cli.Main;
+import org.fogbowcloud.cli.order.compute.CommandCompute;
+import org.fogbowcloud.cli.order.compute.Compute;
 import org.fogbowcloud.manager.utils.HttpRequestUtil;
 import org.junit.Assert;
 import org.junit.Before;

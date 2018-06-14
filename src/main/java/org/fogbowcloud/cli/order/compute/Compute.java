@@ -1,4 +1,4 @@
-package org.fogbowcloud.cli.compute;
+package org.fogbowcloud.cli.order.compute;
 
 import com.beust.jcommander.Parameter;
 

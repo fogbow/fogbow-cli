@@ -7,7 +7,8 @@ import java.io.PrintStream;
 
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.authentication.user.CommandUser;
-import org.fogbowcloud.cli.compute.CommandCompute;
+import org.fogbowcloud.cli.order.compute.CommandCompute;
+import org.fogbowcloud.cli.order.volume.CommandVolume;
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 
@@ -19,7 +20,8 @@ public class Main {
 	private CommandToken commandToken;
 	private CommandCompute commandCompute;
 	private CommandUser commandUser;
-
+	private CommandVolume commandVolume;
+	
 	private JCommander jCommander;
 	
 	private static PrintStream outputStream;			
@@ -31,10 +33,13 @@ public class Main {
 		main.commandToken = new CommandToken();
 		main.commandCompute = new CommandCompute();
 		main.commandUser = new CommandUser();
+		main.commandVolume = new CommandVolume();
+		
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.commandToken)
 				.addCommand(CommandCompute.NAME, main.commandCompute)
 				.addCommand(CommandUser.NAME, main.commandUser)
+				.addCommand(CommandVolume.NAME, main.commandVolume)
 				.build();
 		try {
 			main.jCommander.parse(args);
@@ -65,6 +70,9 @@ public class Main {
 					break;
 				case CommandUser.NAME:
 					output = this.commandUser.run();
+					break;
+				case CommandVolume.NAME:
+					output = this.commandVolume.run();
 					break;
 				}
 			}
