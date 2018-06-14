@@ -20,7 +20,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
 import org.fogbowcloud.cli.Main;
-import org.fogbowcloud.cli.order.compute.CommandCompute;
+import org.fogbowcloud.cli.order.compute.ComputeCommand;
 import org.fogbowcloud.cli.order.compute.Compute;
 import org.fogbowcloud.manager.utils.HttpRequestUtil;
 import org.junit.Assert;
@@ -34,7 +34,7 @@ import com.google.gson.Gson;
 
 public class CommandComputeTest {
 
-	private CommandCompute spyCommandCompute;
+	private ComputeCommand spyCommandCompute;
 
 	private HttpClient mockHttpClient;
 
@@ -60,7 +60,7 @@ public class CommandComputeTest {
 		ArrayList<String> commandCompute = getCreateCommandCompute(this.spyCommandCompute);
 
 		String computeJson = this.spyCommandCompute.computeToJson();
-		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + CommandCompute.ENDPOINT);
+		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, this.spyCommandCompute.getFederationToken());
 		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
@@ -78,7 +78,7 @@ public class CommandComputeTest {
 		ArrayList<String> commandCompute = getCreateCommandCompute(this.spyCommandCompute);
 
 		String computeJson = this.spyCommandCompute.computeToJson();
-		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + CommandCompute.ENDPOINT);
+		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, wrongFederationToken);
 		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
@@ -96,7 +96,7 @@ public class CommandComputeTest {
 		ArrayList<String> commandCompute = getCreateCommandCompute(this.spyCommandCompute);
 
 		String computeJson = this.spyCommandCompute.computeToJson();
-		HttpPost post = new HttpPost(wrongURI + CommandCompute.ENDPOINT);
+		HttpPost post = new HttpPost(wrongURI + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, this.spyCommandCompute.getFederationToken());
 		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
@@ -117,7 +117,7 @@ public class CommandComputeTest {
 				wrongProvidingMemberCommandKey);
 
 		String computeJson = this.spyCommandCompute.computeToJson();
-		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + CommandCompute.ENDPOINT);
+		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, this.spyCommandCompute.getFederationToken());
 		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
@@ -138,7 +138,7 @@ public class CommandComputeTest {
 		commandCompute.set(providingMemberValueIndex, wrongProvidingMemberCommandValue);
 
 		String computeJson = this.spyCommandCompute.computeToJson();
-		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + CommandCompute.ENDPOINT);
+		HttpPost post = new HttpPost(this.spyCommandCompute.getUrl() + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, this.spyCommandCompute.getFederationToken());
 		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
@@ -155,18 +155,18 @@ public class CommandComputeTest {
 		String id = "any-compute-id";
 
 		ArrayList<String> stringBuilder = new ArrayList<String>();
-		stringBuilder.add(CommandCompute.NAME);
-		stringBuilder.add(CommandCompute.DELETE_COMMAND_KEY);
-		stringBuilder.add(CommandCompute.FEDERATION_TOKEN_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.NAME);
+		stringBuilder.add(ComputeCommand.DELETE_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.FEDERATION_TOKEN_COMMAND_KEY);
 		stringBuilder.add(this.spyCommandCompute.getFederationToken());
-		stringBuilder.add(CommandCompute.URL_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.URL_COMMAND_KEY);
 		stringBuilder.add(this.spyCommandCompute.getUrl());
-		stringBuilder.add(CommandCompute.ID_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.ID_COMMAND_KEY);
 		stringBuilder.add(id);
 
 		HttpUtil.setHttpClient(this.mockHttpClient);
 
-		String fullUrl = this.spyCommandCompute.getUrl() + CommandCompute.ENDPOINT + "/" + id;
+		String fullUrl = this.spyCommandCompute.getUrl() + ComputeCommand.ENDPOINT + "/" + id;
 		HttpDelete delete = new HttpDelete(fullUrl);
 		delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, this.spyCommandCompute.getFederationToken());
 		HttpRequestMatcher expectedDeleteRequest = new HttpRequestMatcher(delete);
@@ -182,18 +182,18 @@ public class CommandComputeTest {
 		String id = "any-compute-id";
 
 		ArrayList<String> stringBuilder = new ArrayList<String>();
-		stringBuilder.add(CommandCompute.NAME);
-		stringBuilder.add(CommandCompute.GET_COMMAND_KEY);
-		stringBuilder.add(CommandCompute.FEDERATION_TOKEN_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.NAME);
+		stringBuilder.add(ComputeCommand.GET_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.FEDERATION_TOKEN_COMMAND_KEY);
 		stringBuilder.add(this.spyCommandCompute.getFederationToken());
-		stringBuilder.add(CommandCompute.URL_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.URL_COMMAND_KEY);
 		stringBuilder.add(this.spyCommandCompute.getUrl());
-		stringBuilder.add(CommandCompute.ID_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.ID_COMMAND_KEY);
 		stringBuilder.add(id);
 
 		HttpUtil.setHttpClient(this.mockHttpClient);
 
-		String fullUrl = this.spyCommandCompute.getUrl() + CommandCompute.ENDPOINT + "/" + id;
+		String fullUrl = this.spyCommandCompute.getUrl() + ComputeCommand.ENDPOINT + "/" + id;
 		HttpGet get = new HttpGet(fullUrl);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, this.spyCommandCompute.getFederationToken());
 		HttpRequestMatcher expectedGetRequest = new HttpRequestMatcher(get);
@@ -206,15 +206,15 @@ public class CommandComputeTest {
 	@Test
 	public void testCommandComputeWithoutCommandName() throws IOException {
 		ArrayList<String> stringBuilder = new ArrayList<String>();
-		stringBuilder.add(CommandCompute.NAME);
-		stringBuilder.add(CommandCompute.FEDERATION_TOKEN_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.NAME);
+		stringBuilder.add(ComputeCommand.FEDERATION_TOKEN_COMMAND_KEY);
 		stringBuilder.add(this.spyCommandCompute.getFederationToken());
 
 		Main.main(stringBuilder.stream().toArray(String[]::new));
 	}
 
 	private void initCommandCompute() {
-		this.spyCommandCompute = Mockito.spy(new CommandCompute());
+		this.spyCommandCompute = Mockito.spy(new ComputeCommand());
 		this.spyCommandCompute.setFederationToken(ANY_FEDERATION_TOKEN);
 		this.spyCommandCompute.setUrl(ANY_URL);
 
@@ -236,11 +236,11 @@ public class CommandComputeTest {
 		HttpUtil.setHttpClient(this.mockHttpClient);
 	}
 
-	private ArrayList<String> getCreateCommandCompute(CommandCompute commandCompute) {
+	private ArrayList<String> getCreateCommandCompute(ComputeCommand commandCompute) {
 		ArrayList<String> stringBuilder = new ArrayList<String>();
-		stringBuilder.add(CommandCompute.NAME);
-		stringBuilder.add(CommandCompute.CREATE_COMMAND_KEY);
-		stringBuilder.add(CommandCompute.FEDERATION_TOKEN_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.NAME);
+		stringBuilder.add(ComputeCommand.CREATE_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.FEDERATION_TOKEN_COMMAND_KEY);
 		stringBuilder.add(commandCompute.getFederationToken());
 		stringBuilder.add(Compute.PROVIDING_MEMBER_COMMAND_KEY);
 		stringBuilder.add(commandCompute.getCompute().getProvidingMember());
@@ -254,7 +254,7 @@ public class CommandComputeTest {
 		stringBuilder.add(commandCompute.getCompute().getMemory());
 		stringBuilder.add(Compute.DISC_COMMAND_KEY);
 		stringBuilder.add(commandCompute.getCompute().getDisk());
-		stringBuilder.add(CommandCompute.URL_COMMAND_KEY);
+		stringBuilder.add(ComputeCommand.URL_COMMAND_KEY);
 		stringBuilder.add(commandCompute.getUrl());
 		return stringBuilder;
 	}

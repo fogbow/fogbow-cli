@@ -15,7 +15,7 @@ import com.beust.jcommander.ParametersDelegate;
 import com.google.gson.Gson;
 
 @Parameters(separators = "=", commandDescription = "Compute manipulation")
-public class CommandCompute extends OrderCommand {
+public class ComputeCommand extends OrderCommand {
 
 	public static final String NAME = "compute";
 	
@@ -38,13 +38,13 @@ public class CommandCompute extends OrderCommand {
 	
 	public String run() throws ClientProtocolException, IOException {
 		if (this.isCreateCommand) {
-			return doCreateCompute();
+			return doCreate();
 		} else if (this.isDeleteCommand) {
-			return doDeleteCompute();
+			return doDelete();
 		} else if (this.isGetCommand) {
-			return doGetCompute();
+			return doGet();
 		} else if (this.isGetAllCommand) {
-			return doGetAllCompute();
+			return doGetAll();
 		} else if (this.isGetQuotaCommand) {
 			return doGetQuota();
 		} else if (this.isGetAllocationCommand) {
@@ -53,25 +53,25 @@ public class CommandCompute extends OrderCommand {
 		throw new ParameterException("command is incomplete");
 	}
 
-	private String doCreateCompute() throws ClientProtocolException, IOException {
+	protected String doCreate() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT;
 		HttpResponse httpResponse = HttpUtil.post(fullUrl, computeToJson(), this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 
-	private String doDeleteCompute() throws ClientProtocolException, IOException {
+	protected String doDelete() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT + "/" + this.id;
 		HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federationToken);
 		return httpResponse.getStatusLine().toString();
 	}
 
-	private String doGetCompute() throws ClientProtocolException, IOException {
+	protected String doGet() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT + "/" + this.id;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
-	private String doGetAllCompute() throws ClientProtocolException, IOException {
+	private String doGetAll() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);

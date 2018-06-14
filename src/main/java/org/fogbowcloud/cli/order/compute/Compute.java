@@ -13,7 +13,7 @@ public class Compute {
 	private String publicKey = null;
 	
 	public static final String IMAGE_ID_COMMAND_KEY = "--image-id";
-	@Parameter(names = { IMAGE_ID_COMMAND_KEY }, description = "Image name")
+	@Parameter(names = { IMAGE_ID_COMMAND_KEY }, description = "Image id")
 	private String imageId = null;
 	
 	public static final String VCPU_COMMAND_KEY = "--vcpu";

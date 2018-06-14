@@ -7,8 +7,8 @@ import java.io.PrintStream;
 
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.authentication.user.CommandUser;
-import org.fogbowcloud.cli.order.compute.CommandCompute;
-import org.fogbowcloud.cli.order.volume.CommandVolume;
+import org.fogbowcloud.cli.order.compute.ComputeCommand;
+import org.fogbowcloud.cli.order.volume.VolumeCommand;
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 
@@ -18,9 +18,9 @@ import com.beust.jcommander.ParameterException;
 public class Main {
 
 	private CommandToken commandToken;
-	private CommandCompute commandCompute;
+	private ComputeCommand commandCompute;
 	private CommandUser commandUser;
-	private CommandVolume commandVolume;
+	private VolumeCommand commandVolume;
 	
 	private JCommander jCommander;
 	
@@ -31,15 +31,15 @@ public class Main {
 		Main.initDefaultOutput();
 		Main main = new Main();
 		main.commandToken = new CommandToken();
-		main.commandCompute = new CommandCompute();
+		main.commandCompute = new ComputeCommand();
 		main.commandUser = new CommandUser();
-		main.commandVolume = new CommandVolume();
+		main.commandVolume = new VolumeCommand();
 		
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.commandToken)
-				.addCommand(CommandCompute.NAME, main.commandCompute)
+				.addCommand(ComputeCommand.NAME, main.commandCompute)
 				.addCommand(CommandUser.NAME, main.commandUser)
-				.addCommand(CommandVolume.NAME, main.commandVolume)
+				.addCommand(VolumeCommand.NAME, main.commandVolume)
 				.build();
 		try {
 			main.jCommander.parse(args);
@@ -65,13 +65,13 @@ public class Main {
 				case CommandToken.NAME:
 					output = this.commandToken.run();
 					break;
-				case CommandCompute.NAME:
+				case ComputeCommand.NAME:
 					output = this.commandCompute.run();
 					break;
 				case CommandUser.NAME:
 					output = this.commandUser.run();
 					break;
-				case CommandVolume.NAME:
+				case VolumeCommand.NAME:
 					output = this.commandVolume.run();
 					break;
 				}

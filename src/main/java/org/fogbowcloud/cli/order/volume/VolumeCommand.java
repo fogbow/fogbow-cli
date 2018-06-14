@@ -12,7 +12,7 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
 import com.google.gson.Gson;
 
-public class CommandVolume extends OrderCommand {
+public class VolumeCommand extends OrderCommand {
 	
 	public static final String NAME = "volume";
 	
@@ -23,36 +23,36 @@ public class CommandVolume extends OrderCommand {
 	
 	public String run() throws ClientProtocolException, IOException {
 		if (this.isCreateCommand) {
-			return doCreateVolume();
+			return doCreate();
 		} else if (this.isDeleteCommand) {
-			return doDeleteVolume();
+			return doDelete();
 		} else if (this.isGetCommand) {
-			return doGetVolume();
+			return doGet();
 		} else if (this.isGetAllCommand) {
-			return doGetAllVolume();
+			return doGetAll();
 		}
 		throw new ParameterException("command is incomplete");
 	}
 	
-	private String doCreateVolume() throws ClientProtocolException, IOException {
+	protected String doCreate() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT;
 		HttpResponse httpResponse = HttpUtil.post(fullUrl, volumeToJson(), this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 
-	private String doDeleteVolume() throws ClientProtocolException, IOException {
+	protected String doDelete() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT + "/" + this.id;
 		HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federationToken);
 		return httpResponse.getStatusLine().toString();
 	}
 
-	private String doGetVolume() throws ClientProtocolException, IOException {
+	protected String doGet() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT + "/" + this.id;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
-	private String doGetAllVolume() throws ClientProtocolException, IOException {
+	private String doGetAll() throws ClientProtocolException, IOException {
 		String fullUrl = this.url + ENDPOINT;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);

@@ -1,5 +1,9 @@
 package org.fogbowcloud.cli.order;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import com.beust.jcommander.Parameter;
 
 public abstract class OrderCommand {
@@ -31,5 +35,9 @@ public abstract class OrderCommand {
 	public static final String ID_COMMAND_KEY = "--id";
 	@Parameter(names = { ID_COMMAND_KEY }, description = "id")
 	protected String id = null;
+	
+	protected abstract String doDelete() throws ClientProtocolException, IOException;
+	protected abstract String doCreate() throws ClientProtocolException, IOException;
+	protected abstract String doGet() throws ClientProtocolException, IOException;
 	
 }
