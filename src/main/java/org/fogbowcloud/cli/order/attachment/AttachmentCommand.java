@@ -1,24 +1,24 @@
-	package org.fogbowcloud.cli.order.volume;
+package org.fogbowcloud.cli.order.attachment;
 
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.api.http.VolumeOrdersController;
+import org.fogbowcloud.manager.api.http.AttachmentOrdersController;
 
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
 
-public class VolumeCommand {
-	
-	public static final String NAME = "volume";
-	public static final String ENDPOINT = '/' + VolumeOrdersController.VOLUME_ENDPOINT;
-	
-	@ParametersDelegate
-	private Volume volume = new Volume();
+public class AttachmentCommand {
+
+	public static final String NAME = "attachment";
+	public static final String ENDPOINT = '/' + AttachmentOrdersController.ATTACHMENT_ENDPOINT;
 	
 	@ParametersDelegate
-	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.volume);
+	private Attachment attachment = new Attachment();
+	
+	@ParametersDelegate
+	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.attachment);
 	
 	public String run() throws ClientProtocolException, IOException {
 		if (orderCommand.getIsCreateCommand()) {

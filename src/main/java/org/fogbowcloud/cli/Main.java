@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.authentication.user.CommandUser;
 import org.fogbowcloud.cli.order.compute.ComputeCommand;
+import org.fogbowcloud.cli.order.network.NetworkCommand;
 import org.fogbowcloud.cli.order.volume.VolumeCommand;
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
@@ -21,6 +22,7 @@ public class Main {
 	private ComputeCommand commandCompute;
 	private CommandUser commandUser;
 	private VolumeCommand commandVolume;
+	private NetworkCommand commandNetwork;
 	
 	private JCommander jCommander;
 	
@@ -34,12 +36,14 @@ public class Main {
 		main.commandCompute = new ComputeCommand();
 		main.commandUser = new CommandUser();
 		main.commandVolume = new VolumeCommand();
+		main.commandNetwork = new NetworkCommand();
 		
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.commandToken)
 				.addCommand(ComputeCommand.NAME, main.commandCompute)
 				.addCommand(CommandUser.NAME, main.commandUser)
 				.addCommand(VolumeCommand.NAME, main.commandVolume)
+				.addCommand(NetworkCommand.NAME, main.commandNetwork)
 				.build();
 		try {
 			main.jCommander.parse(args);
@@ -74,7 +78,10 @@ public class Main {
 				case VolumeCommand.NAME:
 					output = this.commandVolume.run();
 					break;
-				}
+				case NetworkCommand.NAME:
+					output = this.commandNetwork.run();
+					break;
+				} 
 			}
 			
 			Main.printToConsole(output);
@@ -92,7 +99,7 @@ public class Main {
 		Main.outputStream = new PrintStream(new FileOutputStream(FileDescriptor.out));
 	}
 	
-	private static void printToConsole(Object s) {
+	public static void printToConsole(Object s) {
 		Main.outputStream.println(s.toString());
 	}
 }

@@ -12,12 +12,12 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
-import com.google.gson.Gson;
 
 @Parameters(separators = "=", commandDescription = "Compute manipulation")
-public class ComputeCommand extends OrderCommand {
+public class ComputeCommand {
 
 	public static final String NAME = "compute";
+	public static final String ENDPOINT = '/' + ComputeOrdersController.COMPUTE_ENDPOINT;
 	
 	public static final String GET_QUOTA_COMMAND_KEY = "--get-quota";
 	@Parameter(names = { GET_QUOTA_COMMAND_KEY }, description = "Get quota")
@@ -33,18 +33,19 @@ public class ComputeCommand extends OrderCommand {
 	
 	@ParametersDelegate
 	private Compute compute = new Compute();
-
-	public static final String ENDPOINT = '/' + ComputeOrdersController.COMPUTE_ENDPOINT;
+	
+	@ParametersDelegate
+	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.compute);
 	
 	public String run() throws ClientProtocolException, IOException {
-		if (this.isCreateCommand) {
-			return doCreate();
-		} else if (this.isDeleteCommand) {
-			return doDelete();
-		} else if (this.isGetCommand) {
-			return doGet();
-		} else if (this.isGetAllCommand) {
-			return doGetAll();
+		if (orderCommand.getIsCreateCommand()) {
+			return orderCommand.doCreate();
+		} else if (orderCommand.getIsDeleteCommand()) {
+			return orderCommand.doDelete();
+		} else if (orderCommand.getIsGetCommand()) {
+			return orderCommand.doGet();
+		} else if (orderCommand.getIsGetAllCommand()) {
+			return orderCommand.doGetAll();
 		} else if (this.isGetQuotaCommand) {
 			return doGetQuota();
 		} else if (this.isGetAllocationCommand) {
@@ -52,70 +53,16 @@ public class ComputeCommand extends OrderCommand {
 		} 
 		throw new ParameterException("command is incomplete");
 	}
-
-	protected String doCreate() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + ENDPOINT;
-		HttpResponse httpResponse = HttpUtil.post(fullUrl, computeToJson(), this.federationToken);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
-	}
-
-	protected String doDelete() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + ENDPOINT + "/" + this.id;
-		HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federationToken);
-		return httpResponse.getStatusLine().toString();
-	}
-
-	protected String doGet() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + ENDPOINT + "/" + this.id;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
-	}
-	
-	private String doGetAll() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + ENDPOINT;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
-	}
 	
 	private String doGetAllocation() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + ENDPOINT + "/allocation/" + this.memberId;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
+		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + "/allocation/" + this.memberId;
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 
 	private String doGetQuota() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + ENDPOINT + "/quota/" + this.memberId;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
+		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + "/quota/" + this.memberId;
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
-	}
-
-	protected String computeToJson() {
-		Gson gson = new Gson();
-		String computeJson = gson.toJson(this.compute);
-		return computeJson;
-	}
-	
-	protected Compute getCompute() {
-		return this.compute;
-	}
-	
-	protected void setCompute(Compute compute) {
-		this.compute = compute;
-	}
-	
-	protected void setFederationToken(String federationToken) {
-		this.federationToken = federationToken;
-	}
-	
-	protected String getFederationToken() {
-		return this.federationToken;
-	}
-	
-	protected String getUrl() {
-		return url;
-	}
-
-	protected void setUrl(String url) {
-		this.url = url;
 	}
 }
