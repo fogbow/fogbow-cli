@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
-import org.fogbowcloud.cli.Main;
 
 import com.beust.jcommander.Parameter;
 import com.google.gson.Gson;
@@ -103,7 +102,6 @@ public class OrderCommand {
 	private String jsonToString() {
 		Gson gson = new Gson();
 		String computeJson = gson.toJson(this.jsonObject);
-		Main.printToConsole(">>>>" + computeJson);
 		return computeJson;
 	}
 	

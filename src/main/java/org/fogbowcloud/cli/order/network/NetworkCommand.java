@@ -21,14 +21,14 @@ public class NetworkCommand {
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.network);
 	
 	public String run() throws ClientProtocolException, IOException {
-		if (orderCommand.getIsCreateCommand()) {
-			return orderCommand.doCreate();
-		} else if (orderCommand.getIsDeleteCommand()) {
-			return orderCommand.doDelete();
-		} else if (orderCommand.getIsGetCommand()) {
-			return orderCommand.doGet();
-		} else if (orderCommand.getIsGetAllCommand()) {
-			return orderCommand.doGetAll();
+		if (this.orderCommand.getIsCreateCommand()) {
+			return this.orderCommand.doCreate();
+		} else if (this.orderCommand.getIsDeleteCommand()) {
+			return this.orderCommand.doDelete();
+		} else if (this.orderCommand.getIsGetCommand()) {
+			return this.orderCommand.doGet();
+		} else if (this.orderCommand.getIsGetAllCommand()) {
+			return this.orderCommand.doGetAll();
 		}
 		throw new ParameterException("command is incomplete");
 	}

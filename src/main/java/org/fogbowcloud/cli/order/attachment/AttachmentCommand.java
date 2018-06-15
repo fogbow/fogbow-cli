@@ -21,13 +21,13 @@ public class AttachmentCommand {
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.attachment);
 	
 	public String run() throws ClientProtocolException, IOException {
-		if (orderCommand.getIsCreateCommand()) {
+		if (this.orderCommand.getIsCreateCommand()) {
 			return orderCommand.doCreate();
-		} else if (orderCommand.getIsDeleteCommand()) {
+		} else if (this.orderCommand.getIsDeleteCommand()) {
 			return orderCommand.doDelete();
-		} else if (orderCommand.getIsGetCommand()) {
+		} else if (this.orderCommand.getIsGetCommand()) {
 			return orderCommand.doGet();
-		} else if (orderCommand.getIsGetAllCommand()) {
+		} else if (this.orderCommand.getIsGetAllCommand()) {
 			return orderCommand.doGetAll();
 		}
 		throw new ParameterException("command is incomplete");

@@ -1,6 +1,7 @@
 package org.fogbowcloud.cli;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
@@ -44,6 +45,17 @@ public class HttpUtil {
 	public static HttpResponse get(String url, String federatedToken) throws ClientProtocolException, IOException {
 		HttpGet request = new HttpGet(url);
 		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
+		HttpResponse response = HttpUtil.getHttpClient().execute(request);
+		return response;
+	}
+	
+	public static HttpResponse get(String url, String federatedToken, Map<String, String> additionalHeaders)
+			throws ClientProtocolException, IOException {
+		HttpGet request = new HttpGet(url);
+		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
+		for (Map.Entry<String, String> entry: additionalHeaders.entrySet()) {
+			request.setHeader(entry.getKey(), entry.getValue());
+		}
 		HttpResponse response = HttpUtil.getHttpClient().execute(request);
 		return response;
 	}
