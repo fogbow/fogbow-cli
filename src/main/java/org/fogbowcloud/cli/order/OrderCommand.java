@@ -11,36 +11,36 @@ import com.google.gson.Gson;
 
 public class OrderCommand {
 	
-	public static final String CREATE_COMMAND_KEY = "--create";
+	private static final String CREATE_COMMAND_KEY = "--create";
 	@Parameter(names = { CREATE_COMMAND_KEY })
-	protected Boolean isCreateCommand = false;
+	private Boolean isCreateCommand = false;
 
-	public static final String DELETE_COMMAND_KEY = "--delete";
+	private static final String DELETE_COMMAND_KEY = "--delete";
 	@Parameter(names = { DELETE_COMMAND_KEY }, description = "Delete a compute")
-	protected Boolean isDeleteCommand = false;
+	private Boolean isDeleteCommand = false;
 	
-	public static final String GET_COMMAND_KEY = "--get";
+	private static final String GET_COMMAND_KEY = "--get";
 	@Parameter(names = { GET_COMMAND_KEY }, description = "Get a specific compute")
-	protected Boolean isGetCommand = false;
+	private Boolean isGetCommand = false;
 	
-	public static final String GET_ALL_COMMAND_KEY = "--get-all";
+	private static final String GET_ALL_COMMAND_KEY = "--get-all";
 	@Parameter(names = { GET_ALL_COMMAND_KEY }, description = "Get all computes")
-	protected Boolean isGetAllCommand = false;
+	private Boolean isGetAllCommand = false;
 	
-	public static final String FEDERATION_TOKEN_COMMAND_KEY =  "--federation-token-value";
+	private static final String FEDERATION_TOKEN_COMMAND_KEY =  "--federation-token-value";
 	@Parameter(names = { FEDERATION_TOKEN_COMMAND_KEY }, description = "User's Token", required = true)
-	protected String federationToken = null;
+	private String federationToken = null;
 	
-	public static final String URL_COMMAND_KEY =  "--url";
+	private static final String URL_COMMAND_KEY =  "--url";
 	@Parameter(names = { URL_COMMAND_KEY }, description = "Url")
-	protected String url = null;
+	private String url = null;
 	
-	public static final String ID_COMMAND_KEY = "--id";
+	private static final String ID_COMMAND_KEY = "--id";
 	@Parameter(names = { ID_COMMAND_KEY }, description = "id")
-	protected String id = null;
+	private String id = null;
 	
 	private String endpoint;
-	public Object jsonObject;
+	private Object jsonObject;
 	
 	public OrderCommand(String endpoint, Object jsonObject) {
 		this.endpoint = endpoint;
