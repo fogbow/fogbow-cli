@@ -12,7 +12,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class VolumeCommand {
 	
 	public static final String NAME = "volume";
-	private static final String ENDPOINT = '/' + VolumeOrdersController.VOLUME_ENDPOINT;
+	public static final String ENDPOINT = '/' + VolumeOrdersController.VOLUME_ENDPOINT;
 	
 	@ParametersDelegate
 	private Volume volume = new Volume();

@@ -21,17 +21,17 @@ import com.beust.jcommander.ParametersDelegate;
 public class ComputeCommand {
 
 	public static final String NAME = "compute";
-	private static final String ENDPOINT = '/' + ComputeOrdersController.COMPUTE_ENDPOINT;
+	public static final String ENDPOINT = '/' + ComputeOrdersController.COMPUTE_ENDPOINT;
 	
-	private static final String GET_QUOTA_COMMAND_KEY = "--get-quota";
+	public static final String GET_QUOTA_COMMAND_KEY = "--get-quota";
 	@Parameter(names = { GET_QUOTA_COMMAND_KEY }, description = "Get quota")
 	private Boolean isGetQuotaCommand = false;
 	
-	private static final String GET_ALLOCATION_COMMAND_KEY = "--get-allocation";
+	public static final String GET_ALLOCATION_COMMAND_KEY = "--get-allocation";
 	@Parameter(names = { GET_ALLOCATION_COMMAND_KEY }, description = "Get alocation")
 	private Boolean isGetAllocationCommand = false;
 	
-	private static final String MEMBER_ID_COMMAND_KEY = "--member-id";
+	public static final String MEMBER_ID_COMMAND_KEY = "--member-id";
 	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id")
 	private String memberId = null;
 	
@@ -40,6 +40,9 @@ public class ComputeCommand {
 	
 	@ParametersDelegate
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.compute);
+	
+	public static final String QUOTA_ENDPOINT_KEY = "/quota/";
+	public static final String ALLOCATION_ENDPOINT_KEY = "/allocation/";
 	
 	public String run() throws ClientProtocolException, IOException {
 		if (this.orderCommand.getIsCreateCommand()) {
@@ -68,13 +71,13 @@ public class ComputeCommand {
 	}
 	
 	private String doGetAllocation() throws ClientProtocolException, IOException {
-		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + "/allocation/" + this.memberId;
+		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + ALLOCATION_ENDPOINT_KEY + this.memberId;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 
 	private String doGetQuota() throws ClientProtocolException, IOException {
-		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + "/quota/" + this.memberId;
+		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + QUOTA_ENDPOINT_KEY + this.memberId;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}

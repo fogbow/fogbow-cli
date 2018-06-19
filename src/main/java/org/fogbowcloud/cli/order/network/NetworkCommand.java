@@ -12,7 +12,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class NetworkCommand {
 
 	public static final String NAME = "network";
-	private static final String ENDPOINT = '/' + NetworkOrdersController.NETWORK_ENDPOINT;
+	public static final String ENDPOINT = '/' + NetworkOrdersController.NETWORK_ENDPOINT;
 	
 	@ParametersDelegate
 	private Network network = new Network();

@@ -40,7 +40,7 @@ public class ImageCommand {
 	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id")
 	private String memberId = null;
 	
-	private static final String MEMBER_ID_HEADER_KEY = "memberId";
+	public static final String MEMBER_ID_HEADER_KEY = "memberId";
 	
 	public String run() throws ClientProtocolException, IOException {
 		if (this.isGetCommand) {
