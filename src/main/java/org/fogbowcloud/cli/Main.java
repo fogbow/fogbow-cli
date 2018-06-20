@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.fogbowcloud.cli.authentication.token.CommandCheckToken;
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.authentication.user.CommandUser;
 import org.fogbowcloud.cli.image.ImageCommand;
@@ -22,6 +23,7 @@ import com.beust.jcommander.ParameterException;
 public class Main {
 
 	private CommandToken commandToken;
+	private CommandCheckToken commandCheckToken;
 	private ComputeCommand commandCompute;
 	private CommandUser commandUser;
 	private VolumeCommand commandVolume;
@@ -38,6 +40,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		Main.initDefaultOutput();
 		Main main = new Main();
+
 		main.commandToken = new CommandToken();
 		main.commandCompute = new ComputeCommand();
 		main.commandUser = new CommandUser();
@@ -46,7 +49,8 @@ public class Main {
 		main.commandAttachment = new AttachmentCommand();
 		main.commandImage = new ImageCommand();
 		main.memberCommand = new MemberCommand();
-		
+		main.commandCheckToken = new CommandCheckToken();
+
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.commandToken)
 				.addCommand(ComputeCommand.NAME, main.commandCompute)
@@ -56,6 +60,7 @@ public class Main {
 				.addCommand(AttachmentCommand.NAME, main.commandAttachment)
 				.addCommand(ImageCommand.NAME, main.commandImage)
 				.addCommand(MemberCommand.NAME, main.memberCommand)
+				.addCommand(CommandCheckToken.NAME, main.commandCheckToken)
 				.build();
 		try {
 			main.jCommander.parse(args);
@@ -70,7 +75,6 @@ public class Main {
 	}
 
 	private void run() {
-		
 		try {
 			String output = null;
 			
@@ -102,7 +106,10 @@ public class Main {
 				case MemberCommand.NAME:
 					output = this.memberCommand.run();
 					break;
-				} 
+				case CommandCheckToken.NAME:
+					output = this.commandCheckToken.run();
+					break;
+				}
 			}
 			
 			Main.printToConsole(output);
