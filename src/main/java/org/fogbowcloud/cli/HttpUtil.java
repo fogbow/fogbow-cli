@@ -41,7 +41,13 @@ public class HttpUtil {
 		HttpResponse response = HttpUtil.getHttpClient().execute(request);
 		return response;
 	}
-
+	
+	public static HttpResponse get(String url) throws ClientProtocolException, IOException {
+		HttpGet request = new HttpGet(url);
+		HttpResponse response = HttpUtil.getHttpClient().execute(request);
+		return response;
+	}
+	
 	public static HttpResponse get(String url, String federatedToken) throws ClientProtocolException, IOException {
 		HttpGet request = new HttpGet(url);
 		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
