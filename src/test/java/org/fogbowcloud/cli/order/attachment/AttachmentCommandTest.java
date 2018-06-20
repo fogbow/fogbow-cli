@@ -66,11 +66,11 @@ public class AttachmentCommandTest {
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
-		HttpRequestMatcher expectedPostRequest = new HttpRequestMatcher(post);
+		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
 		this.attachmentCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedPostRequest));
+		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 	
 	@Test
@@ -86,11 +86,11 @@ public class AttachmentCommandTest {
 
 		HttpDelete delete = new HttpDelete(this.url + AttachmentCommand.ENDPOINT + '/' + this.id);
 		delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
-		HttpRequestMatcher expectedPostRequest = new HttpRequestMatcher(delete);
+		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
 
 		this.attachmentCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedPostRequest));
+		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 	
 	@Test
@@ -126,11 +126,11 @@ public class AttachmentCommandTest {
 
 		HttpGet get = new HttpGet(this.url + AttachmentCommand.ENDPOINT );
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
-		HttpRequestMatcher expectedPostRequest = new HttpRequestMatcher(get);
+		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.attachmentCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedPostRequest));
+		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
 	private void initHttpClient() throws ClientProtocolException, IOException {

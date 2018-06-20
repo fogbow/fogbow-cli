@@ -43,10 +43,10 @@ public class MemberCommandTest {
 					MemberCommand.URL_COMMAND_KEY, this.url);
 		
 		HttpGet get = new HttpGet(this.url + MemberCommand.ENDPOINT);
-		HttpRequestMatcher expectedGetRequest = new HttpRequestMatcher(get);
+		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 		
 		this.memberCommand.run();
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedGetRequest));
+		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 	
 	private void initHttpClient() throws ClientProtocolException, IOException {

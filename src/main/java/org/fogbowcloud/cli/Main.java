@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.authentication.user.CommandUser;
 import org.fogbowcloud.cli.image.ImageCommand;
+import org.fogbowcloud.cli.member.MemberCommand;
 import org.fogbowcloud.cli.order.attachment.AttachmentCommand;
 import org.fogbowcloud.cli.order.compute.ComputeCommand;
 import org.fogbowcloud.cli.order.network.NetworkCommand;
@@ -27,6 +28,7 @@ public class Main {
 	private NetworkCommand commandNetwork;
 	private AttachmentCommand commandAttachment;
 	private ImageCommand commandImage;
+	private MemberCommand memberCommand;
 	
 	private JCommander jCommander;
 	
@@ -43,6 +45,7 @@ public class Main {
 		main.commandNetwork = new NetworkCommand();
 		main.commandAttachment = new AttachmentCommand();
 		main.commandImage = new ImageCommand();
+		main.memberCommand = new MemberCommand();
 		
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.commandToken)
@@ -52,6 +55,7 @@ public class Main {
 				.addCommand(NetworkCommand.NAME, main.commandNetwork)
 				.addCommand(AttachmentCommand.NAME, main.commandAttachment)
 				.addCommand(ImageCommand.NAME, main.commandImage)
+				.addCommand(MemberCommand.NAME, main.memberCommand)
 				.build();
 		try {
 			main.jCommander.parse(args);
@@ -94,6 +98,9 @@ public class Main {
 					break;
 				case ImageCommand.NAME:
 					output = this.commandImage.run();
+					break;
+				case MemberCommand.NAME:
+					output = this.memberCommand.run();
 					break;
 				} 
 			}

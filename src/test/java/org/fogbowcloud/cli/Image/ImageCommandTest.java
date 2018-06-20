@@ -52,11 +52,11 @@ public class ImageCommandTest {
 		HttpGet get = new HttpGet(this.url + ImageCommand.ENDPOINT + '/' + this.id);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		get.setHeader(ImageCommand.MEMBER_ID_HEADER_KEY, this.memberId);
-		HttpRequestMatcher expectedGetRequest = new HttpRequestMatcher(get);
+		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.imageCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedGetRequest));
+		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 	
 	@Test
@@ -73,11 +73,11 @@ public class ImageCommandTest {
 		HttpGet get = new HttpGet(this.url + ImageCommand.ENDPOINT);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		get.setHeader(ImageCommand.MEMBER_ID_HEADER_KEY, this.memberId);
-		HttpRequestMatcher expectedPostRequest = new HttpRequestMatcher(get);
+		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.imageCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedPostRequest));
+		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
 	private void initHttpClient() throws ClientProtocolException, IOException {

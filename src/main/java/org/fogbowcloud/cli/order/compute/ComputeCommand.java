@@ -61,13 +61,13 @@ public class ComputeCommand {
 		throw new ParameterException("command is incomplete");
 	}
 	
-	private String doCreate() throws FileNotFoundException {
+	private String doCreate() throws ClientProtocolException, IOException {
 		try {
 			this.compute.setPublicKey(readFile(this.compute.getPublicKey()));
-			return this.orderCommand.doCreate();
 		} catch (IOException e) {
 			throw new FileNotFoundException("Unable to read public key");
 		}
+		return this.orderCommand.doCreate();
 	}
 	
 	private String doGetAllocation() throws ClientProtocolException, IOException {
