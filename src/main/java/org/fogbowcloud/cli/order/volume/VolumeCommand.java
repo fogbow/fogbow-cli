@@ -29,6 +29,8 @@ public class VolumeCommand {
 			return orderCommand.doGet();
 		} else if (orderCommand.getIsGetAllCommand()) {
 			return orderCommand.doGetAll();
+		} else if (this.orderCommand.getIsGetAllStatusCommand()) {
+			return orderCommand.doGetAllStatus();
 		}
 		throw new ParameterException("command is incomplete");
 	}

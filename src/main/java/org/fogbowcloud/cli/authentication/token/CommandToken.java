@@ -1,16 +1,17 @@
 package org.fogbowcloud.cli.authentication.token;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.fogbowcloud.cli.authentication.CommandAuthentication;
+import org.fogbowcloud.manager.core.HomeDir;
+import org.fogbowcloud.manager.core.exceptions.TokenValueCreationException;
+import org.fogbowcloud.manager.core.exceptions.UnauthenticatedUserException;
+import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
+
 import com.beust.jcommander.DynamicParameter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import org.fogbowcloud.cli.authentication.CommandAuthentication;
-import org.fogbowcloud.manager.core.HomeDir;
-import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
-import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Parameters(separators = "=", commandDescription = "Token manipulation")
 public class CommandToken extends CommandAuthentication {
@@ -23,7 +24,7 @@ public class CommandToken extends CommandAuthentication {
 	@DynamicParameter(names = "-D", description = "Dynamic parameters")
 	private Map<String, String> credentials = new HashMap<>();
 
-	public String run() throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
+	public String run() throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedUserException {
 		if (this.isCreate) {
 			HomeDir.getInstance().setPath(getConfPath());
 			return createToken();
@@ -33,7 +34,7 @@ public class CommandToken extends CommandAuthentication {
 	}
 
 	private String createToken()
-			throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
+			throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedUserException {
 
 		FederationIdentityPlugin identityPlugin = getFederationIdentityPlugin();
 		Map<String, String> userCredentials = new HashMap<>();

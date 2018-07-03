@@ -27,6 +27,10 @@ public class OrderCommand {
 	@Parameter(names = { GET_ALL_COMMAND_KEY }, description = "Get all computes")
 	private Boolean isGetAllCommand = false;
 	
+	public static final String GET_ALL_STATUS_COMMAND_KEY = "--get-all-status";
+	@Parameter(names = { GET_ALL_STATUS_COMMAND_KEY }, description = "Get all computes")
+	private Boolean isGetAllStatusCommand = false;
+
 	public static final String FEDERATION_TOKEN_COMMAND_KEY =  "--federation-token-value";
 	@Parameter(names = { FEDERATION_TOKEN_COMMAND_KEY }, description = "User's Token", required = true)
 	private String federationToken = null;
@@ -41,6 +45,7 @@ public class OrderCommand {
 	
 	private String endpoint;
 	private Object jsonObject;
+	public static final String STATUS_ENDPOINT_KEY = "status";
 	
 	public OrderCommand(String endpoint, Object jsonObject) {
 		this.endpoint = endpoint;
@@ -71,6 +76,12 @@ public class OrderCommand {
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
+	public String doGetAllStatus() throws IOException, IOException {
+		String fullUrl = this.url + this.endpoint + "/" + STATUS_ENDPOINT_KEY;
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
+		return HttpUtil.getHttpEntityAsString(httpResponse);
+	}
+	
 	public Boolean getIsCreateCommand() {
 		return isCreateCommand;
 	}
@@ -85,6 +96,10 @@ public class OrderCommand {
 
 	public Boolean getIsGetAllCommand() {
 		return isGetAllCommand;
+	}
+	
+	public Boolean getIsGetAllStatusCommand() {
+		return isGetAllStatusCommand;
 	}
 
 	public String getFederationToken() {

@@ -17,7 +17,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.utils.HttpRequestUtil;
+import org.fogbowcloud.manager.util.connectivity.HttpRequestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -125,6 +125,26 @@ public class AttachmentCommandTest {
 					OrderCommand.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + AttachmentCommand.ENDPOINT );
+		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
+
+		this.attachmentCommand.run();
+
+		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+	}
+	
+	@Test
+	public void testRunGetAllStatusCommand() throws ClientProtocolException, IOException {
+		JCommander.newBuilder()
+				.addObject(this.attachmentCommand)
+				.build()
+				.parse(
+					OrderCommand.GET_ALL_STATUS_COMMAND_KEY,
+					OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+					OrderCommand.URL_COMMAND_KEY, this.url,
+					OrderCommand.ID_COMMAND_KEY, this.id);
+
+		HttpGet get = new HttpGet(this.url + AttachmentCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 

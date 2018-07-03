@@ -1,14 +1,13 @@
 package org.fogbowcloud.cli.authentication.token;
 
-import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
+import static org.junit.Assert.assertEquals;
+
+import org.fogbowcloud.manager.core.exceptions.TokenValueCreationException;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import static org.junit.Assert.assertEquals;
 
 public class CommandCheckTokenTest {
 
@@ -19,7 +18,7 @@ public class CommandCheckTokenTest {
 
     @Test
     public void testIsValidToken()
-            throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedException {
+            throws ReflectiveOperationException, TokenValueCreationException {
 
         FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
         Mockito.when(federationIdentityPlugin.isValid(Mockito.any())).thenReturn(true);
@@ -32,7 +31,7 @@ public class CommandCheckTokenTest {
 
     @Test
     public void testIsNotValidToken()
-            throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedException {
+            throws ReflectiveOperationException, TokenValueCreationException {
 
         FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
         Mockito.when(federationIdentityPlugin.isValid(Mockito.any())).thenReturn(false);
