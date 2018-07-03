@@ -29,7 +29,7 @@ public class ImageCommand {
 	protected String federationToken = null;
 	
 	public static final String URL_COMMAND_KEY =  "--url";
-	@Parameter(names = { URL_COMMAND_KEY }, description = "Url")
+	@Parameter(names = { URL_COMMAND_KEY }, description = "Url", required = true)
 	protected String url = null;
 	
 	public static final String ID_COMMAND_KEY = "--id";
@@ -37,7 +37,7 @@ public class ImageCommand {
 	protected String id = null;
 	
 	public static final String MEMBER_ID_COMMAND_KEY = "--member-id";
-	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id")
+	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id", required = true)
 	private String memberId = null;
 	
 	public static final String MEMBER_ID_HEADER_KEY = "memberId";
@@ -52,11 +52,15 @@ public class ImageCommand {
 	}
 	
 	public String doGet() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + ENDPOINT + "/" + this.id;
-		Map<String, String> additionalHeaders = new HashMap<String, String>();
-		additionalHeaders.put(MEMBER_ID_HEADER_KEY, this.memberId);
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken, additionalHeaders);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
+		if (this.id == null) {
+			throw new ParameterException("No id passed as parameter");
+		} else {
+			String fullUrl = this.url + ENDPOINT + "/" + this.id;
+			Map<String, String> additionalHeaders = new HashMap<String, String>();
+			additionalHeaders.put(MEMBER_ID_HEADER_KEY, this.memberId);
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken, additionalHeaders);
+			return HttpUtil.getHttpEntityAsString(httpResponse);
+		}
 	}
 	
 	public String doGetAll() throws ClientProtocolException, IOException {
