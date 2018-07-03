@@ -1,13 +1,14 @@
 package org.fogbowcloud.cli.authentication;
 
+import static org.junit.Assert.assertTrue;
+
 import org.fogbowcloud.manager.core.HomeDir;
+import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
+import org.fogbowcloud.manager.core.exceptions.TokenValueCreationException;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.ldap.LdapIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
-
-import static org.junit.Assert.assertTrue;
 
 public class CommandAuthenticationTest {
 
@@ -30,8 +31,8 @@ public class CommandAuthenticationTest {
       
     }
 
-    @Test(expected = TokenValueCreationException.class)
-    public void testWrongIdentityPluginType() throws ReflectiveOperationException, TokenValueCreationException {
+    @Test(expected = FogbowManagerException.class)
+    public void testWrongIdentityPluginType() throws ReflectiveOperationException, FogbowManagerException {
         Whitebox.setInternalState(this.commandAuthentication, "identityPluginName", "ldab");
         this.commandAuthentication.getFederationIdentityPlugin();
     }

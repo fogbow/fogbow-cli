@@ -14,8 +14,8 @@ import org.fogbowcloud.cli.order.attachment.AttachmentCommand;
 import org.fogbowcloud.cli.order.compute.ComputeCommand;
 import org.fogbowcloud.cli.order.network.NetworkCommand;
 import org.fogbowcloud.cli.order.volume.VolumeCommand;
-import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
+import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
+import org.fogbowcloud.manager.core.exceptions.UnexpectedException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -65,7 +65,7 @@ public class Main {
 		try {
 			main.jCommander.parse(args);
 			main.run();
-		} catch (ParameterException e) {
+		} catch (ParameterException | UnexpectedException e) {
 			Main.printToConsole(e);
 			
 			StringBuilder out = new StringBuilder();
@@ -74,7 +74,7 @@ public class Main {
 		}
 	}
 
-	private void run() {
+	private void run() throws UnexpectedException {
 		try {
 			String output = null;
 			
@@ -113,8 +113,7 @@ public class Main {
 			}
 			
 			Main.printToConsole(output);
-		} catch (ReflectiveOperationException | UnauthenticatedException | TokenValueCreationException
-				| IOException e) {
+		} catch (ReflectiveOperationException | FogbowManagerException | IOException e) {
 			Main.printToConsole(e);
 			Main.printToConsole(e.getMessage());
 			Main.printToConsole(e.getCause());

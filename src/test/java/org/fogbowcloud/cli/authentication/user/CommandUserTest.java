@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 
-import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
-import org.fogbowcloud.manager.core.models.token.FederationUser;
+import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
+import org.fogbowcloud.manager.core.exceptions.UnexpectedException;
+import org.fogbowcloud.manager.core.models.tokens.FederationUser;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -25,8 +25,7 @@ public class CommandUserTest {
     }
 
     @Test
-    public void testGetFederationUser()
-            throws UnauthenticatedException, TokenValueCreationException, ReflectiveOperationException {
+    public void testGetFederationUser() throws FogbowManagerException, ReflectiveOperationException, UnexpectedException {
 
         FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
 
@@ -47,8 +46,7 @@ public class CommandUserTest {
     }
 
     @Test
-    public void testNoCommandDefined()
-            throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
+    public void testNoCommandDefined() throws ReflectiveOperationException, FogbowManagerException, UnexpectedException {
         assertEquals(null, this.commandUser.run());
     }
 }

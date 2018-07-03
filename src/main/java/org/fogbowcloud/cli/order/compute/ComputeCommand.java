@@ -57,7 +57,9 @@ public class ComputeCommand {
 			return doGetQuota();
 		} else if (this.isGetAllocationCommand) {
 			return doGetAllocation();
-		} 
+		} else if (this.orderCommand.getIsGetAllStatusCommand()) {
+			return orderCommand.doGetAllStatus();
+		}
 		throw new ParameterException("command is incomplete");
 	}
 	

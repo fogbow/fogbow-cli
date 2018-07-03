@@ -1,10 +1,11 @@
 package org.fogbowcloud.cli.authentication.token;
 
-import com.beust.jcommander.Parameter;
 import org.fogbowcloud.cli.authentication.CommandAuthentication;
 import org.fogbowcloud.manager.core.HomeDir;
+import org.fogbowcloud.manager.core.exceptions.TokenValueCreationException;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
+
+import com.beust.jcommander.Parameter;
 
 public class CommandCheckToken extends CommandAuthentication {
 

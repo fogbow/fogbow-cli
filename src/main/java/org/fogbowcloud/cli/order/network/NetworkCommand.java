@@ -29,6 +29,8 @@ public class NetworkCommand {
 			return this.orderCommand.doGet();
 		} else if (this.orderCommand.getIsGetAllCommand()) {
 			return this.orderCommand.doGetAll();
+		} else if (this.orderCommand.getIsGetAllStatusCommand()) {
+			return orderCommand.doGetAllStatus();
 		}
 		throw new ParameterException("command is incomplete");
 	}

@@ -1,12 +1,13 @@
 package org.fogbowcloud.cli.authentication;
 
-import com.beust.jcommander.Parameter;
-import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
-import org.reflections.Reflections;
-
 import java.lang.reflect.Constructor;
 import java.util.Set;
+
+import org.fogbowcloud.manager.core.exceptions.TokenValueCreationException;
+import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
+import org.reflections.Reflections;
+
+import com.beust.jcommander.Parameter;
 
 public class CommandAuthentication {
 

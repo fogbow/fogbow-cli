@@ -1,10 +1,13 @@
 package org.fogbowcloud.cli.authentication.token;
 
-import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenCreationException;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
-import org.fogbowcloud.manager.core.plugins.exceptions.UnauthorizedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,12 +15,6 @@ import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class CommandTokenTest {
 
@@ -33,8 +30,7 @@ public class CommandTokenTest {
 	}
 
 	@Test
-	public void testCreateToken()
-			throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedException {
+	public void testCreateToken() throws FogbowManagerException, ReflectiveOperationException {
 
 		FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
 		String accessId = "accessId";
@@ -55,13 +51,12 @@ public class CommandTokenTest {
 
 	@Test
 	public void testNoCommandDefined()
-			throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
+			throws ReflectiveOperationException, FogbowManagerException {
 		assertEquals(null, this.commandToken.run());
 	}
 
 	@Test
-	public void testCredentials() throws UnauthorizedException, TokenCreationException, ReflectiveOperationException,
-			UnauthenticatedException, TokenValueCreationException {
+	public void testCredentials() throws FogbowManagerException, ReflectiveOperationException {
 
 		Map<String, String> credentials = new HashMap<String, String>();
 

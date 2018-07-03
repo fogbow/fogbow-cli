@@ -1,14 +1,16 @@
 package org.fogbowcloud.cli.authentication.user;
 
+import org.fogbowcloud.cli.authentication.CommandAuthentication;
+import org.fogbowcloud.manager.core.HomeDir;
+import org.fogbowcloud.manager.core.exceptions.TokenValueCreationException;
+import org.fogbowcloud.manager.core.exceptions.UnauthenticatedUserException;
+import org.fogbowcloud.manager.core.exceptions.UnexpectedException;
+import org.fogbowcloud.manager.core.models.tokens.FederationUser;
+import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
+
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.google.gson.Gson;
-import org.fogbowcloud.cli.authentication.CommandAuthentication;
-import org.fogbowcloud.manager.core.HomeDir;
-import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
-import org.fogbowcloud.manager.core.models.token.FederationUser;
-import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 
 @Parameters(separators = "=", commandDescription = "Token manipulation")
 public class CommandUser extends CommandAuthentication {
@@ -21,7 +23,7 @@ public class CommandUser extends CommandAuthentication {
     @Parameter(names = { "--federation-token-value", "-f" }, description = "Federation token value", required = true)
     private String federationTokenValue = null;
 
-    public String run() throws ReflectiveOperationException, UnauthenticatedException, TokenValueCreationException {
+    public String run() throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedUserException, UnexpectedException {
         if (this.isGetUser) {
             HomeDir.getInstance().setPath(getConfPath());
             FederationUser federationUser = getFederationUser();
@@ -32,7 +34,7 @@ public class CommandUser extends CommandAuthentication {
     }
 
     private FederationUser getFederationUser()
-            throws TokenValueCreationException, ReflectiveOperationException, UnauthenticatedException {
+            throws TokenValueCreationException, ReflectiveOperationException, UnauthenticatedUserException, UnexpectedException {
 
         FederationIdentityPlugin identityPlugin = getFederationIdentityPlugin();
         FederationUser federationUser = identityPlugin.getFederationUser(this.federationTokenValue);
