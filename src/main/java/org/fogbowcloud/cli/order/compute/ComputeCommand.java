@@ -73,15 +73,23 @@ public class ComputeCommand {
 	}
 	
 	private String doGetAllocation() throws ClientProtocolException, IOException {
-		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + ALLOCATION_ENDPOINT_KEY + this.memberId;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
-		return HttpUtil.getHttpEntityAsString(httpResponse);
+		if (this.memberId == null) {
+			throw new ParameterException("No member-id passed as parameter");
+		} else {
+			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + ALLOCATION_ENDPOINT_KEY + this.memberId;
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
+			return HttpUtil.getHttpEntityAsString(httpResponse);
+		}
 	}
 
 	private String doGetQuota() throws ClientProtocolException, IOException {
-		String fullUrl = this.orderCommand.getUrl() + ENDPOINT + QUOTA_ENDPOINT_KEY + this.memberId;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
-		return HttpUtil.getHttpEntityAsString(httpResponse);
+		if (this.memberId == null) {
+			throw new ParameterException("No member-id passed as parameter");
+		} else {
+			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + QUOTA_ENDPOINT_KEY + this.memberId;
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
+			return HttpUtil.getHttpEntityAsString(httpResponse);
+		}
 	}
 
 	private String readFile(String path) throws IOException {

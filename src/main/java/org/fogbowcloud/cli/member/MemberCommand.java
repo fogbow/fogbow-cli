@@ -19,7 +19,7 @@ public class MemberCommand {
 	protected Boolean isGetAllCommand = false;
 	
 	public static final String URL_COMMAND_KEY =  "--url";
-	@Parameter(names = { URL_COMMAND_KEY }, description = "Url")
+	@Parameter(names = { URL_COMMAND_KEY }, description = "Url", required = true)
 	protected String url = null;
 
 	public String run() throws IOException {

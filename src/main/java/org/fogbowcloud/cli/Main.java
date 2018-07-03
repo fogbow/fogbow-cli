@@ -4,6 +4,7 @@ import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 
 import org.fogbowcloud.cli.authentication.token.CommandCheckToken;
 import org.fogbowcloud.cli.authentication.token.CommandToken;
@@ -113,6 +114,9 @@ public class Main {
 			}
 			
 			Main.printToConsole(output);
+		} catch (InvocationTargetException e) {
+			Main.printToConsole(e.getTargetException());
+			Main.printToConsole(e.getTargetException().getCause());
 		} catch (ReflectiveOperationException | FogbowManagerException | IOException e) {
 			Main.printToConsole(e);
 			Main.printToConsole(e.getMessage());

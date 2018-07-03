@@ -7,6 +7,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 
 public class OrderCommand {
@@ -59,15 +60,23 @@ public class OrderCommand {
 	}
 	
 	public String doDelete() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + this.endpoint + "/" + this.id;
-		HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federationToken);
-		return httpResponse.getStatusLine().toString();
+		if (this.id == null) {
+			throw new ParameterException("No id passed as parameter");
+		} else {
+			String fullUrl = this.url + this.endpoint + "/" + this.id;
+			HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federationToken);
+			return httpResponse.getStatusLine().toString();
+		}
 	}
 
 	public String doGet() throws ClientProtocolException, IOException {
-		String fullUrl = this.url + this.endpoint + "/" + this.id;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
+		if (this.id == null) {
+			throw new ParameterException("No id passed as parameter");
+		} else {
+			String fullUrl = this.url + this.endpoint + "/" + this.id;
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
+			return HttpUtil.getHttpEntityAsString(httpResponse);
+		}
 	}
 	
 	public String doGetAll() throws ClientProtocolException, IOException {
