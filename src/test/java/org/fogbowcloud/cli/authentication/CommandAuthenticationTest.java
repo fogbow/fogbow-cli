@@ -27,6 +27,7 @@ public class CommandAuthenticationTest {
         Whitebox.setInternalState(this.commandAuthentication, "identityPluginName", "ldap");
 
         assertTrue(this.commandAuthentication.getFederationIdentityPlugin() instanceof LdapIdentityPlugin);
+      
     }
 
     @Test(expected = TokenValueCreationException.class)

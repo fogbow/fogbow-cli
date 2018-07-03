@@ -1,20 +1,18 @@
 package org.fogbowcloud.cli.authentication.user;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+
 import org.fogbowcloud.manager.core.exceptions.UnauthenticatedException;
 import org.fogbowcloud.manager.core.models.token.FederationUser;
 import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
-import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.ldap.LdapIdentityPlugin;
 import org.fogbowcloud.manager.core.plugins.exceptions.TokenValueCreationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
-
-import java.util.HashMap;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class CommandUserTest {
 
