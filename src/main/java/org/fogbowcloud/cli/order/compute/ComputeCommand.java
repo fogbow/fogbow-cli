@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -16,6 +18,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParametersDelegate;
+import com.google.gson.Gson;
 
 @Parameters(separators = "=", commandDescription = "Compute manipulation")
 public class ComputeCommand {
@@ -35,6 +38,10 @@ public class ComputeCommand {
 	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id")
 	private String memberId = null;
 	
+	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--fednet-id";
+	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id")
+	private String federatedNetworkId = null;
+	
 	@ParametersDelegate
 	private Compute compute = new Compute();
 	
@@ -43,6 +50,8 @@ public class ComputeCommand {
 	
 	public static final String QUOTA_ENDPOINT_KEY = "/quota/";
 	public static final String ALLOCATION_ENDPOINT_KEY = "/allocation/";
+	public static final String COMPUTE_ORDER_JSON_KEY = "computeOrder";
+	public static final String FEDERATED_NETWORK_ID_JSON_KEY = "federatedNetworkId";
 	
 	public String run() throws ClientProtocolException, IOException {
 		if (this.orderCommand.getIsCreateCommand()) {
@@ -69,7 +78,11 @@ public class ComputeCommand {
 		} catch (IOException e) {
 			throw new FileNotFoundException("Unable to read public key");
 		}
-		return this.orderCommand.doCreate();
+		if (this.federatedNetworkId != null) {
+			return this.orderCommand.doCreate(getJsonFromComputeAndFederatedNetworkId(this.federatedNetworkId, this.compute));
+		} else {		
+			return this.orderCommand.doCreate();
+		}
 	}
 	
 	private String doGetAllocation() throws ClientProtocolException, IOException {
@@ -96,5 +109,14 @@ public class ComputeCommand {
 		if (path == null) return "";
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, StandardCharsets.UTF_8);
+	}
+	
+	protected String getJsonFromComputeAndFederatedNetworkId(String federatedNetworkId, Compute compute) {
+		Map <String, Object> computeAndFederatedNetworkIdMap = new HashMap<String, Object>();
+		computeAndFederatedNetworkIdMap.put(FEDERATED_NETWORK_ID_JSON_KEY, federatedNetworkId);
+		computeAndFederatedNetworkIdMap.put(COMPUTE_ORDER_JSON_KEY, compute);
+		Gson gson = new Gson();
+		String computeAndFederatedNetworkIdJson = gson.toJson(computeAndFederatedNetworkIdMap);
+		return computeAndFederatedNetworkIdJson.toString();
 	}
 }

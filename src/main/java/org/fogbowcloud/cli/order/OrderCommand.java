@@ -54,8 +54,12 @@ public class OrderCommand {
 	}
 	
 	public String doCreate() throws ClientProtocolException, IOException {
+		return doCreate(jsonToString());
+	}
+	
+	public String doCreate(String json) throws ClientProtocolException, IOException {
 		String fullUrl = this.url + this.endpoint;
-		HttpResponse httpResponse = HttpUtil.post(fullUrl, jsonToString(), this.federationToken);
+		HttpResponse httpResponse = HttpUtil.post(fullUrl, json, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
