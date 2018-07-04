@@ -13,6 +13,7 @@ import org.fogbowcloud.cli.image.ImageCommand;
 import org.fogbowcloud.cli.member.MemberCommand;
 import org.fogbowcloud.cli.order.attachment.AttachmentCommand;
 import org.fogbowcloud.cli.order.compute.ComputeCommand;
+import org.fogbowcloud.cli.order.fednet.FederatedNetworkCommand;
 import org.fogbowcloud.cli.order.network.NetworkCommand;
 import org.fogbowcloud.cli.order.volume.VolumeCommand;
 import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
@@ -23,15 +24,16 @@ import com.beust.jcommander.ParameterException;
 
 public class Main {
 
-	private CommandToken commandToken;
-	private CommandCheckToken commandCheckToken;
-	private ComputeCommand commandCompute;
-	private CommandUser commandUser;
-	private VolumeCommand commandVolume;
-	private NetworkCommand commandNetwork;
-	private AttachmentCommand commandAttachment;
-	private ImageCommand commandImage;
+	private CommandToken tokenCommand;
+	private CommandCheckToken checkTokenCommand;
+	private ComputeCommand computeCommand;
+	private CommandUser userCommand;
+	private VolumeCommand volumeCommand;
+	private NetworkCommand networkCommand;
+	private AttachmentCommand attachmentCommand;
+	private ImageCommand imageCommand;
 	private MemberCommand memberCommand;
+	private FederatedNetworkCommand federatedNetworkCommand;
 	
 	private JCommander jCommander;
 	
@@ -42,26 +44,28 @@ public class Main {
 		Main.initDefaultOutput();
 		Main main = new Main();
 
-		main.commandToken = new CommandToken();
-		main.commandCompute = new ComputeCommand();
-		main.commandUser = new CommandUser();
-		main.commandVolume = new VolumeCommand();
-		main.commandNetwork = new NetworkCommand();
-		main.commandAttachment = new AttachmentCommand();
-		main.commandImage = new ImageCommand();
+		main.tokenCommand = new CommandToken();
+		main.computeCommand = new ComputeCommand();
+		main.userCommand = new CommandUser();
+		main.volumeCommand = new VolumeCommand();
+		main.networkCommand = new NetworkCommand();
+		main.attachmentCommand = new AttachmentCommand();
+		main.imageCommand = new ImageCommand();
 		main.memberCommand = new MemberCommand();
-		main.commandCheckToken = new CommandCheckToken();
-
+		main.checkTokenCommand = new CommandCheckToken();
+		main.federatedNetworkCommand = new FederatedNetworkCommand();
+		
 		main.jCommander = JCommander.newBuilder()
-				.addCommand(CommandToken.NAME, main.commandToken)
-				.addCommand(ComputeCommand.NAME, main.commandCompute)
-				.addCommand(CommandUser.NAME, main.commandUser)
-				.addCommand(VolumeCommand.NAME, main.commandVolume)
-				.addCommand(NetworkCommand.NAME, main.commandNetwork)
-				.addCommand(AttachmentCommand.NAME, main.commandAttachment)
-				.addCommand(ImageCommand.NAME, main.commandImage)
+				.addCommand(CommandToken.NAME, main.tokenCommand)
+				.addCommand(ComputeCommand.NAME, main.computeCommand)
+				.addCommand(CommandUser.NAME, main.userCommand)
+				.addCommand(VolumeCommand.NAME, main.volumeCommand)
+				.addCommand(NetworkCommand.NAME, main.networkCommand)
+				.addCommand(AttachmentCommand.NAME, main.attachmentCommand)
+				.addCommand(ImageCommand.NAME, main.imageCommand)
 				.addCommand(MemberCommand.NAME, main.memberCommand)
-				.addCommand(CommandCheckToken.NAME, main.commandCheckToken)
+				.addCommand(CommandCheckToken.NAME, main.checkTokenCommand)
+				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
 				.build();
 		try {
 			main.jCommander.parse(args);
@@ -84,31 +88,34 @@ public class Main {
 			} else {
 				switch (this.jCommander.getParsedCommand()) {
 				case CommandToken.NAME:
-					output = this.commandToken.run();
+					output = this.tokenCommand.run();
 					break;
 				case ComputeCommand.NAME:
-					output = this.commandCompute.run();
+					output = this.computeCommand.run();
 					break;
 				case CommandUser.NAME:
-					output = this.commandUser.run();
+					output = this.userCommand.run();
 					break;
 				case VolumeCommand.NAME:
-					output = this.commandVolume.run();
+					output = this.volumeCommand.run();
 					break;
 				case NetworkCommand.NAME:
-					output = this.commandNetwork.run();
+					output = this.networkCommand.run();
 					break;
 				case AttachmentCommand.NAME:
-					output = this.commandAttachment.run();
+					output = this.attachmentCommand.run();
 					break;
 				case ImageCommand.NAME:
-					output = this.commandImage.run();
+					output = this.imageCommand.run();
 					break;
 				case MemberCommand.NAME:
 					output = this.memberCommand.run();
 					break;
 				case CommandCheckToken.NAME:
-					output = this.commandCheckToken.run();
+					output = this.checkTokenCommand.run();
+					break;
+				case FederatedNetworkCommand.NAME:
+					output = this.federatedNetworkCommand.run();
 					break;
 				}
 			}
