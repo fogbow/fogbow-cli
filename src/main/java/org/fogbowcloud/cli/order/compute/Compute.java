@@ -28,11 +28,15 @@ public class Compute {
 	@Parameter(names = { DISC_COMMAND_KEY }, description = "Disk")
 	private String disk = null;
 	
+	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--fednet-id";
+	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id")
+	private String federatedNetworkId = null;
+	
 	public Compute() {
 		
 	}
 
-	protected Compute(String providingMember, String publicKey, String imageId, String vCPU, String memory, String disk) {
+	protected Compute(String providingMember, String publicKey, String imageId, String vCPU, String memory, String disk, String federatedNetworkId) {
 		super();
 		this.providingMember = providingMember;
 		this.publicKey = publicKey;
@@ -40,6 +44,7 @@ public class Compute {
 		this.vCPU = vCPU;
 		this.memory = memory;
 		this.disk = disk;
+		this.federatedNetworkId = federatedNetworkId;
 	}
 
 	public String getPublicKey() {
@@ -64,6 +69,10 @@ public class Compute {
 	
 	public String getProvidingMember() {
 		return this.providingMember;
+	}
+	
+	public String getFederatedNetworkId() {
+		return this.federatedNetworkId;
 	}
 	
 	public void setPublicKey(String publicKey) {
