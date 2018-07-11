@@ -35,7 +35,6 @@ public class ComputeCommandTest {
 	private final String token = "my-token";
 	private final String id = "my-id";
 	private final String memberId = "my-member-id";
-	private final String federatedNetworkId = "fed-net-id";
 	
 	@Before
 	public void setUp() throws ClientProtocolException, IOException {
@@ -45,7 +44,8 @@ public class ComputeCommandTest {
 				"my-image-id", 
 				"my-vcpu", 
 				"my-memory", 
-				"my-disk"
+				"my-disk",
+				"fednet-id"
 		);
 		this.computeCommand = new ComputeCommand();
 		initHttpClient();
@@ -64,7 +64,8 @@ public class ComputeCommandTest {
 		    		Compute.IMAGE_ID_COMMAND_KEY, this.compute.getImageId(),
 		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
 		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),
-		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk()
+		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
+		    		Compute.FEDERATED_NETWORK_ID_COMMAND_KEY, this.compute.getFederatedNetworkId()
 		    ); 
 	
 		String computeJson = new Gson().toJson(this.compute);
@@ -76,35 +77,6 @@ public class ComputeCommandTest {
 
 		this.computeCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
-	}
-	
-	@Test
-	public void testRunCreateCommandWithFederatedNetwork() throws IOException {
-		JCommander.newBuilder()
-		    .addObject(this.computeCommand)
-		    .build()
-		    .parse(
-		    		OrderCommand.CREATE_COMMAND_KEY, 
-		    		OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
-		    		OrderCommand.URL_COMMAND_KEY, this.url,
-		    		Compute.PROVIDING_MEMBER_COMMAND_KEY, this.compute.getProvidingMember(),
-		    		Compute.IMAGE_ID_COMMAND_KEY, this.compute.getImageId(),
-		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
-		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),
-		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
-		    		ComputeCommand.FEDERATED_NETWORK_ID_COMMAND_KEY, this.federatedNetworkId
-		    ); 
-
-		String computeJson = this.computeCommand.getJsonFromComputeAndFederatedNetworkId(this.federatedNetworkId, this.compute);
-		HttpPost post = new HttpPost(this.url + ComputeCommand.ENDPOINT);
-		post.setEntity(new StringEntity(computeJson));
-		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
-		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
-		
-		this.computeCommand.run();
-	
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 	
