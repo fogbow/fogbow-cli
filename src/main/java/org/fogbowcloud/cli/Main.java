@@ -105,10 +105,7 @@ public class Main {
 			}
 			
 			Main.printToConsole(output);
-		} catch (InvocationTargetException e) {
-			Main.printToConsole(e.getTargetException());
-			Main.printToConsole(e.getTargetException().getCause());
-		} catch (ReflectiveOperationException | IOException e) {
+		} catch (IOException e) {
 			Main.printToConsole(e);
 			Main.printToConsole(e.getMessage());
 			Main.printToConsole(e.getCause());
