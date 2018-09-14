@@ -35,6 +35,10 @@ public class HttpUtil {
 		HttpUtil.httpClient = httpClient;
 	}
 
+	public static HttpResponse post(String url, String json) throws IOException {
+		return post(url, json, null);
+	}
+
 	public static HttpResponse post(String url, String json, String federatedToken) throws IOException {
 		HttpPost request = new HttpPost(url);
 		try {
