@@ -2,16 +2,14 @@ package org.fogbowcloud.cli.authentication.token;
 
 import com.beust.jcommander.ParameterException;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
-import org.fogbowcloud.cli.authentication.CommandAuthentication;
 
 import com.beust.jcommander.Parameter;
 import org.fogbowcloud.cli.constants.Messages;
 
 import java.io.IOException;
 
-public class CommandCheckToken extends CommandAuthentication {
+public class CommandCheckToken {
 
     public static final String NAME = "check-token";
     public static final String ENDPOINT = "tokens/validate";

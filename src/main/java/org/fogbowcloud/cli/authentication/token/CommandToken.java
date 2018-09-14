@@ -8,7 +8,6 @@ import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.fogbowcloud.cli.HttpUtil;
-import org.fogbowcloud.cli.authentication.CommandAuthentication;
 
 import com.beust.jcommander.DynamicParameter;
 import com.beust.jcommander.Parameter;
@@ -16,7 +15,7 @@ import com.beust.jcommander.Parameters;
 import org.fogbowcloud.cli.constants.Messages;
 
 @Parameters(separators = "=", commandDescription = "Token manipulation")
-public class CommandToken extends CommandAuthentication {
+public class CommandToken {
 
 	public static final String NAME = "token";
 	public static final String ENDPOINT = '/' + "tokens";

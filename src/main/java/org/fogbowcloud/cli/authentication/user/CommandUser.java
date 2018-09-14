@@ -2,9 +2,7 @@ package org.fogbowcloud.cli.authentication.user;
 
 import com.beust.jcommander.ParameterException;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
-import org.fogbowcloud.cli.authentication.CommandAuthentication;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
