@@ -25,7 +25,7 @@ public class MemberCommand {
 
 	public String run() throws IOException {
 		if (this.url == null || this.url.isEmpty()) {
-			throw new ParameterException(Messages.Exception.NO_MEMBERSHIP_SERVICE_URL_PASSED);
+			throw new ParameterException(Messages.Exception.NO_MEMBERSHIP_SERVICE_URL);
 		}
 
 		if (this.isGetAllCommand) {
