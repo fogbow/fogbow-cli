@@ -41,7 +41,7 @@ public class CommandToken extends CommandAuthentication {
 
 	private String createToken(Map<String, String> credentials) throws IOException {
 		if (credentials == null || credentials.isEmpty()) {
-			throw new ParameterException(Messages.Exception.NO_TOKEN_PARAMS_PASSED);
+			throw new ParameterException(Messages.Exception.NO_CREDENTIALS_PARAMS_PASSED);
 		}
 		if (this.url == null || this.url.isEmpty()) {
 			throw new ParameterException(Messages.Exception.NO_FOGBOW_URL_PARAMS_PASSED);
