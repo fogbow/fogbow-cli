@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
-import org.fogbowcloud.cli.authentication.token.CommandCheckToken;
 import org.fogbowcloud.cli.authentication.token.CommandToken;
-import org.fogbowcloud.cli.authentication.user.CommandUser;
 import org.fogbowcloud.cli.image.ImageCommand;
 import org.fogbowcloud.cli.member.MemberCommand;
 import org.fogbowcloud.cli.order.attachment.AttachmentCommand;
@@ -23,9 +21,7 @@ import com.beust.jcommander.ParameterException;
 public class Main {
 
 	private CommandToken tokenCommand;
-	private CommandCheckToken checkTokenCommand;
 	private ComputeCommand computeCommand;
-	private CommandUser userCommand;
 	private VolumeCommand volumeCommand;
 	private NetworkCommand networkCommand;
 	private AttachmentCommand attachmentCommand;
@@ -44,25 +40,21 @@ public class Main {
 
 		main.tokenCommand = new CommandToken();
 		main.computeCommand = new ComputeCommand();
-		main.userCommand = new CommandUser();
 		main.volumeCommand = new VolumeCommand();
 		main.networkCommand = new NetworkCommand();
 		main.attachmentCommand = new AttachmentCommand();
 		main.imageCommand = new ImageCommand();
 		main.memberCommand = new MemberCommand();
-		main.checkTokenCommand = new CommandCheckToken();
 		main.federatedNetworkCommand = new FederatedNetworkCommand();
 		
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.tokenCommand)
 				.addCommand(ComputeCommand.NAME, main.computeCommand)
-				.addCommand(CommandUser.NAME, main.userCommand)
 				.addCommand(VolumeCommand.NAME, main.volumeCommand)
 				.addCommand(NetworkCommand.NAME, main.networkCommand)
 				.addCommand(AttachmentCommand.NAME, main.attachmentCommand)
 				.addCommand(ImageCommand.NAME, main.imageCommand)
 				.addCommand(MemberCommand.NAME, main.memberCommand)
-				.addCommand(CommandCheckToken.NAME, main.checkTokenCommand)
 				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
 				.build();
 		try {
@@ -91,9 +83,6 @@ public class Main {
 				case ComputeCommand.NAME:
 					output = this.computeCommand.run();
 					break;
-				case CommandUser.NAME:
-					output = this.userCommand.run();
-					break;
 				case VolumeCommand.NAME:
 					output = this.volumeCommand.run();
 					break;
@@ -108,9 +97,6 @@ public class Main {
 					break;
 				case MemberCommand.NAME:
 					output = this.memberCommand.run();
-					break;
-				case CommandCheckToken.NAME:
-					output = this.checkTokenCommand.run();
 					break;
 				case FederatedNetworkCommand.NAME:
 					output = this.federatedNetworkCommand.run();
