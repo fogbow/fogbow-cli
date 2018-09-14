@@ -10,7 +10,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.api.http.ComputeOrdersController;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -21,7 +20,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class ComputeCommand {
 
 	public static final String NAME = "compute";
-	public static final String ENDPOINT = '/' + ComputeOrdersController.COMPUTE_ENDPOINT;
+	public static final String ENDPOINT = '/' + "computes";
 	
 	public static final String GET_QUOTA_COMMAND_KEY = "--get-quota";
 	@Parameter(names = { GET_QUOTA_COMMAND_KEY }, description = "Get quota")

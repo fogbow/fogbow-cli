@@ -16,8 +16,6 @@ import org.fogbowcloud.cli.order.compute.ComputeCommand;
 import org.fogbowcloud.cli.order.fednet.FederatedNetworkCommand;
 import org.fogbowcloud.cli.order.network.NetworkCommand;
 import org.fogbowcloud.cli.order.volume.VolumeCommand;
-import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
-import org.fogbowcloud.manager.core.exceptions.UnexpectedException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -70,7 +68,7 @@ public class Main {
 		try {
 			main.jCommander.parse(args);
 			main.run();
-		} catch (ParameterException | UnexpectedException e) {
+		} catch (ParameterException e) {
 			Main.printToConsole(e);
 			
 			StringBuilder out = new StringBuilder();
@@ -79,7 +77,7 @@ public class Main {
 		}
 	}
 
-	private void run() throws UnexpectedException {
+	private void run() {
 		try {
 			String output = null;
 			
@@ -124,7 +122,7 @@ public class Main {
 		} catch (InvocationTargetException e) {
 			Main.printToConsole(e.getTargetException());
 			Main.printToConsole(e.getTargetException().getCause());
-		} catch (ReflectiveOperationException | FogbowManagerException | IOException e) {
+		} catch (ReflectiveOperationException | IOException e) {
 			Main.printToConsole(e);
 			Main.printToConsole(e.getMessage());
 			Main.printToConsole(e.getCause());

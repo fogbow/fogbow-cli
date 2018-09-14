@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.api.http.NetworkOrdersController;
 
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
@@ -12,7 +11,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class NetworkCommand {
 
 	public static final String NAME = "network";
-	public static final String ENDPOINT = '/' + NetworkOrdersController.NETWORK_ENDPOINT;
+	public static final String ENDPOINT = '/' + "networks";
 	
 	@ParametersDelegate
 	private Network network = new Network();

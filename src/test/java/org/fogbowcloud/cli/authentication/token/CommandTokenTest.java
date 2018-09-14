@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
-import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -30,7 +28,7 @@ public class CommandTokenTest {
 	}
 
 	@Test
-	public void testCreateToken() throws FogbowManagerException, ReflectiveOperationException {
+	public void testCreateToken() throws ReflectiveOperationException {
 
 		FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
 		String accessId = "accessId";

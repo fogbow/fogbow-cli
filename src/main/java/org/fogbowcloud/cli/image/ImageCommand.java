@@ -7,14 +7,13 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
-import org.fogbowcloud.manager.api.http.ImageRequestController;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 
 public class ImageCommand {
 	public static final String NAME = "image";
-	public static final String ENDPOINT = '/' + ImageRequestController.IMAGE_ENDPOINT;
+	public static final String ENDPOINT = '/' + "images";
 	
 	public static final String GET_COMMAND_KEY = "--get";
 	@Parameter(names = { GET_COMMAND_KEY }, description = "Get a specific compute")

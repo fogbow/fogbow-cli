@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.api.http.AttachmentOrdersController;
 
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
@@ -12,7 +11,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class AttachmentCommand {
 
 	public static final String NAME = "attachment";
-	public static final String ENDPOINT = '/' + AttachmentOrdersController.ATTACHMENT_ENDPOINT;
+	public static final String ENDPOINT = '/' + "attachments";
 	
 	@ParametersDelegate
 	private Attachment attachment = new Attachment();

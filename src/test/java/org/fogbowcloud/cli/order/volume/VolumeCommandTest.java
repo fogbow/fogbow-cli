@@ -17,7 +17,6 @@ import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.util.connectivity.HttpRequestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -61,7 +60,7 @@ public class VolumeCommandTest {
 		HttpPost post = new HttpPost(this.url + VolumeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
-		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
+		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
 		this.volumeCommand.run();

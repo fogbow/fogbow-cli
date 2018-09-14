@@ -12,7 +12,7 @@ import com.beust.jcommander.ParameterException;
 public class MemberCommand {
 	
 	public static final String NAME = "member";
-	public static final String ENDPOINT = "/members";
+	public static final String ENDPOINT = '/' + "members";
 	
 	public static final String GET_ALL_COMMAND_KEY = "--get-all";
 	@Parameter(names = { GET_ALL_COMMAND_KEY }, description = "Get all computes")
