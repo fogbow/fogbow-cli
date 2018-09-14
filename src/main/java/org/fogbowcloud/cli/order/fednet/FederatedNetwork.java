@@ -16,7 +16,7 @@ public class FederatedNetwork {
 	@Parameter(names = { CIDR_NOTATION_COMMAND_KEY }, description = "CIDR Notation")
 	private String cidrNotation = null;
 	
-	public static final String NAME_COMMAND_KEY =  "--Name";
+	public static final String NAME_COMMAND_KEY =  "--name";
 	@Parameter(names = {NAME_COMMAND_KEY}, description = "Name")
 	private String name = null;
 	

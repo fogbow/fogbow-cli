@@ -11,6 +11,10 @@ public class Volume {
 	public static final String VOLUME_SIZE_COMMAND_KEY =  "--volume-size";
 	@Parameter(names = { VOLUME_SIZE_COMMAND_KEY }, description = "Volume size")
 	private Integer volumeSize = null;
+
+	public static final String NAME_COMMAND_KEY =  "--name";
+	@Parameter(names = {NAME_COMMAND_KEY}, description = "Name")
+	private String name = null;
 	
 	public Volume() {
 		
@@ -36,5 +40,13 @@ public class Volume {
 	
 	public void setVolumeSize(Integer volumeSize) {
 		this.volumeSize = volumeSize;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
