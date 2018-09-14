@@ -64,7 +64,7 @@ public class ComputeCommandTest {
 		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
 		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),
 		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
-		    		Compute.FEDERATED_NETWORK_ID_COMMAND_KEY, this.compute.getFederatedNetworkId()
+		    		Compute.FEDERATED_NETWORK_ID_COMMAND_KEY, this.compute.getNetworksId()
 		    ); 
 	
 		String computeJson = new Gson().toJson(this.compute);

@@ -27,16 +27,21 @@ public class Compute {
 	public static final String DISC_COMMAND_KEY = "--disk";
 	@Parameter(names = { DISC_COMMAND_KEY }, description = "Disk")
 	private String disk = null;
+
+	public static final String USER_DATA_COMMAND_KEY = "--user-data";
+	@Parameter(names = { USER_DATA_COMMAND_KEY }, description = "User Data")
+	private String userData = null;
 	
 	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--fednet-id";
 	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id")
-	private String federatedNetworkId = null;
+	private String networksId = null;
 	
 	public Compute() {
 		
 	}
 
-	protected Compute(String providingMember, String publicKey, String imageId, String vCPU, String memory, String disk, String federatedNetworkId) {
+	protected Compute(String providingMember, String publicKey, String imageId, String vCPU, String memory, String disk,
+					  String networksId) {
 		super();
 		this.providingMember = providingMember;
 		this.publicKey = publicKey;
@@ -44,7 +49,7 @@ public class Compute {
 		this.vCPU = vCPU;
 		this.memory = memory;
 		this.disk = disk;
-		this.federatedNetworkId = federatedNetworkId;
+		this.networksId = networksId;
 	}
 
 	public String getPublicKey() {
@@ -71,11 +76,19 @@ public class Compute {
 		return this.providingMember;
 	}
 	
-	public String getFederatedNetworkId() {
-		return this.federatedNetworkId;
+	public String getNetworksId() {
+		return this.networksId;
 	}
 	
 	public void setPublicKey(String publicKey) {
 		this.publicKey = publicKey;
+	}
+
+	public String getUserData() {
+		return userData;
+	}
+
+	public void setUserData(String userData) {
+		this.userData = userData;
 	}
 }
