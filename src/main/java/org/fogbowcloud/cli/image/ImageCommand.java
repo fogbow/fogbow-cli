@@ -33,7 +33,7 @@ public class ImageCommand {
 	
 	public static final String ID_COMMAND_KEY = "--id";
 	@Parameter(names = { ID_COMMAND_KEY }, description = "id")
-	protected String id = null;
+	protected String imageID = null;
 	
 	public static final String MEMBER_ID_COMMAND_KEY = "--member-id";
 	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id", required = true)
@@ -51,10 +51,10 @@ public class ImageCommand {
 	}
 	
 	public String doGet() throws ClientProtocolException, IOException {
-		if (this.id == null) {
+		if (this.imageID == null) {
 			throw new ParameterException("No id passed as parameter");
 		} else {
-			String fullUrl = this.url + ENDPOINT + "/" + this.id;
+			String fullUrl = this.url + ENDPOINT + "/" + this.imageID;
 			Map<String, String> additionalHeaders = new HashMap<String, String>();
 			additionalHeaders.put(MEMBER_ID_HEADER_KEY, this.memberId);
 			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken, additionalHeaders);
