@@ -2,6 +2,9 @@ package org.fogbowcloud.cli.order.fednet;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
@@ -29,38 +32,43 @@ public class FederatedNetworkCommandTest {
 	private FederatedNetwork federatedNetwork;
 	private FederatedNetworkCommand federatedNetworkCommand = new FederatedNetworkCommand();
 	private HttpClient mockHttpClient;
-	
+
 	private final String url = "my-url";
 	private final String token = "my-token";
 	private final String id = "my-id";
-	
+
+	private final String fakeAllowedMemberOne = "member-one";
+	private final String fakeAllowedMemberTwo = "member-two";
+	private final String fakeAllowedMemberThree = "member-three";
+
 	@Before
 	public void setUp() throws ClientProtocolException, IOException {
+		Set<String> allowedMembers = Stream.of(fakeAllowedMemberOne, fakeAllowedMemberTwo, fakeAllowedMemberThree).collect(Collectors.toSet());
 		this.federatedNetwork = new FederatedNetwork(
-				"10.150.15.0/28", 
+				"10.150.15.0/28",
 				"testeFedNet",
-				Arrays.asList("member-one", "member-two", "member-three")
+				allowedMembers
 		);
 		this.federatedNetworkCommand = new FederatedNetworkCommand();
 		initHttpClient();
 	}
-	
+
 	@Test
 	public void testRunCreateCommand() throws IOException {
 		JCommander.newBuilder()
 		    .addObject(this.federatedNetworkCommand)
 		    .build()
 		    .parse(
-		    		OrderCommand.CREATE_COMMAND_KEY, 
+		    		OrderCommand.CREATE_COMMAND_KEY,
 		    		OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 		    		OrderCommand.URL_COMMAND_KEY, this.url,
 		    		FederatedNetwork.CIDR_NOTATION_COMMAND_KEY, this.federatedNetwork.getCidrNotation(),
-		    		FederatedNetwork.LABEL_COMMAND_KEY, this.federatedNetwork.getLabel(),
-		    		FederatedNetwork.ALLOWED_MEMBERS_COMMAND_KEY, this.federatedNetwork.getAllowedMembers().get(0).toString(),
-		    		FederatedNetwork.ALLOWED_MEMBERS_COMMAND_KEY, this.federatedNetwork.getAllowedMembers().get(1).toString(),
-		    		FederatedNetwork.ALLOWED_MEMBERS_COMMAND_KEY, this.federatedNetwork.getAllowedMembers().get(2).toString()
-		    ); 
-	
+		    		FederatedNetwork.NAME_COMMAND_KEY, this.federatedNetwork.getName(),
+					FederatedNetwork.ALLOWED_MEMBERS_COMMAND_KEY, fakeAllowedMemberOne,
+					FederatedNetwork.ALLOWED_MEMBERS_COMMAND_KEY, fakeAllowedMemberTwo,
+					FederatedNetwork.ALLOWED_MEMBERS_COMMAND_KEY, fakeAllowedMemberThree
+		    );
+
 		String federatedNetworkJson = new Gson().toJson(this.federatedNetwork);
 		HttpPost post = new HttpPost(this.url + FederatedNetworkCommand.ENDPOINT);
 		post.setEntity(new StringEntity(federatedNetworkJson));
@@ -72,7 +80,7 @@ public class FederatedNetworkCommandTest {
 
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
-	
+
 	@Test
 	public void testRunDeleteCommand() throws ClientProtocolException, IOException {
 		JCommander.newBuilder()
@@ -92,7 +100,7 @@ public class FederatedNetworkCommandTest {
 
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
-	
+
 	@Test
 	public void testRunGetCommand() throws ClientProtocolException, IOException {
 		JCommander.newBuilder()
@@ -112,7 +120,7 @@ public class FederatedNetworkCommandTest {
 
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
-	
+
 	@Test
 	public void testRunGetAllCommand() throws ClientProtocolException, IOException {
 		JCommander.newBuilder()
@@ -132,7 +140,7 @@ public class FederatedNetworkCommandTest {
 
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
-	
+
 	@Test
 	public void testRunGetAllStatusCommand() throws ClientProtocolException, IOException {
 		JCommander.newBuilder()
