@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
 
 import com.beust.jcommander.Parameter;
@@ -45,7 +46,7 @@ public class ComputeCommand {
 	public static final String COMPUTE_ORDER_JSON_KEY = "computeOrder";
 	public static final String FEDERATED_NETWORK_ID_JSON_KEY = "federatedNetworkId";
 	
-	public String run() throws ClientProtocolException, IOException {
+	public String run() throws FogbowCLIException, IOException {
 		if (this.orderCommand.getIsCreateCommand()) {
 			return doCreate();
 		} else if (this.orderCommand.getIsDeleteCommand()) {
@@ -64,7 +65,7 @@ public class ComputeCommand {
 		throw new ParameterException("command is incomplete");
 	}
 	
-	private String doCreate() throws ClientProtocolException, IOException {
+	private String doCreate() throws FogbowCLIException, IOException {
 		try {
 			this.compute.setPublicKey(readFile(this.compute.getPublicKey()));
 		} catch (IOException e) {
@@ -73,7 +74,7 @@ public class ComputeCommand {
 		return this.orderCommand.doCreate();
 	}
 	
-	private String doGetAllocation() throws ClientProtocolException, IOException {
+	private String doGetAllocation() throws FogbowCLIException, IOException {
 		if (this.memberId == null) {
 			throw new ParameterException("No member-id passed as parameter");
 		} else {
@@ -83,7 +84,7 @@ public class ComputeCommand {
 		}
 	}
 
-	private String doGetQuota() throws ClientProtocolException, IOException {
+	private String doGetQuota() throws FogbowCLIException, IOException {
 		if (this.memberId == null) {
 			throw new ParameterException("No member-id passed as parameter");
 		} else {

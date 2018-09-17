@@ -3,6 +3,7 @@
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
 
 import com.beust.jcommander.ParameterException;
@@ -19,7 +20,7 @@ public class VolumeCommand {
 	@ParametersDelegate
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.volume);
 	
-	public String run() throws ClientProtocolException, IOException {
+	public String run() throws FogbowCLIException, IOException {
 		if (orderCommand.getIsCreateCommand()) {
 			return orderCommand.doCreate();
 		} else if (orderCommand.getIsDeleteCommand()) {

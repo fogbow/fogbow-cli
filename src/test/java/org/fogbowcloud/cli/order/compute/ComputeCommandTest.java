@@ -16,6 +16,7 @@ import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class ComputeCommandTest {
 	private final String memberId = "my-member-id";
 	
 	@Before
-	public void setUp() throws ClientProtocolException, IOException {
+	public void setUp() throws FogbowCLIException, IOException {
 		this.compute = new Compute(
 				"my-providing-member", 
 				"", 
@@ -51,7 +52,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunCreateCommand() throws IOException {
+	public void testRunCreateCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 		    .addObject(this.computeCommand)
 		    .build()
@@ -80,7 +81,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunDeleteCommand() throws ClientProtocolException, IOException {
+	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -100,7 +101,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetCommand() throws ClientProtocolException, IOException {
+	public void testRunGetCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -120,7 +121,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -140,7 +141,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllStatusCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllStatusCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -160,7 +161,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetQuota() throws ClientProtocolException, IOException {
+	public void testRunGetQuota() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -181,7 +182,7 @@ public class ComputeCommandTest {
 	
 	
 	@Test
-	public void testRunGetAllocation() throws ClientProtocolException, IOException {
+	public void testRunGetAllocation() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -200,7 +201,7 @@ public class ComputeCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private void initHttpClient() throws ClientProtocolException, IOException {
+	private void initHttpClient() throws FogbowCLIException, IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(
@@ -209,5 +210,5 @@ public class ComputeCommandTest {
 		Mockito.when(this.mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
 		HttpUtil.setHttpClient(this.mockHttpClient);
 	}
-	
+
 }

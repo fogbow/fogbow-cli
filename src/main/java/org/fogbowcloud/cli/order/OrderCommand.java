@@ -9,6 +9,8 @@ import org.fogbowcloud.cli.HttpUtil;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
+import org.fogbowcloud.cli.utils.FileUtils;
 
 public class OrderCommand {
 	
@@ -53,17 +55,17 @@ public class OrderCommand {
 		this.jsonObject = jsonObject;
 	}
 	
-	public String doCreate() throws ClientProtocolException, IOException {
+	public String doCreate() throws IOException, FogbowCLIException {
 		return doCreate(jsonToString());
 	}
 	
-	public String doCreate(String json) throws ClientProtocolException, IOException {
+	public String doCreate(String json) throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint;
 		HttpResponse httpResponse = HttpUtil.post(fullUrl, json, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
-	public String doDelete() throws ClientProtocolException, IOException {
+	public String doDelete() throws IOException, FogbowCLIException {
 		if (this.id == null) {
 			throw new ParameterException("No id passed as parameter");
 		} else {
@@ -73,7 +75,7 @@ public class OrderCommand {
 		}
 	}
 
-	public String doGet() throws ClientProtocolException, IOException {
+	public String doGet() throws IOException, FogbowCLIException {
 		if (this.id == null) {
 			throw new ParameterException("No id passed as parameter");
 		} else {
@@ -83,13 +85,13 @@ public class OrderCommand {
 		}
 	}
 	
-	public String doGetAll() throws ClientProtocolException, IOException {
+	public String doGetAll() throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
-	public String doGetAllStatus() throws IOException, IOException {
+	public String doGetAllStatus() throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint + "/" + STATUS_ENDPOINT_KEY;
 		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);

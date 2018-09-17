@@ -16,6 +16,7 @@ import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class NetworkCommandTest {
 	private final String id = "my-id";
 	
 	@Before
-	public void setUp() throws ClientProtocolException, IOException {
+	public void setUp() throws FogbowCLIException, IOException {
 		this.network = new Network(
 				"my-providing-member", 
 				"my-gateway",
@@ -46,7 +47,7 @@ public class NetworkCommandTest {
 	}
 	
 	@Test
-	public void testRunCreateCommand() throws IOException {
+	public void testRunCreateCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 		    .addObject(this.networkCommand)
 		    .build()
@@ -73,7 +74,7 @@ public class NetworkCommandTest {
 	}
 	
 	@Test
-	public void testRunDeleteCommand() throws ClientProtocolException, IOException {
+	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.networkCommand)
 				.build()
@@ -93,7 +94,7 @@ public class NetworkCommandTest {
 	}
 	
 	@Test
-	public void testRunGetCommand() throws ClientProtocolException, IOException {
+	public void testRunGetCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.networkCommand)
 				.build()
@@ -113,7 +114,7 @@ public class NetworkCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.networkCommand)
 				.build()
@@ -133,7 +134,7 @@ public class NetworkCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllStatusCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllStatusCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.networkCommand)
 				.build()
@@ -152,7 +153,7 @@ public class NetworkCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private void initHttpClient() throws ClientProtocolException, IOException {
+	private void initHttpClient() throws FogbowCLIException, IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(

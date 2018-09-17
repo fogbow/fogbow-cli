@@ -20,6 +20,7 @@ import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class FederatedNetworkCommandTest {
 	private final String fakeAllowedMemberThree = "member-three";
 
 	@Before
-	public void setUp() throws ClientProtocolException, IOException {
+	public void setUp() throws IOException {
 		Set<String> allowedMembers = Stream.of(fakeAllowedMemberOne, fakeAllowedMemberTwo, fakeAllowedMemberThree).collect(Collectors.toSet());
 		this.federatedNetwork = new FederatedNetwork(
 				"10.150.15.0/28",
@@ -54,7 +55,7 @@ public class FederatedNetworkCommandTest {
 	}
 
 	@Test
-	public void testRunCreateCommand() throws IOException {
+	public void testRunCreateCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 		    .addObject(this.federatedNetworkCommand)
 		    .build()
@@ -82,7 +83,7 @@ public class FederatedNetworkCommandTest {
 	}
 
 	@Test
-	public void testRunDeleteCommand() throws ClientProtocolException, IOException {
+	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.federatedNetworkCommand)
 				.build()
@@ -102,7 +103,7 @@ public class FederatedNetworkCommandTest {
 	}
 
 	@Test
-	public void testRunGetCommand() throws ClientProtocolException, IOException {
+	public void testRunGetCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.federatedNetworkCommand)
 				.build()
@@ -122,7 +123,7 @@ public class FederatedNetworkCommandTest {
 	}
 
 	@Test
-	public void testRunGetAllCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.federatedNetworkCommand)
 				.build()
@@ -142,7 +143,7 @@ public class FederatedNetworkCommandTest {
 	}
 
 	@Test
-	public void testRunGetAllStatusCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllStatusCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.federatedNetworkCommand)
 				.build()
@@ -161,7 +162,7 @@ public class FederatedNetworkCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private void initHttpClient() throws ClientProtocolException, IOException {
+	private void initHttpClient() throws IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(

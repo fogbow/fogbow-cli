@@ -16,6 +16,7 @@ import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class VolumeCommandTest {
 	private final String id = "my-id";
 	
 	@Before
-	public void setUp() throws ClientProtocolException, IOException {
+	public void setUp() throws FogbowCLIException, IOException {
 		this.volume = new Volume(
 				"my-providing-member", 
 				1024
@@ -44,7 +45,7 @@ public class VolumeCommandTest {
 	}
 	
 	@Test
-	public void testRunCreateCommand() throws IOException {
+	public void testRunCreateCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 		    .addObject(this.volumeCommand)
 		    .build()
@@ -69,7 +70,7 @@ public class VolumeCommandTest {
 	}
 	
 	@Test
-	public void testRunDeleteCommand() throws ClientProtocolException, IOException {
+	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.volumeCommand)
 				.build()
@@ -89,7 +90,7 @@ public class VolumeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetCommand() throws ClientProtocolException, IOException {
+	public void testRunGetCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.volumeCommand)
 				.build()
@@ -109,7 +110,7 @@ public class VolumeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.volumeCommand)
 				.build()
@@ -129,7 +130,7 @@ public class VolumeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllStatusCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllStatusCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.volumeCommand)
 				.build()
@@ -148,7 +149,7 @@ public class VolumeCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private void initHttpClient() throws ClientProtocolException, IOException {
+	private void initHttpClient() throws IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(

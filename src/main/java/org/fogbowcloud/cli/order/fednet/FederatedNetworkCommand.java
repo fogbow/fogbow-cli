@@ -3,6 +3,7 @@ package org.fogbowcloud.cli.order.fednet;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
 
 import com.beust.jcommander.ParameterException;
@@ -19,7 +20,7 @@ public class FederatedNetworkCommand {
 	@ParametersDelegate
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.federatedNetwork);
 	
-	public String run() throws ClientProtocolException, IOException {
+	public String run() throws FogbowCLIException, IOException {
 		if (this.orderCommand.getIsCreateCommand()) {
 			return this.orderCommand.doCreate();
 		} else if (this.orderCommand.getIsDeleteCommand()) {

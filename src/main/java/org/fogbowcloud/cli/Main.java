@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
 import org.fogbowcloud.cli.authentication.token.CommandToken;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.image.ImageCommand;
 import org.fogbowcloud.cli.member.MemberCommand;
 import org.fogbowcloud.cli.order.attachment.AttachmentCommand;
@@ -105,11 +106,11 @@ public class Main {
 			}
 			
 			Main.printToConsole(output);
-		} catch (IOException e) {
+		} catch (IOException | FogbowCLIException e) {
 			Main.printToConsole(e);
 			Main.printToConsole(e.getMessage());
 			Main.printToConsole(e.getCause());
-		} 
+		}
 	}
 	
 	private static void initDefaultOutput() throws IOException {
