@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.*;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.fogbowcloud.cli.HttpUtil;
 
-import com.beust.jcommander.DynamicParameter;
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
 import org.fogbowcloud.cli.constants.Messages;
 
 @Parameters(separators = "=", commandDescription = "Token manipulation")
@@ -20,10 +17,13 @@ public class CommandToken {
 	public static final String NAME = "token";
 	public static final String ENDPOINT = '/' + "tokens";
 
-	@Parameter(names = { "--create", "-c" }, description = "Create a new token", required = true)
+	public static final String CREATE_COMMAND_KEY =  "--create";
+	public static final String CREATE_COMMAND_ABBREVIATION =  "-c";
+	@Parameter(names = { CREATE_COMMAND_KEY, CREATE_COMMAND_ABBREVIATION }, description = "Create a new token", required = true)
 	private Boolean isCreate = false;
 
-	@DynamicParameter(names = "-D", description = "Dynamic parameters")
+	public static final String DYNAMIC_PARAMS_COMMAND_KEY =  "-D";
+	@DynamicParameter(names = DYNAMIC_PARAMS_COMMAND_KEY, description = "Dynamic parameters")
 	private Map<String, String> credentials = new HashMap<>();
 
 	public static final String URL_COMMAND_KEY =  "--url";

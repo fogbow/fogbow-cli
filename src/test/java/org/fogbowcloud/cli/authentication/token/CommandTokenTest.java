@@ -1,15 +1,24 @@
 package org.fogbowcloud.cli.authentication.token;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.beust.jcommander.JCommander;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponseFactory;
+import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.DefaultHttpResponseFactory;
+import org.apache.http.message.BasicStatusLine;
+import org.fogbowcloud.cli.HttpUtil;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -17,80 +26,70 @@ import org.mockito.internal.util.reflection.Whitebox;
 public class CommandTokenTest {
 
 	private CommandToken commandToken;
-
-	@Captor
-	private ArgumentCaptor<Map<String, String>> mapCaptor;
+    private HttpClient mockHttpClient;
+    private final String URL = "my-url";
+    private final String MOCKED_TOKEN = "fake-token";
 
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
 		this.commandToken = new CommandToken();
 		MockitoAnnotations.initMocks(this);
+        initHttpClient();
 	}
 
 	@Test
-	public void testCreateToken() throws ReflectiveOperationException {
+	public void testCreateToken() throws IOException {
+        CommandToken spyCommand = getCommandTokenWithMockedDynamicParams();
+	    JCommander.newBuilder()
+                .addObject(spyCommand)
+                .build()
+                .parse(
+                        CommandToken.CREATE_COMMAND_KEY,
+                        CommandToken.URL_COMMAND_KEY, URL);
 
-		FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
-		String accessId = "accessId";
-		Mockito.when(federationIdentityPlugin.createFederationTokenValue(Mockito.any())).thenReturn(accessId);
+        Whitebox.setInternalState(spyCommand, "isCreate", true);
+        String token = spyCommand.run();
+        assertEquals(MOCKED_TOKEN, token);
+	}
 
+	public CommandToken getCommandTokenWithMockedDynamicParams() {
+        Map<String, String> credentials = getMockedCredentials();
 		CommandToken spyCommandToken = Mockito.spy(new CommandToken());
-		Mockito.doReturn(federationIdentityPlugin).when(spyCommandToken).getFederationIdentityPlugin();
-
-		Whitebox.setInternalState(spyCommandToken, "isCreate", true);
-
-		Map<String, String> credentials = new HashMap<>();
-		credentials.put("Dkey", "value");
-
 		Whitebox.setInternalState(spyCommandToken, "credentials", credentials);
-
-		assertEquals(accessId, spyCommandToken.run());
+		return spyCommandToken;
 	}
 
-	@Test
-	public void testNoCommandDefined()
-			throws ReflectiveOperationException, FogbowManagerException {
-		assertEquals(null, this.commandToken.run());
-	}
+	private Map<String, String> getMockedCredentials() {
+        Map<String, String> credentials = new HashMap<String, String>();
 
-	@Test
-	public void testCredentials() throws FogbowManagerException, ReflectiveOperationException {
+        String password = "12345678";
+        credentials.put("password", password);
 
-		Map<String, String> credentials = new HashMap<String, String>();
+        String username = "fogbow";
+        credentials.put("username", username);
 
-		String password = "12345678";
-		credentials.put("password", password);
+        String authUrl = "ldap://ldap.lsd.ufcg.edu.br:389";
+        credentials.put("authUrl", authUrl);
 
-		String username = "fogbow";
-		credentials.put("username", username);
+        String base = "dc=lsd,dc=ufcg,dc=edu,dc=br";
+        credentials.put("base", base);
 
-		String authUrl = "ldap://ldap.lsd.ufcg.edu.br:389";
-		credentials.put("authUrl", authUrl);
+        String privateKey = "/home/ordan/private_key.pem";
+        credentials.put("privateKey", privateKey);
 
-		String base = "dc=lsd,dc=ufcg,dc=edu,dc=br";
-		credentials.put("base", base);
+        String publicKey = "/home/ordan/public_key.pem";
+        credentials.put("publicKey", publicKey);
 
-		String privateKey = "/home/ordan/private_key.pem";
-		credentials.put("privateKey", privateKey);
+        return credentials;
+    }
 
-		String publicKey = "/home/ordan/public_key.pem";
-		credentials.put("publicKey", publicKey);
-
-		FederationIdentityPlugin federationIdentityPlugin = Mockito.mock(FederationIdentityPlugin.class);
-		String accessId = "accessId";
-		Mockito.when(federationIdentityPlugin.createFederationTokenValue(Mockito.any())).thenReturn(accessId);
-
-		CommandToken spyCommandToken = Mockito.spy(new CommandToken());
-
-		Whitebox.setInternalState(spyCommandToken, "credentials", credentials);
-		Whitebox.setInternalState(spyCommandToken, "isCreate", true);
-
-		Mockito.doReturn(federationIdentityPlugin).when(spyCommandToken).getFederationIdentityPlugin();
-
-		spyCommandToken.run();
-
-		Mockito.verify(federationIdentityPlugin).createFederationTokenValue(this.mapCaptor.capture());
-
-		assertTrue(this.mapCaptor.getValue().equals(credentials));
-	}
+    private void initHttpClient() throws IOException {
+        this.mockHttpClient = Mockito.mock(HttpClient.class);
+        HttpResponseFactory factory = new DefaultHttpResponseFactory();
+        HttpResponse response = factory.newHttpResponse(
+                new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_CREATED, "Return Irrelevant"), null);
+        response.setEntity(new StringEntity(MOCKED_TOKEN));
+        Mockito.when(this.mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
+        HttpUtil.setHttpClient(this.mockHttpClient);
+    }
 }
