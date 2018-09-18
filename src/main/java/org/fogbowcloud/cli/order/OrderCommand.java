@@ -9,6 +9,8 @@ import org.fogbowcloud.cli.HttpUtil;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
+import org.fogbowcloud.cli.utils.FileUtils;
 
 public class OrderCommand {
 	
@@ -33,9 +35,13 @@ public class OrderCommand {
 	private Boolean isGetAllStatusCommand = false;
 
 	public static final String FEDERATION_TOKEN_COMMAND_KEY =  "--federation-token-value";
-	@Parameter(names = { FEDERATION_TOKEN_COMMAND_KEY }, description = "User's Token", required = true)
-	private String federationToken = null;
-	
+	@Parameter(names = { FEDERATION_TOKEN_COMMAND_KEY }, description = "User's Token")
+	private String federationTokenValue = null;
+
+	public static final String FEDERATION_TOKEN_PATH_COMMAND_KEY =  "--federation-token-path";
+	@Parameter(names = { FEDERATION_TOKEN_PATH_COMMAND_KEY }, description = "Path to user's Token")
+	private String federationTokenPath = null;
+
 	public static final String URL_COMMAND_KEY =  "--url";
 	@Parameter(names = { URL_COMMAND_KEY }, description = "Url", required = true)
 	private String url = null;
@@ -46,48 +52,53 @@ public class OrderCommand {
 	
 	private String endpoint;
 	private Object jsonObject;
+	private String federationToken = null;
 	public static final String STATUS_ENDPOINT_KEY = "status";
-	
+
 	public OrderCommand(String endpoint, Object jsonObject) {
 		this.endpoint = endpoint;
 		this.jsonObject = jsonObject;
 	}
 	
-	public String doCreate() throws ClientProtocolException, IOException {
+	public String doCreate() throws IOException, FogbowCLIException {
+		return doCreate(jsonToString());
+	}
+	
+	public String doCreate(String json) throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint;
-		HttpResponse httpResponse = HttpUtil.post(fullUrl, jsonToString(), this.federationToken);
+		HttpResponse httpResponse = HttpUtil.post(fullUrl, json, getFederationToken());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
-	public String doDelete() throws ClientProtocolException, IOException {
+	public String doDelete() throws IOException, FogbowCLIException {
 		if (this.id == null) {
 			throw new ParameterException("No id passed as parameter");
 		} else {
 			String fullUrl = this.url + this.endpoint + "/" + this.id;
-			HttpResponse httpResponse = HttpUtil.delete(fullUrl, this.federationToken);
+			HttpResponse httpResponse = HttpUtil.delete(fullUrl, getFederationToken());
 			return httpResponse.getStatusLine().toString();
 		}
 	}
 
-	public String doGet() throws ClientProtocolException, IOException {
+	public String doGet() throws IOException, FogbowCLIException {
 		if (this.id == null) {
 			throw new ParameterException("No id passed as parameter");
 		} else {
 			String fullUrl = this.url + this.endpoint + "/" + this.id;
-			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, getFederationToken());
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}
 	}
 	
-	public String doGetAll() throws ClientProtocolException, IOException {
+	public String doGetAll() throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, getFederationToken());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
-	public String doGetAllStatus() throws IOException, IOException {
+	public String doGetAllStatus() throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint + "/" + STATUS_ENDPOINT_KEY;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, this.federationToken);
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, getFederationToken());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
@@ -111,7 +122,20 @@ public class OrderCommand {
 		return isGetAllStatusCommand;
 	}
 
-	public String getFederationToken() {
+	public String getFederationToken() throws FogbowCLIException {
+		if (this.federationToken == null || this.federationToken.isEmpty()) {
+			if (this.federationTokenValue != null && !this.federationTokenValue.isEmpty()) {
+				this.federationToken = this.federationTokenValue;
+			} else if (this.federationTokenPath != null && !this.federationTokenPath.isEmpty()) {
+				try {
+					this.federationToken = FileUtils.readFileToString(this.federationTokenPath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				throw new FogbowCLIException("Its required to pass --federation-token-value or --federation-token-value as params.");
+			}
+		}
 		return federationToken;
 	}
 

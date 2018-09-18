@@ -1,49 +1,54 @@
 package org.fogbowcloud.cli.authentication.token;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.fogbowcloud.cli.authentication.CommandAuthentication;
-import org.fogbowcloud.manager.core.HomeDir;
-import org.fogbowcloud.manager.core.exceptions.TokenValueCreationException;
-import org.fogbowcloud.manager.core.exceptions.UnauthenticatedUserException;
-import org.fogbowcloud.manager.core.plugins.behavior.federationidentity.FederationIdentityPlugin;
+import com.beust.jcommander.*;
+import com.google.gson.Gson;
+import org.apache.http.HttpResponse;
+import org.fogbowcloud.cli.HttpUtil;
 
-import com.beust.jcommander.DynamicParameter;
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
+import org.fogbowcloud.cli.constants.Messages;
 
 @Parameters(separators = "=", commandDescription = "Token manipulation")
-public class CommandToken extends CommandAuthentication {
+public class CommandToken {
 
 	public static final String NAME = "token";
+	public static final String ENDPOINT = '/' + "tokens";
 
-	@Parameter(names = { "--create", "-c" }, description = "Create a new token", required = true)
+	public static final String CREATE_COMMAND_KEY =  "--create";
+	public static final String CREATE_COMMAND_ABBREVIATION =  "-c";
+	@Parameter(names = { CREATE_COMMAND_KEY, CREATE_COMMAND_ABBREVIATION }, description = "Create a new token", required = true)
 	private Boolean isCreate = false;
 
-	@DynamicParameter(names = "-D", description = "Dynamic parameters")
+	public static final String DYNAMIC_PARAMS_COMMAND_KEY =  "-D";
+	@DynamicParameter(names = DYNAMIC_PARAMS_COMMAND_KEY, description = "Dynamic parameters")
 	private Map<String, String> credentials = new HashMap<>();
 
-	public String run() throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedUserException {
+	public static final String URL_COMMAND_KEY =  "--url";
+	@Parameter(names = { URL_COMMAND_KEY }, description = "Url", required = true)
+	private String url = null;
+
+	public String run() throws IOException {
 		if (this.isCreate) {
-			HomeDir.getInstance().setPath(getConfPath());
-			return createToken();
+			return createToken(this.credentials);
 		}
 
 		return null;
 	}
 
-	private String createToken()
-			throws ReflectiveOperationException, TokenValueCreationException, UnauthenticatedUserException {
-
-		FederationIdentityPlugin identityPlugin = getFederationIdentityPlugin();
-		Map<String, String> userCredentials = new HashMap<>();
-
-		for (String key : this.credentials.keySet()) {
-			userCredentials.put(key, this.credentials.get(key));
+	private String createToken(Map<String, String> credentials) throws IOException {
+		if (credentials == null || credentials.isEmpty()) {
+			throw new ParameterException(Messages.Exception.NO_CREDENTIALS_PARAMS);
+		}
+		if (this.url == null || this.url.isEmpty()) {
+			throw new ParameterException(Messages.Exception.NO_FOGBOW_URL_PARAMS);
 		}
 
-		String accessId = identityPlugin.createFederationTokenValue(userCredentials);
-		return accessId;
+		String fullUrl = this.url + ENDPOINT;
+		String credentialsParams = new Gson().toJson(credentials);
+		HttpResponse httpResponse = HttpUtil.post(fullUrl, credentialsParams);
+		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 }

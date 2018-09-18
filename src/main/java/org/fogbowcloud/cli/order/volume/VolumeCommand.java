@@ -3,8 +3,8 @@
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.api.http.VolumeOrdersController;
 
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
@@ -12,7 +12,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class VolumeCommand {
 	
 	public static final String NAME = "volume";
-	public static final String ENDPOINT = '/' + VolumeOrdersController.VOLUME_ENDPOINT;
+	public static final String ENDPOINT = '/' + "volumes";
 	
 	@ParametersDelegate
 	private Volume volume = new Volume();
@@ -20,7 +20,7 @@ public class VolumeCommand {
 	@ParametersDelegate
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.volume);
 	
-	public String run() throws ClientProtocolException, IOException {
+	public String run() throws FogbowCLIException, IOException {
 		if (orderCommand.getIsCreateCommand()) {
 			return orderCommand.doCreate();
 		} else if (orderCommand.getIsDeleteCommand()) {

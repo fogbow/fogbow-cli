@@ -14,12 +14,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.fogbowcloud.manager.util.connectivity.HttpRequestUtil;
 
 public class HttpUtil {
 
 	private static HttpClient httpClient;
 	public static final String FEDERATION_TOKEN_VALUE_HEADER_KEY = "federationTokenValue";
+
+	public static final String CONTENT_TYPE_KEY = "Content-Type";
+	public static final String JSON_CONTENT_TYPE_KEY = "application/json";
 
 	private static HttpClient getHttpClient() {
 		if (HttpUtil.httpClient == null) {
@@ -33,6 +35,10 @@ public class HttpUtil {
 		HttpUtil.httpClient = httpClient;
 	}
 
+	public static HttpResponse post(String url, String json) throws IOException {
+		return post(url, json, null);
+	}
+
 	public static HttpResponse post(String url, String json, String federatedToken) throws IOException {
 		HttpPost request = new HttpPost(url);
 		try {
@@ -41,7 +47,7 @@ public class HttpUtil {
 			throw new IOException("Invalid json" + json, e);
 		}
 		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
-		request.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
+		request.setHeader(CONTENT_TYPE_KEY, JSON_CONTENT_TYPE_KEY);
 		HttpResponse response;
 		try {
 			response = HttpUtil.getHttpClient().execute(request);

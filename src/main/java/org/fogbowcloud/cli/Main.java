@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 
-import org.fogbowcloud.cli.authentication.token.CommandCheckToken;
 import org.fogbowcloud.cli.authentication.token.CommandToken;
-import org.fogbowcloud.cli.authentication.user.CommandUser;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.image.ImageCommand;
 import org.fogbowcloud.cli.member.MemberCommand;
 import org.fogbowcloud.cli.order.attachment.AttachmentCommand;
@@ -16,8 +15,6 @@ import org.fogbowcloud.cli.order.compute.ComputeCommand;
 import org.fogbowcloud.cli.order.fednet.FederatedNetworkCommand;
 import org.fogbowcloud.cli.order.network.NetworkCommand;
 import org.fogbowcloud.cli.order.volume.VolumeCommand;
-import org.fogbowcloud.manager.core.exceptions.FogbowManagerException;
-import org.fogbowcloud.manager.core.exceptions.UnexpectedException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -25,9 +22,7 @@ import com.beust.jcommander.ParameterException;
 public class Main {
 
 	private CommandToken tokenCommand;
-	private CommandCheckToken checkTokenCommand;
 	private ComputeCommand computeCommand;
-	private CommandUser userCommand;
 	private VolumeCommand volumeCommand;
 	private NetworkCommand networkCommand;
 	private AttachmentCommand attachmentCommand;
@@ -46,31 +41,27 @@ public class Main {
 
 		main.tokenCommand = new CommandToken();
 		main.computeCommand = new ComputeCommand();
-		main.userCommand = new CommandUser();
 		main.volumeCommand = new VolumeCommand();
 		main.networkCommand = new NetworkCommand();
 		main.attachmentCommand = new AttachmentCommand();
 		main.imageCommand = new ImageCommand();
 		main.memberCommand = new MemberCommand();
-		main.checkTokenCommand = new CommandCheckToken();
 		main.federatedNetworkCommand = new FederatedNetworkCommand();
 		
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.tokenCommand)
 				.addCommand(ComputeCommand.NAME, main.computeCommand)
-				.addCommand(CommandUser.NAME, main.userCommand)
 				.addCommand(VolumeCommand.NAME, main.volumeCommand)
 				.addCommand(NetworkCommand.NAME, main.networkCommand)
 				.addCommand(AttachmentCommand.NAME, main.attachmentCommand)
 				.addCommand(ImageCommand.NAME, main.imageCommand)
 				.addCommand(MemberCommand.NAME, main.memberCommand)
-				.addCommand(CommandCheckToken.NAME, main.checkTokenCommand)
 				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
 				.build();
 		try {
 			main.jCommander.parse(args);
 			main.run();
-		} catch (ParameterException | UnexpectedException e) {
+		} catch (ParameterException e) {
 			Main.printToConsole(e);
 			
 			StringBuilder out = new StringBuilder();
@@ -79,7 +70,7 @@ public class Main {
 		}
 	}
 
-	private void run() throws UnexpectedException {
+	private void run() {
 		try {
 			String output = null;
 			
@@ -92,9 +83,6 @@ public class Main {
 					break;
 				case ComputeCommand.NAME:
 					output = this.computeCommand.run();
-					break;
-				case CommandUser.NAME:
-					output = this.userCommand.run();
 					break;
 				case VolumeCommand.NAME:
 					output = this.volumeCommand.run();
@@ -111,9 +99,6 @@ public class Main {
 				case MemberCommand.NAME:
 					output = this.memberCommand.run();
 					break;
-				case CommandCheckToken.NAME:
-					output = this.checkTokenCommand.run();
-					break;
 				case FederatedNetworkCommand.NAME:
 					output = this.federatedNetworkCommand.run();
 					break;
@@ -121,14 +106,11 @@ public class Main {
 			}
 			
 			Main.printToConsole(output);
-		} catch (InvocationTargetException e) {
-			Main.printToConsole(e.getTargetException());
-			Main.printToConsole(e.getTargetException().getCause());
-		} catch (ReflectiveOperationException | FogbowManagerException | IOException e) {
+		} catch (IOException | FogbowCLIException e) {
 			Main.printToConsole(e);
 			Main.printToConsole(e.getMessage());
 			Main.printToConsole(e.getCause());
-		} 
+		}
 	}
 	
 	private static void initDefaultOutput() throws IOException {

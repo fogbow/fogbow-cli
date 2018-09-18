@@ -16,8 +16,8 @@ import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
+import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
-import org.fogbowcloud.manager.util.connectivity.HttpRequestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -37,21 +37,22 @@ public class ComputeCommandTest {
 	private final String memberId = "my-member-id";
 	
 	@Before
-	public void setUp() throws ClientProtocolException, IOException {
+	public void setUp() throws FogbowCLIException, IOException {
 		this.compute = new Compute(
 				"my-providing-member", 
 				"", 
 				"my-image-id", 
 				"my-vcpu", 
 				"my-memory", 
-				"my-disk"
+				"my-disk",
+				"fednet-id"
 		);
 		this.computeCommand = new ComputeCommand();
 		initHttpClient();
 	}
 	
 	@Test
-	public void testRunCreateCommand() throws IOException {
+	public void testRunCreateCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 		    .addObject(this.computeCommand)
 		    .build()
@@ -63,14 +64,15 @@ public class ComputeCommandTest {
 		    		Compute.IMAGE_ID_COMMAND_KEY, this.compute.getImageId(),
 		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
 		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),
-		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk()
+		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
+		    		Compute.FEDERATED_NETWORK_ID_COMMAND_KEY, this.compute.getNetworksId()
 		    ); 
 	
 		String computeJson = new Gson().toJson(this.compute);
 		HttpPost post = new HttpPost(this.url + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
-		post.setHeader(HttpRequestUtil.CONTENT_TYPE_KEY, HttpRequestUtil.JSON_CONTENT_TYPE_KEY);
+		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
 		this.computeCommand.run();
@@ -79,7 +81,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunDeleteCommand() throws ClientProtocolException, IOException {
+	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -99,7 +101,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetCommand() throws ClientProtocolException, IOException {
+	public void testRunGetCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -119,7 +121,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -139,7 +141,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetAllStatusCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllStatusCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -159,7 +161,7 @@ public class ComputeCommandTest {
 	}
 	
 	@Test
-	public void testRunGetQuota() throws ClientProtocolException, IOException {
+	public void testRunGetQuota() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -180,7 +182,7 @@ public class ComputeCommandTest {
 	
 	
 	@Test
-	public void testRunGetAllocation() throws ClientProtocolException, IOException {
+	public void testRunGetAllocation() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -199,8 +201,7 @@ public class ComputeCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-
-	private void initHttpClient() throws ClientProtocolException, IOException {
+	private void initHttpClient() throws FogbowCLIException, IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(
@@ -209,5 +210,5 @@ public class ComputeCommandTest {
 		Mockito.when(this.mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
 		HttpUtil.setHttpClient(this.mockHttpClient);
 	}
-	
+
 }
