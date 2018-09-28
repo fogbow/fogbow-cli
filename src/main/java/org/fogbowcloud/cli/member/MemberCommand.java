@@ -16,7 +16,7 @@ public class MemberCommand {
 	public static final String ENDPOINT = '/' + "members";
 	
 	public static final String GET_ALL_COMMAND_KEY = "--get-all";
-	@Parameter(names = { GET_ALL_COMMAND_KEY }, description = "Get all computes")
+	@Parameter(names = { GET_ALL_COMMAND_KEY }, description = "Get all members")
 	protected Boolean isGetAllCommand = false;
 	
 	public static final String URL_COMMAND_KEY =  "--url";

@@ -30,7 +30,7 @@ public class Compute {
 
 	public static final String USER_DATA_COMMAND_KEY = "--user-data";
 	@Parameter(names = { USER_DATA_COMMAND_KEY }, description = "User Data")
-	private String userData = null;
+	private String userData = null; // TODO check this
 	
 	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--fednet-id";
 	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id")
