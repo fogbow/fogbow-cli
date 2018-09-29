@@ -133,7 +133,7 @@ public class OrderCommand {
 					e.printStackTrace();
 				}
 			} else {
-				throw new FogbowCLIException("Its required to pass --federation-token-value or --federation-token-value as params.");
+				throw new FogbowCLIException("Its required to pass --federation-token-value or --federation-token-path as params.");
 			}
 		}
 		return federationToken;
