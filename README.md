@@ -1,19 +1,22 @@
-FOGBOW-CLI
+Fogbow-CLI
 ==========
 
-The fogbow CLI is a command line interface for the [Fogbow Resource Allocation Service (RAS)](https://github.com/fogbow/resource-allocation-service). 
-Through the fogbow CLI, users are able to get information about federation members; create, retrive and delete instance, network, storage and attachment; and create orders.
-
+The Fogbow CLI is a command line interface for the 
+[Fogbow Resource Allocation Service (RAS)](https://github.com/fogbow/resource-allocation-service),
+the [Membership Service (MS)](https://github.com/fogbow/membership-service) and the
+[Federated Network Service](https://github.com/fogbow/network-federated-service). 
+Through the Fogbow CLI, users are able to get information about federation members, create, retrieve
+and delete compute instances, private and federated networks, storage volumes, etc.
 
 Installation
 ==========
 
-### Depdendencies
+## Depdendencies
 
 `apt-get install maven`   
 `apt-get install openjdk-8-jdk`
 
-### Install from source
+## Install from source
 
 Download it from our repository and then install it with maven.   
 
@@ -24,11 +27,11 @@ Now, install it with Maven:
 `cd fogbow-clid`   
 `mvn install -Dmaven.test.skip=true`   
 
-# Usage
+## Usage
 
-## Token operations (token)
+### Token operations (token)
 
-### Create a new Token
+#### Create a new Token
 
 Create a new user token.
 
@@ -41,9 +44,9 @@ Note: to pass the credentials and the identity plugin endpoint it is necessary t
 -DAuthUrl= (optional): dynamic parameter
 
 
-## Member operations (member)
+### Member operations (member)
 
-### List federation members
+#### List federation members
 
 Get the ids of all federation members.
 
@@ -51,9 +54,9 @@ Get the ids of all federation members.
 --url (required)
 
 
-## Images operations
+### Images operations
 
-### List all images
+#### List all images
 
 Get ids of all images.
 
@@ -62,7 +65,7 @@ Get ids of all images.
 --federation-token-value (required)
 --member-id (required)
 
-### Get image
+#### Get image
 
 Get detailed information about a single image.
 
@@ -73,9 +76,9 @@ Get detailed information about a single image.
 -- id (required)
 
 
-## Attachment operations (attachment)
+### Attachment operations (attachment)
 
-### Create attachment
+#### Create attachment
 
 --create
 --federation-token-value or --federation-token-path
@@ -86,12 +89,12 @@ Get detailed information about a single image.
 --target
 --device
 
-### Delete attachment
+#### Delete attachment
 
 --federation-token-value or --federation-token-path
 --id
 
-### Get all attachments
+#### Get all attachments
 
 Get all instance orders associated to a particular user's token.
 
@@ -99,7 +102,7 @@ Get all instance orders associated to a particular user's token.
 --url (required)
 --federation-token-value (required)
 
-### Get attachment
+#### Get attachment
 
 Get all instance orders associated to a particular user's token.
 
@@ -108,9 +111,9 @@ Get all instance orders associated to a particular user's token.
 --federation-token-value (required)
 
 
-## Compute operations (compute)
+### Compute operations (compute)
 
-### Create compute
+#### Create compute
 
 --create
 --federation-token-value or --federation-token-path
@@ -125,9 +128,9 @@ Get all instance orders associated to a particular user's token.
 --fednet-id
 
 
-## Fednet operations (federated-network)
+### Fednet operations (federated-network)
 
-### Create fednet
+#### Create fednet
 
 --create
 --federation-token-value or --federation-token-path
@@ -138,9 +141,9 @@ Get all instance orders associated to a particular user's token.
 --allowed-member
 
 
-## Network operations (network)
+### Network operations (network)
 
-### Create network
+#### Create network
 
 --create
 --federation-token-value or --federation-token-path
@@ -152,9 +155,9 @@ Get all instance orders associated to a particular user's token.
 --allocation
 
 
-## Volume operations (volume)
+### Volume operations (volume)
 
-### Create volume
+#### Create volume
 
 --create
 --federation-token-value or --federation-token-path
