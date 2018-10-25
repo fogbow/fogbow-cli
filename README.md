@@ -24,7 +24,7 @@ Download it from our repository and then install it with maven.
 
 Now, install it with Maven:
 
-`cd fogbow-clid`   
+`cd fogbow-cli`
 `mvn install -Dmaven.test.skip=true`   
 
 ## Usage
