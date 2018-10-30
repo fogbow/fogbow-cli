@@ -36,8 +36,9 @@ public class OrderCommandTest {
     @Before
     public void setUp() throws ClientProtocolException, IOException {
         this.volume = new Volume(
-                "my-providing-member",
-                1024
+                "my-provider",
+                1024,
+                "volume-name"
         );
         this.orderCommand = new OrderCommand(VolumeCommand.ENDPOINT, this.volume);
     }

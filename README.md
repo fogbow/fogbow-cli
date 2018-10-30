@@ -11,7 +11,7 @@ and delete compute instances, private and federated networks, storage volumes, e
 Installation
 ==========
 
-## Depdendencies
+## Dependencies
 
 `apt-get install maven`   
 `apt-get install openjdk-8-jdk`
@@ -57,7 +57,7 @@ Get the ids of all federation members.
 --url (required)
 
 
-### Images operations
+### Images operations (image)
 
 #### List a particular image
 
@@ -67,7 +67,7 @@ Get detailed information about a single image.
 --url (required)  
 --federation-token-value (required)  
 --member-id (required)  
--- id (required)  
+--id (required)  
 
 ### List all images
 
@@ -87,189 +87,189 @@ Get ids of all images.
 --federation-token-value or --federation-token-path (required)  
 --url  
 
---providing-member  
---source  
---target  
---device  
+--provider
+--volumeId
+--computeId
+--device
 
 #### Delete attachment
 
---delete  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--delete
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
 #### Get all attachments
 
-Get all instance orders associated to a particular user's token.  
+Get all instance orders associated to a particular user's token.
 
---get-all (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
+--get-all (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
 
 #### Get attachment
 
 Get information  about a specific instance.
 
---get (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--get (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
 ### Get all attachments status
 
 Get status for all instances orders associated to a particular user's token.
 
---get-all-status (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
+--get-all-status (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
 
 
 ### Compute operations (compute)
 
 #### Create compute
 
---create  
---federation-token-value or --federation-token-path (required)  
---url  
+--create
+--federation-token-value or --federation-token-path (required)
+--url
 
---providing-member  
---public-key  
---image-id  
---vcpu  
---memory  
---disk  
---fednet-id  
+--provider
+--public-key
+--image-id
+--vcpu
+--memory
+--disk
+--fednet-id
 
 ### Delete compute
 
---delete  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--delete
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
 ### Get compute
 
---get (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--get (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
 ### Get all computes
 
---get-all (required)  
---url (required)  
---federation-token-value (required)  
+--get-all (required)
+--url (required)
+--federation-token-value (required)
 
 ### Get all computes status
 
---get-all-status (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
+--get-all-status (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
 
 ### Get Allocation
 
---get-allocation (required)  
---member-id (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
+--get-allocation (required)
+--member-id (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
 
 ### Get Quota
 
---get-quota (required)  
---member-id (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
+--get-quota (required)
+--member-id (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
 
 
 ### Fednet operations (federated-network)
 
 #### Create fednet
 
---create  
---federation-token-value or --federation-token-path  
---url  
+--create
+--federation-token-value or --federation-token-path
+--url
 
---cidr  
---name  
---allowed-member  
+--cidr
+--name
+--allowed-member
 
 ### Delete federated-network
 
---delete  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--delete
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
 ### Get federated-network
 
---get (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--get (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
 ### Get all federated-networks
 
---get-all (required)  
---url (required)  
---federation-token-value (required)  
+--get-all (required)
+--url (required)
+--federation-token-value (required)
 
 ### Get all federated-networks status
 
---get-all-status (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
+--get-all-status (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
 
 
 ### Network operations (network)
 
 #### Create network
 
---create  
---federation-token-value or --federation-token-path  
---url  
+--create
+--federation-token-value or --federation-token-path
+--url
 
---providing-member  
---gateway  
---address  
---allocation  
+--provider
+--gateway
+--cidr
+--allocationMode
 
 ### Delete network
 
---delete  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--delete
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
-### Get network  
+### Get network
 
---get (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
---id  
+--get (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id
 
 ### Get all networks
 
---get-all (required)  
---url (required)  
---federation-token-value (required)  
+--get-all (required)
+--url (required)
+--federation-token-value (required)
 
 ### Get all networks status
 
---get-all-status (required)  
---url (required)  
---federation-token-value or --federation-token-path (required)  
+--get-all-status (required)
+--url (required)
+--federation-token-value or --federation-token-path (required)
 
 
 ### Volume operations (volume)
 
 #### Create volume
 
---create  
---federation-token-value or --federation-token-path  
---url  
+--create
+--federation-token-value or --federation-token-path
+--url
 
---providing-member  
+--provider
 --volume-size  
 --name  
 
@@ -297,4 +297,37 @@ Get status for all instances orders associated to a particular user's token.
 
 --get-all-status (required)  
 --url (required)  
---federation-token-value or --federation-token-path (required)  
+--federation-token-value or --federation-token-path (required)
+
+
+### Public Ip operations (public-ip)
+
+#### Create Public Ip
+
+--create
+--url (required)
+--federation-token-value or --federation-token-path (required)
+
+--provider
+--compute-id (required)
+--name
+
+### Delete Public Ip
+
+--delete
+--url (required)
+--federation-token-value or --federation-token-path (required)
+--id (required)
+
+### Get Public Ip
+
+--get
+--url (required)
+--id (required)
+--federation-token-value or --federation-token-path (required)
+
+### Get Status of All Public Ips Status
+
+--get-all-status
+--url (required)
+--federation-token-value or --federation-token-path (required)

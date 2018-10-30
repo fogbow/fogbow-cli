@@ -6,7 +6,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -39,13 +38,14 @@ public class ComputeCommandTest {
 	@Before
 	public void setUp() throws FogbowCLIException, IOException {
 		this.compute = new Compute(
-				"my-providing-member", 
+				"my-provider",
 				"", 
 				"my-image-id", 
 				"my-vcpu", 
 				"my-memory", 
 				"my-disk",
-				"fednet-id"
+				"fednet-id",
+				"compute-name"
 		);
 		this.computeCommand = new ComputeCommand();
 		initHttpClient();
@@ -60,7 +60,7 @@ public class ComputeCommandTest {
 		    		OrderCommand.CREATE_COMMAND_KEY, 
 		    		OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 		    		OrderCommand.URL_COMMAND_KEY, this.url,
-		    		Compute.PROVIDING_MEMBER_COMMAND_KEY, this.compute.getProvidingMember(),
+		    		Compute.PROVIDER_COMMAND_KEY, this.compute.getProvider(),
 		    		Compute.IMAGE_ID_COMMAND_KEY, this.compute.getImageId(),
 		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
 		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),

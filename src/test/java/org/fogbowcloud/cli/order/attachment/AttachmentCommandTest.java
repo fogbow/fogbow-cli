@@ -6,7 +6,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -37,7 +36,7 @@ public class AttachmentCommandTest {
 	@Before
 	public void setUp() throws IOException {
 		this.attachment = new Attachment(
-				"my-providing-member", 
+				"my-provider",
 				"source",
 				"target",
 				"device"
@@ -55,9 +54,9 @@ public class AttachmentCommandTest {
 		    		OrderCommand.CREATE_COMMAND_KEY, 
 		    		OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 		    		OrderCommand.URL_COMMAND_KEY, this.url,
-		    		Attachment.PROVIDING_MEMBER_COMMAND_KEY, attachment.getProvidingMember(),
-		    		Attachment.SOURCE_COMMAND_KEY, attachment.getSource(),
-		    		Attachment.TARGET_COMMAND_KEY, attachment.getTarget(),
+		    		Attachment.PROVIDER_COMMAND_KEY, attachment.getProvider(),
+		    		Attachment.VOLUME_ID_COMMAND_KEY, attachment.getVolumeId(),
+		    		Attachment.COMPUTE_ID_COMMAND_KEY, attachment.getComputeId(),
 		    		Attachment.DEVICE_COMMAND_KEY, attachment.getDevice()
 		    ); 
 	

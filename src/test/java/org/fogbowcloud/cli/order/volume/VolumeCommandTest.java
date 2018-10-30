@@ -6,7 +6,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -37,8 +36,9 @@ public class VolumeCommandTest {
 	@Before
 	public void setUp() throws FogbowCLIException, IOException {
 		this.volume = new Volume(
-				"my-providing-member", 
-				1024
+				"my-provider",
+				1024,
+                "volume-name"
 		);
 		this.volumeCommand = new VolumeCommand();
 		initHttpClient();
@@ -53,8 +53,8 @@ public class VolumeCommandTest {
 		    		OrderCommand.CREATE_COMMAND_KEY, 
 		    		OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 		    		OrderCommand.URL_COMMAND_KEY, this.url,
-		    		Volume.PROVIDING_MEMBER_COMMAND_KEY, this.volume.getProvidingMember(),
-		    		Volume.VOLUME_SIZE_COMMAND_KEY, Integer.toString(this.volume.getVolumeSize())
+	                Volume.PROVIDER_COMMAND_KEY, this.volume.getProvider(),
+	        		Volume.VOLUME_SIZE_COMMAND_KEY, Integer.toString(this.volume.getVolumeSize())
 		    ); 
 	
 		String computeJson = new Gson().toJson(this.volume);

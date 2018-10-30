@@ -4,9 +4,9 @@ import com.beust.jcommander.Parameter;
 
 public class Volume {
 	
-	public static final String PROVIDING_MEMBER_COMMAND_KEY =  "--providing-member";
-	@Parameter(names = { PROVIDING_MEMBER_COMMAND_KEY }, description = "Providing member")
-	private String providingMember = null;
+	public static final String PROVIDER_COMMAND_KEY =  "--provider";
+	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
+	private String provider = null;
 	
 	public static final String VOLUME_SIZE_COMMAND_KEY =  "--volume-size";
 	@Parameter(names = { VOLUME_SIZE_COMMAND_KEY }, description = "Volume size")
@@ -19,19 +19,20 @@ public class Volume {
 	public Volume() {
 		
 	}
-	
-	public Volume(String providingMember, Integer volumeSize) {
+
+	public Volume(String provider, Integer volumeSize, String name) {
 		super();
-		this.providingMember = providingMember;
+		this.provider = provider;
 		this.volumeSize = volumeSize;
+		this.name = name;
 	}
 
-	public String getProvidingMember() {
-		return providingMember;
+	public String getProvider() {
+		return provider;
 	}
 	
-	public void setProvidingMember(String providingMember) {
-		this.providingMember = providingMember;
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 	
 	public Integer getVolumeSize() {

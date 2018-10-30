@@ -4,9 +4,9 @@ import com.beust.jcommander.Parameter;
 
 public class Compute {
 	
-	public static final String PROVIDING_MEMBER_COMMAND_KEY =  "--providing-member";
-	@Parameter(names = { PROVIDING_MEMBER_COMMAND_KEY }, description = "Providing member")
-	private String providingMember = null;
+	public static final String PROVIDER_COMMAND_KEY =  "--provider";
+	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
+	private String provider = null;
 
 	public static final String PUBLIC_KEY_COMMMAND_KEY = "--public-key";
 	@Parameter(names = { PUBLIC_KEY_COMMMAND_KEY}, description = "Public key")
@@ -35,21 +35,26 @@ public class Compute {
 	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--fednet-id";
 	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id")
 	private String networksId = null;
-	
+
+	public static final String NAME_COMMAND_KEY = "--name";
+	@Parameter(names = { NAME_COMMAND_KEY }, description = "Name")
+	private String name;
+
 	public Compute() {
 		
 	}
 
-	protected Compute(String providingMember, String publicKey, String imageId, String vCPU, String memory, String disk,
-					  String networksId) {
+	protected Compute(String provider, String publicKey, String imageId, String vCPU, String memory, String disk,
+					  String networksId, String name) {
 		super();
-		this.providingMember = providingMember;
+		this.provider = provider;
 		this.publicKey = publicKey;
 		this.imageId = imageId;
 		this.vCPU = vCPU;
 		this.memory = memory;
 		this.disk = disk;
 		this.networksId = networksId;
+		this.name = name;
 	}
 
 	public String getPublicKey() {
@@ -72,8 +77,8 @@ public class Compute {
 		return disk;
 	}
 	
-	public String getProvidingMember() {
-		return this.providingMember;
+	public String getProvider() {
+		return this.provider;
 	}
 	
 	public String getNetworksId() {
@@ -91,4 +96,9 @@ public class Compute {
 	public void setUserData(String userData) {
 		this.userData = userData;
 	}
+
+	public String getName() {
+		return name;
+	}
+
 }

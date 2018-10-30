@@ -6,7 +6,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -37,10 +36,11 @@ public class NetworkCommandTest {
 	@Before
 	public void setUp() throws FogbowCLIException, IOException {
 		this.network = new Network(
-				"my-providing-member", 
+				"my-provider",
 				"my-gateway",
 				"my-address",
-				"my-allocation"
+				"my-allocation",
+				"network-name"
 		);
 		this.networkCommand = new NetworkCommand();
 		initHttpClient();
@@ -55,9 +55,9 @@ public class NetworkCommandTest {
 		    		OrderCommand.CREATE_COMMAND_KEY, 
 		    		OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 		    		OrderCommand.URL_COMMAND_KEY, this.url,
-		    		Network.PROVIDING_MEMBER_COMMAND_KEY, this.network.getProvidingMember(),
+		    		Network.PROVIDER_COMMAND_KEY, this.network.getProvider(),
 		    		Network.GATEWAY_COMMAND_KEY, this.network.getGateway(),
-		    		Network.ADDRESS_COMMAND_KEY, this.network.getAddress(),
+		    		Network.ADDRESS_COMMAND_KEY, this.network.getCidr(),
 		    		Network.ALLOCATION_COMMAND_KEY, this.network.getAllocation()
 		    ); 
 	

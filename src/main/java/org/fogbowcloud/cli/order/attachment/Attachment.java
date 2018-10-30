@@ -4,17 +4,17 @@ import com.beust.jcommander.Parameter;
 
 public class Attachment {
 	
-	public static final String PROVIDING_MEMBER_COMMAND_KEY =  "--providing-member";
-	@Parameter(names = { PROVIDING_MEMBER_COMMAND_KEY }, description = "Providing member")
-	private String providingMember = null;
+	public static final String PROVIDER_COMMAND_KEY =  "--provider";
+	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
+	private String provider = null;
 	
-	public static final String SOURCE_COMMAND_KEY =  "--source";
-	@Parameter(names = { SOURCE_COMMAND_KEY }, description = "Source")
-	private String source = null;
+	public static final String VOLUME_ID_COMMAND_KEY =  "--volumeId";
+	@Parameter(names = {VOLUME_ID_COMMAND_KEY}, description = "Source")
+	private String volumeId = null;
 	
-	public static final String TARGET_COMMAND_KEY =  "--target";
-	@Parameter(names = { TARGET_COMMAND_KEY }, description = "Target")
-	private String target = null;
+	public static final String COMPUTE_ID_COMMAND_KEY =  "--computeId";
+	@Parameter(names = {COMPUTE_ID_COMMAND_KEY}, description = "Target")
+	private String computeId = null;
 	
 	public static final String DEVICE_COMMAND_KEY =  "--device";
 	@Parameter(names = { DEVICE_COMMAND_KEY }, description = "Source")
@@ -24,24 +24,24 @@ public class Attachment {
 		
 	}
 	
-	public Attachment(String providingMember, String source, String target, String device) {
+	public Attachment(String provider, String volumeId, String computeId, String device) {
 		super();
-		this.providingMember = providingMember;
-		this.source = source;
-		this.target = target;
+		this.provider = provider;
+		this.volumeId = volumeId;
+		this.computeId = computeId;
 		this.device = device;
 	}
 	
-	public String getProvidingMember() {
-		return providingMember;
+	public String getProvider() {
+		return provider;
 	}
 	
-	public String getSource() {
-		return source;
+	public String getVolumeId() {
+		return volumeId;
 	}
 	
-	public String getTarget() {
-		return target;
+	public String getComputeId() {
+		return computeId;
 	}
 	
 	public String getDevice() {

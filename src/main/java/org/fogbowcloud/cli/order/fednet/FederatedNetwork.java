@@ -8,9 +8,9 @@ import com.beust.jcommander.Parameter;
 
 public class FederatedNetwork {
 
-	public static final String PROVIDING_MEMBER_COMMAND_KEY =  "--providing-member";
-	@Parameter(names = { PROVIDING_MEMBER_COMMAND_KEY }, description = "Providing member")
-	private String providingMember = null;
+	public static final String PROVIDER_COMMAND_KEY =  "--provider";
+	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
+	private String provider = null;
 
 	public static final String CIDR_NOTATION_COMMAND_KEY =  "--cidr";
 	@Parameter(names = { CIDR_NOTATION_COMMAND_KEY }, description = "CIDR Notation")
@@ -83,11 +83,11 @@ public class FederatedNetwork {
 		this.computesIp = computesIp;
 	}
 
-	public String getProvidingMember() {
-		return providingMember;
+	public String getProvider() {
+		return provider;
 	}
 
-	public void setProvidingMember(String providingMember) {
-		this.providingMember = providingMember;
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 }
