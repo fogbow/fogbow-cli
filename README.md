@@ -184,15 +184,15 @@ Get status for all instances orders associated to a particular user's token.
 
 ### Fednet operations (federated-network)
 
-#### Create fednet
+#### Create Federated Network
 
 --create
 --federation-token-value or --federation-token-path
 --url
 
---cidr
+--cidrNotation
 --name
---allowed-member
+--allowed-members
 
 ### Delete federated-network
 

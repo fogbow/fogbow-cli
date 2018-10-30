@@ -1,6 +1,9 @@
 package org.fogbowcloud.cli.order.compute;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
@@ -37,6 +40,8 @@ public class ComputeCommandTest {
 	
 	@Before
 	public void setUp() throws FogbowCLIException, IOException {
+		HashSet<String> networkIds = new HashSet<>();
+		networkIds.add("network-id");
 		this.compute = new Compute(
 				"my-provider",
 				"", 
@@ -44,7 +49,7 @@ public class ComputeCommandTest {
 				"my-vcpu", 
 				"my-memory", 
 				"my-disk",
-				"fednet-id",
+				networkIds,
 				"compute-name"
 		);
 		this.computeCommand = new ComputeCommand();
@@ -65,10 +70,12 @@ public class ComputeCommandTest {
 		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
 		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),
 		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
-		    		Compute.FEDERATED_NETWORK_ID_COMMAND_KEY, this.compute.getNetworksId()
-		    ); 
-	
-		String computeJson = new Gson().toJson(this.compute);
+		    		Compute.FEDERATED_NETWORK_ID_COMMAND_KEY, separateBySpaces(this.compute.getNetworksId()),
+					Compute.NAME_COMMAND_KEY, this.compute.getName()
+		    );
+
+		ComputeWrappedWithFedNet computeWrappedWithFedNet = new ComputeWrappedWithFedNet(this.compute);
+		String computeJson = new Gson().toJson(computeWrappedWithFedNet);
 		HttpPost post = new HttpPost(this.url + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
@@ -79,7 +86,22 @@ public class ComputeCommandTest {
 
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
-	
+
+	private String separateBySpaces(Collection<String> networkIds) {
+		StringBuilder result = new StringBuilder();
+		for (String networkId : networkIds) {
+			result.append(networkId);
+			result.append(" ");
+		}
+
+		if (result.length() > 0) {
+			// remove ending space
+			result.deleteCharAt(result.length() - 1);
+		}
+
+		return result.toString();
+	}
+
 	@Test
 	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
 		JCommander.newBuilder()

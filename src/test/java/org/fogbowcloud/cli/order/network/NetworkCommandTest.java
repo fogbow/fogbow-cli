@@ -58,7 +58,8 @@ public class NetworkCommandTest {
 		    		Network.PROVIDER_COMMAND_KEY, this.network.getProvider(),
 		    		Network.GATEWAY_COMMAND_KEY, this.network.getGateway(),
 		    		Network.ADDRESS_COMMAND_KEY, this.network.getCidr(),
-		    		Network.ALLOCATION_COMMAND_KEY, this.network.getAllocation()
+		    		Network.ALLOCATION_COMMAND_KEY, this.network.getAllocation(),
+					Network.NAME_COMMAND_KEY, this.network.getName()
 		    ); 
 	
 		String computeJson = new Gson().toJson(this.network);

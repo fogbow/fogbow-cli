@@ -2,6 +2,8 @@ package org.fogbowcloud.cli.order.compute;
 
 import com.beust.jcommander.Parameter;
 
+import java.util.Set;
+
 public class Compute {
 
 	public static final String PROVIDER_COMMAND_KEY =  "--provider";
@@ -32,9 +34,9 @@ public class Compute {
 	@Parameter(names = { USER_DATA_COMMAND_KEY }, description = "User Data")
 	private String userData = null; // TODO check this
 	
-	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--fednet-id";
-	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id")
-	private String networksId = null;
+	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--networkIds";
+	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id", variableArity = true)
+	private Set<String> networksId = null;
 
 	public static final String NAME_COMMAND_KEY = "--name";
 	@Parameter(names = { NAME_COMMAND_KEY }, description = "Name")
@@ -45,7 +47,7 @@ public class Compute {
 	}
 
 	protected Compute(String provider, String publicKey, String imageId, String vCPU, String memory, String disk,
-					  String networksId, String name) {
+					  Set<String> networksId, String name) {
 		this.provider = provider;
 		this.publicKey = publicKey;
 		this.imageId = imageId;
@@ -80,12 +82,12 @@ public class Compute {
 		return this.provider;
 	}
 	
-	public String getNetworksId() {
-		return this.networksId;
-	}
-	
 	public void setPublicKey(String publicKey) {
 		this.publicKey = publicKey;
+	}
+
+	public Set<String> getNetworksId() {
+		return networksId;
 	}
 
 	public String getUserData() {

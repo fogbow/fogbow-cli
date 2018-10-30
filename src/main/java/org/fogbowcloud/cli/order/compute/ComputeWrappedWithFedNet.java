@@ -15,6 +15,13 @@ public class ComputeWrappedWithFedNet {
     @ParametersDelegate
     private Compute compute = new Compute();
 
+    public ComputeWrappedWithFedNet() {
+    }
+
+    public ComputeWrappedWithFedNet(Compute compute) {
+        this.compute = compute;
+    }
+
     public String getPublicKey() {
         return compute.getPublicKey();
     }

@@ -53,13 +53,14 @@ public class VolumeCommandTest {
 		    		OrderCommand.CREATE_COMMAND_KEY, 
 		    		OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 		    		OrderCommand.URL_COMMAND_KEY, this.url,
-	                Volume.PROVIDER_COMMAND_KEY, this.volume.getProvider(),
-	        		Volume.VOLUME_SIZE_COMMAND_KEY, Integer.toString(this.volume.getVolumeSize())
-		    ); 
+					Volume.NAME_COMMAND_KEY, this.volume.getName(),
+					Volume.PROVIDER_COMMAND_KEY, this.volume.getProvider(),
+					Volume.VOLUME_SIZE_COMMAND_KEY, Integer.toString(this.volume.getVolumeSize())
+					);
 	
-		String computeJson = new Gson().toJson(this.volume);
+		String volumeJson = new Gson().toJson(this.volume);
 		HttpPost post = new HttpPost(this.url + VolumeCommand.ENDPOINT);
-		post.setEntity(new StringEntity(computeJson));
+		post.setEntity(new StringEntity(volumeJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
