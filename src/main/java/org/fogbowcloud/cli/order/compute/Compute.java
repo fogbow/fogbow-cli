@@ -3,7 +3,7 @@ package org.fogbowcloud.cli.order.compute;
 import com.beust.jcommander.Parameter;
 
 public class Compute {
-	
+
 	public static final String PROVIDER_COMMAND_KEY =  "--provider";
 	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
 	private String provider = null;
@@ -46,7 +46,6 @@ public class Compute {
 
 	protected Compute(String provider, String publicKey, String imageId, String vCPU, String memory, String disk,
 					  String networksId, String name) {
-		super();
 		this.provider = provider;
 		this.publicKey = publicKey;
 		this.imageId = imageId;

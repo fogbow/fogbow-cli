@@ -4,7 +4,6 @@ import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
 
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.exceptions.FogbowCLIException;
@@ -38,7 +37,6 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		Main.initDefaultOutput();
 		Main main = new Main();
-
 		main.tokenCommand = new CommandToken();
 		main.computeCommand = new ComputeCommand();
 		main.volumeCommand = new VolumeCommand();
@@ -47,7 +45,7 @@ public class Main {
 		main.imageCommand = new ImageCommand();
 		main.memberCommand = new MemberCommand();
 		main.federatedNetworkCommand = new FederatedNetworkCommand();
-		
+
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.tokenCommand)
 				.addCommand(ComputeCommand.NAME, main.computeCommand)
@@ -58,59 +56,58 @@ public class Main {
 				.addCommand(MemberCommand.NAME, main.memberCommand)
 				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
 				.build();
+
 		try {
 			main.jCommander.parse(args);
-			main.run();
+			String output = main.run();
+			Main.printToConsole(output);
+		} catch (FogbowCLIException e) {
+			Main.printToConsole(e);
+			Main.printToConsole(e.getMessage());
+			Main.printToConsole(e.getCause());
 		} catch (ParameterException e) {
 			Main.printToConsole(e);
-			
+
 			StringBuilder out = new StringBuilder();
 			main.jCommander.usage(out);
 			Main.printToConsole(out);
 		}
 	}
 
-	private void run() {
-		try {
-			String output = null;
-			
-			if (this.jCommander.getParsedCommand() == null) {
-				throw new ParameterException("command is empty");
-			} else {
-				switch (this.jCommander.getParsedCommand()) {
-				case CommandToken.NAME:
-					output = this.tokenCommand.run();
-					break;
-				case ComputeCommand.NAME:
-					output = this.computeCommand.run();
-					break;
-				case VolumeCommand.NAME:
-					output = this.volumeCommand.run();
-					break;
-				case NetworkCommand.NAME:
-					output = this.networkCommand.run();
-					break;
-				case AttachmentCommand.NAME:
-					output = this.attachmentCommand.run();
-					break;
-				case ImageCommand.NAME:
-					output = this.imageCommand.run();
-					break;
-				case MemberCommand.NAME:
-					output = this.memberCommand.run();
-					break;
-				case FederatedNetworkCommand.NAME:
-					output = this.federatedNetworkCommand.run();
-					break;
-				}
+	private String run() throws IOException, FogbowCLIException {
+		String output = null;
+
+		if (this.jCommander.getParsedCommand() == null) {
+			throw new ParameterException("command is empty");
+		} else {
+			switch (this.jCommander.getParsedCommand()) {
+			case CommandToken.NAME:
+				output = this.tokenCommand.run();
+				break;
+			case ComputeCommand.NAME:
+				output = this.computeCommand.run();
+				break;
+			case VolumeCommand.NAME:
+				output = this.volumeCommand.run();
+				break;
+			case NetworkCommand.NAME:
+				output = this.networkCommand.run();
+				break;
+			case AttachmentCommand.NAME:
+				output = this.attachmentCommand.run();
+				break;
+			case ImageCommand.NAME:
+				output = this.imageCommand.run();
+				break;
+			case MemberCommand.NAME:
+				output = this.memberCommand.run();
+				break;
+			case FederatedNetworkCommand.NAME:
+				output = this.federatedNetworkCommand.run();
+				break;
 			}
-			
-			Main.printToConsole(output);
-		} catch (IOException | FogbowCLIException e) {
-			Main.printToConsole(e);
-			Main.printToConsole(e.getMessage());
-			Main.printToConsole(e.getCause());
 		}
+		return output;
 	}
 	
 	private static void initDefaultOutput() throws IOException {

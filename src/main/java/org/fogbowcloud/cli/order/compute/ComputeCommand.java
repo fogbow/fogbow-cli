@@ -34,9 +34,9 @@ public class ComputeCommand {
 	public static final String MEMBER_ID_COMMAND_KEY = "--member-id";
 	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id")
 	private String memberId = null;
-	
+
 	@ParametersDelegate
-	private Compute compute = new Compute();
+	private ComputeWrappedWithFedNet compute = new ComputeWrappedWithFedNet();
 	
 	@ParametersDelegate
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.compute);

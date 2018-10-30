@@ -2,6 +2,7 @@ package org.fogbowcloud.cli.order;
 
 import java.io.IOException;
 
+import com.google.gson.annotations.SerializedName;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.fogbowcloud.cli.HttpUtil;
@@ -10,6 +11,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 import org.fogbowcloud.cli.exceptions.FogbowCLIException;
+import org.fogbowcloud.cli.order.compute.Compute;
 import org.fogbowcloud.cli.utils.FileUtils;
 
 public class OrderCommand {
@@ -146,11 +148,11 @@ public class OrderCommand {
 	public String getUrl() {
 		return url;
 	}
-	
+
 	private String jsonToString() {
-		Gson gson = new Gson();
-		String computeJson = gson.toJson(this.jsonObject);
-		return computeJson;
-	}
-	
+	    Gson gson = new Gson();
+	    String computeJson = gson.toJson(this.jsonObject);
+	    return computeJson;
+    }
+
 }
