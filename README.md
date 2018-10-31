@@ -69,7 +69,7 @@ Get detailed information about a single image.
 --member-id (required)  
 --id (required)  
 
-### List all images
+#### List all images
 
 Get ids of all images.
 
@@ -99,14 +99,6 @@ Get ids of all images.
 --federation-token-value or --federation-token-path (required)
 --id
 
-#### Get all attachments
-
-Get all instance orders associated to a particular user's token.
-
---get-all (required)
---url (required)
---federation-token-value or --federation-token-path (required)
-
 #### Get attachment
 
 Get information  about a specific instance.
@@ -116,7 +108,7 @@ Get information  about a specific instance.
 --federation-token-value or --federation-token-path (required)
 --id
 
-### Get all attachments status
+#### Get all attachments status
 
 Get status for all instances orders associated to a particular user's token.
 
@@ -141,40 +133,40 @@ Get status for all instances orders associated to a particular user's token.
 --disk
 --fednet-id
 
-### Delete compute
+#### Delete compute
 
 --delete
 --url (required)
 --federation-token-value or --federation-token-path (required)
 --id
 
-### Get compute
+#### Get compute
 
 --get (required)
 --url (required)
 --federation-token-value or --federation-token-path (required)
 --id
 
-### Get all computes
+#### Get all computes
 
 --get-all (required)
 --url (required)
 --federation-token-value (required)
 
-### Get all computes status
+#### Get all computes status
 
 --get-all-status (required)
 --url (required)
 --federation-token-value or --federation-token-path (required)
 
-### Get Allocation
+#### Get Allocation
 
 --get-allocation (required)
 --member-id (required)
 --url (required)
 --federation-token-value or --federation-token-path (required)
 
-### Get Quota
+#### Get Quota
 
 --get-quota (required)
 --member-id (required)
@@ -182,7 +174,7 @@ Get status for all instances orders associated to a particular user's token.
 --federation-token-value or --federation-token-path (required)
 
 
-### Fednet operations (federated-network)
+### Federated Network Operations (federated-network)
 
 #### Create Federated Network
 
@@ -194,34 +186,28 @@ Get status for all instances orders associated to a particular user's token.
 --name
 --allowed-members
 
-### Delete federated-network
+#### Delete Federated Network
 
 --delete
 --url (required)
 --federation-token-value or --federation-token-path (required)
 --id
 
-### Get federated-network
+#### Get Federated Network
 
 --get (required)
 --url (required)
 --federation-token-value or --federation-token-path (required)
 --id
 
-### Get all federated-networks
-
---get-all (required)
---url (required)
---federation-token-value (required)
-
-### Get all federated-networks status
+#### Get All Federated Networks Status
 
 --get-all-status (required)
 --url (required)
 --federation-token-value or --federation-token-path (required)
 
 
-### Network operations (network)
+### Network Operations (network)
 
 #### Create network
 
@@ -234,27 +220,21 @@ Get status for all instances orders associated to a particular user's token.
 --cidr
 --allocationMode
 
-### Delete network
+#### Delete network
 
 --delete
 --url (required)
 --federation-token-value or --federation-token-path (required)
 --id
 
-### Get network
+#### Get network
 
 --get (required)
 --url (required)
 --federation-token-value or --federation-token-path (required)
 --id
 
-### Get all networks
-
---get-all (required)
---url (required)
---federation-token-value (required)
-
-### Get all networks status
+#### Get all networks status
 
 --get-all-status (required)
 --url (required)
@@ -273,27 +253,21 @@ Get status for all instances orders associated to a particular user's token.
 --volume-size  
 --name  
 
-### Delete volume
+#### Delete volume
 
 --delete  
 --url (required)  
 --federation-token-value or --federation-token-path (required)  
 --id  
 
-### Get volume
+#### Get volume
 
 --get (required)  
 --url (required)  
 --federation-token-value or --federation-token-path (required)  
 --id  
 
-### Get all volumes
-
---get-all (required)  
---url (required)  
---federation-token-value (required)  
-
-### Get all volumes status
+#### Get all volumes status
 
 --get-all-status (required)  
 --url (required)  
@@ -312,21 +286,21 @@ Get status for all instances orders associated to a particular user's token.
 --compute-id (required)
 --name
 
-### Delete Public Ip
+#### Delete Public Ip
 
 --delete
 --url (required)
 --federation-token-value or --federation-token-path (required)
 --id (required)
 
-### Get Public Ip
+#### Get Public Ip
 
 --get
 --url (required)
 --id (required)
 --federation-token-value or --federation-token-path (required)
 
-### Get Status of All Public Ips Status
+#### Get Status of All Public Ips Status
 
 --get-all-status
 --url (required)
