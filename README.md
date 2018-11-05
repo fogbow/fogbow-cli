@@ -13,8 +13,10 @@ Installation
 
 ## Dependencies
 
-`apt-get install maven`
-`apt-get install openjdk-8-jdk`
+```
+apt-get install maven
+apt-get install openjdk-8-jdk
+```
 
 ## Build from source
 
