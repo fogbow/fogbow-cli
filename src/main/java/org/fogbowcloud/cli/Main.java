@@ -20,6 +20,26 @@ import com.beust.jcommander.ParameterException;
 
 public class Main {
 
+	public static final String FOGBOW_CLI_PREFIX = "fogbow-cli: ";
+	public static final String LINE_BREAK = System.getProperty("line.separator");
+
+	public static final String USAGE_DEFAULT_MESSAGE = "Usage: fogbow-cli [command] [command options]" + LINE_BREAK +
+			LINE_BREAK +
+			"Available commands:" + LINE_BREAK +
+			"  * token" + LINE_BREAK +
+			"  * compute" + LINE_BREAK +
+			"  * volume" + LINE_BREAK +
+			"  * network" + LINE_BREAK +
+			"  * attachment" + LINE_BREAK +
+			"  * image" + LINE_BREAK +
+			"  * member" + LINE_BREAK +
+			"  * federated-network" + LINE_BREAK +
+			LINE_BREAK +
+			LINE_BREAK +
+			"See https://github.com/fogbow/fogbow-cli/blob/master/README.md for more details.";
+
+	public static final String LOG_FILE_NAME = "log.txt";
+
 	private CommandToken tokenCommand;
 	private ComputeCommand computeCommand;
 	private VolumeCommand volumeCommand;
@@ -32,8 +52,7 @@ public class Main {
 	private JCommander jCommander;
 	
 	private static PrintStream outputStream;			
-	private static final String LOG_FILE_NAME = "log.txt";
-	
+
 	public static void main(String[] args) throws IOException {
 		Main.initDefaultOutput();
 		Main main = new Main();
@@ -57,6 +76,9 @@ public class Main {
 				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
 				.build();
 
+		StringBuilder a = new StringBuilder();
+		main.jCommander.usage(a);
+		String b = a.toString();
 		try {
 			main.jCommander.parse(args);
 			String output = main.run();
@@ -66,11 +88,13 @@ public class Main {
 			Main.printToConsole(e.getMessage());
 			Main.printToConsole(e.getCause());
 		} catch (ParameterException e) {
-			Main.printToConsole(e);
+			StringBuilder errorMessage = new StringBuilder();
+			errorMessage.append(FOGBOW_CLI_PREFIX + e.getMessage());
+			errorMessage.append(LINE_BREAK);
+			errorMessage.append(LINE_BREAK);
+			errorMessage.append(USAGE_DEFAULT_MESSAGE);
 
-			StringBuilder out = new StringBuilder();
-			main.jCommander.usage(out);
-			Main.printToConsole(out);
+			Main.printToConsole(errorMessage);
 		}
 	}
 
