@@ -20,18 +20,22 @@ Installation
 
 Download it from our repository and then install it with maven.
 
-`wget https://github.com/fogbow/fogbow-cli.git`
+```
+wget https://github.com/fogbow/fogbow-cli.git
+```
 
 Now, install it with Maven:
 
-`cd fogbow-cli`
-`mvn install -Dmaven.test.skip=true`
+```
+cd fogbow-cli
+mvn install -Dmaven.test.skip=true
+```
 
 ## Usage
 
 You can use the executable located in the `bin` folder to use Fogbow-CLI:
 
-`./bin/fogbow-cli [command] [command options]`
+```./bin/fogbow-cli [command] [command options]```
 
 ## Commands
 
@@ -105,9 +109,7 @@ Get ids of all images.
 --create
 --federation-token-value or --federation-token-path (required)
 --url
-```
 
-```
 --provider
 --volumeId
 --computeId
