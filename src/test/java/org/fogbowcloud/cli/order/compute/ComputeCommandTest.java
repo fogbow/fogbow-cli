@@ -1,9 +1,9 @@
 package org.fogbowcloud.cli.order.compute;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
@@ -37,19 +37,18 @@ public class ComputeCommandTest {
 	private final String token = "my-token";
 	private final String id = "my-id";
 	private final String memberId = "my-member-id";
-	
+
 	@Before
 	public void setUp() throws FogbowCLIException, IOException {
-		HashSet<String> networkIds = new HashSet<>();
-		networkIds.add("network-id");
 		this.compute = new Compute(
 				"my-provider",
-				"", 
+				"",
 				"my-image-id", 
-				"my-vcpu", 
+				"my-vcpu-count",
 				"my-memory", 
 				"my-disk",
-				networkIds,
+				Arrays.asList(new String[] {"fake-user-data-1", "fake-user-data-2"}),
+				Arrays.asList(new String[] {"fake-network-id-1", "fake-network-id-2"}),
 				"compute-name"
 		);
 		this.computeCommand = new ComputeCommand();
@@ -70,14 +69,16 @@ public class ComputeCommandTest {
 		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
 		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),
 		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
-		    		Compute.FEDERATED_NETWORK_ID_COMMAND_KEY, separateBySpaces(this.compute.getNetworksId()),
-					Compute.NAME_COMMAND_KEY, this.compute.getName()
+		    		Compute.NETWORK_IDS_COMMAND_KEY, separateBy(this.compute.getNetworksId(), ","),
+					Compute.NAME_COMMAND_KEY, this.compute.getName(),
+					Compute.USER_DATA_COMMAND_KEY, separateBy(this.compute.getUserData(), ",")
 		    );
 
 		ComputeWrappedWithFedNet computeWrappedWithFedNet = new ComputeWrappedWithFedNet(this.compute);
-		String computeJson = new Gson().toJson(computeWrappedWithFedNet);
+
+		String expectedJson = new Gson().toJson(computeWrappedWithFedNet);
 		HttpPost post = new HttpPost(this.url + ComputeCommand.ENDPOINT);
-		post.setEntity(new StringEntity(computeJson));
+		post.setEntity(new StringEntity(expectedJson));
 		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
@@ -87,11 +88,11 @@ public class ComputeCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private String separateBySpaces(Collection<String> networkIds) {
+	private String separateBy(Collection<String> networkIds, String separator) {
 		StringBuilder result = new StringBuilder();
 		for (String networkId : networkIds) {
 			result.append(networkId);
-			result.append(" ");
+			result.append(separator);
 		}
 
 		if (result.length() > 0) {

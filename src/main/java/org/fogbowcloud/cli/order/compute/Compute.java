@@ -2,6 +2,7 @@ package org.fogbowcloud.cli.order.compute;
 
 import com.beust.jcommander.Parameter;
 
+import java.util.List;
 import java.util.Set;
 
 public class Compute {
@@ -32,11 +33,11 @@ public class Compute {
 
 	public static final String USER_DATA_COMMAND_KEY = "--user-data";
 	@Parameter(names = { USER_DATA_COMMAND_KEY }, description = "User Data")
-	private String userData = null; // TODO check this
-	
-	public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--networkIds";
-	@Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = "Federated network id", variableArity = true)
-	private Set<String> networksId = null;
+	private List<String> userData = null;
+
+	public static final String NETWORK_IDS_COMMAND_KEY = "--networkIds";
+	@Parameter(names = {NETWORK_IDS_COMMAND_KEY}, description = "Network Ids")
+	private List<String> networksId = null;
 
 	public static final String NAME_COMMAND_KEY = "--name";
 	@Parameter(names = { NAME_COMMAND_KEY }, description = "Name")
@@ -46,14 +47,14 @@ public class Compute {
 		
 	}
 
-	protected Compute(String provider, String publicKey, String imageId, String vCPU, String memory, String disk,
-					  Set<String> networksId, String name) {
+	public Compute(String provider, String publicKey, String imageId, String vCPU, String memory, String disk, List<String> userData, List<String> networksId, String name) {
 		this.provider = provider;
 		this.publicKey = publicKey;
 		this.imageId = imageId;
 		this.vCPU = vCPU;
 		this.memory = memory;
 		this.disk = disk;
+		this.userData = userData;
 		this.networksId = networksId;
 		this.name = name;
 	}
@@ -86,15 +87,15 @@ public class Compute {
 		this.publicKey = publicKey;
 	}
 
-	public Set<String> getNetworksId() {
+	public List<String> getNetworksId() {
 		return networksId;
 	}
 
-	public String getUserData() {
+	public List<String> getUserData() {
 		return userData;
 	}
 
-	public void setUserData(String userData) {
+	public void setUserData(List<String> userData) {
 		this.userData = userData;
 	}
 
