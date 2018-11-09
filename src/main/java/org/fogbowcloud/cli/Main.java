@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.image.ImageCommand;
+import org.fogbowcloud.cli.securitygrouprule.SecurityGroupRuleCommand;
 import org.fogbowcloud.cli.member.MemberCommand;
 import org.fogbowcloud.cli.order.attachment.AttachmentCommand;
 import org.fogbowcloud.cli.order.compute.ComputeCommand;
@@ -32,6 +33,7 @@ public class Main {
 			"  * network" + LINE_BREAK +
 			"  * attachment" + LINE_BREAK +
 			"  * image" + LINE_BREAK +
+			"  * security-group-rules" + LINE_BREAK +
 			"  * member" + LINE_BREAK +
 			"  * federated-network" + LINE_BREAK +
 			LINE_BREAK +
@@ -46,6 +48,7 @@ public class Main {
 	private NetworkCommand networkCommand;
 	private AttachmentCommand attachmentCommand;
 	private ImageCommand imageCommand;
+	private SecurityGroupRuleCommand securityGroupRuleCommand;
 	private MemberCommand memberCommand;
 	private FederatedNetworkCommand federatedNetworkCommand;
 	
@@ -62,6 +65,7 @@ public class Main {
 		main.networkCommand = new NetworkCommand();
 		main.attachmentCommand = new AttachmentCommand();
 		main.imageCommand = new ImageCommand();
+		main.securityGroupRuleCommand = new SecurityGroupRuleCommand();
 		main.memberCommand = new MemberCommand();
 		main.federatedNetworkCommand = new FederatedNetworkCommand();
 
@@ -72,6 +76,7 @@ public class Main {
 				.addCommand(NetworkCommand.NAME, main.networkCommand)
 				.addCommand(AttachmentCommand.NAME, main.attachmentCommand)
 				.addCommand(ImageCommand.NAME, main.imageCommand)
+				.addCommand(SecurityGroupRuleCommand.NAME, main.securityGroupRuleCommand)
 				.addCommand(MemberCommand.NAME, main.memberCommand)
 				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
 				.build();
@@ -123,6 +128,8 @@ public class Main {
 			case ImageCommand.NAME:
 				output = this.imageCommand.run();
 				break;
+			case SecurityGroupRuleCommand.NAME:
+				output = this.securityGroupRuleCommand.run();
 			case MemberCommand.NAME:
 				output = this.memberCommand.run();
 				break;

@@ -9,15 +9,15 @@ public class Attachment {
 	private String provider = null;
 	
 	public static final String VOLUME_ID_COMMAND_KEY =  "--volumeId";
-	@Parameter(names = {VOLUME_ID_COMMAND_KEY}, description = "Source")
+	@Parameter(names = {VOLUME_ID_COMMAND_KEY}, description = "Volume Id")
 	private String volumeId = null;
 	
 	public static final String COMPUTE_ID_COMMAND_KEY =  "--computeId";
-	@Parameter(names = {COMPUTE_ID_COMMAND_KEY}, description = "Target")
+	@Parameter(names = {COMPUTE_ID_COMMAND_KEY}, description = "Compute Id")
 	private String computeId = null;
 	
 	public static final String DEVICE_COMMAND_KEY =  "--device";
-	@Parameter(names = { DEVICE_COMMAND_KEY }, description = "Source")
+	@Parameter(names = { DEVICE_COMMAND_KEY }, description = "Device")
 	private String device = null;
 	
 	public Attachment(){
