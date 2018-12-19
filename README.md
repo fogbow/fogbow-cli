@@ -387,3 +387,25 @@ Get status for all instances orders associated to a particular user's token.
 --url (required)
 --federation-token-value or --federation-token-path (required)
 ```
+
+
+### Security Group Rules (security-group-rules)
+
+#### Create Security Group Rule
+
+```
+--create
+--direction
+--portFrom
+--portTo
+--cidr
+--etherType
+--protocol
+```
+
+#### Delete Security Group Rule
+
+```
+--delete
+--id
+```
