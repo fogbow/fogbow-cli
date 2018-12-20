@@ -18,13 +18,12 @@ public class GenericRequestCommand {
     public static final String FEDERATION_TOKEN_PATH_COMMAND_KEY =  "--federation-token-path";
     public static final String URL_COMMAND_KEY = "--url";
 
-    public static final String MEMBER_ID_HEADER_KEY = "memberId";
     private static final String ENDPOINT = "/genericRequest";
 
     @Parameter(names = URL_COMMAND_KEY)
     private String url;
 
-    @Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id")
+    @Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id", required = true)
     private String memberId = null;
 
     @Parameter(names = { FEDERATION_TOKEN_COMMAND_KEY }, description = "User's Token")
@@ -56,7 +55,7 @@ public class GenericRequestCommand {
     }
 
     public String run() throws FogbowCLIException, IOException {
-        String fullUrl = this.url + ENDPOINT + "/" + this.memberId;
+        String fullUrl = this.url + "/" + ENDPOINT + "/" + this.memberId;
         HttpResponse httpResponse = HttpUtil.post(fullUrl, new Gson().toJson(this.genericRequest), getFederationToken());
         return HttpUtil.getHttpEntityAsString(httpResponse);
     }

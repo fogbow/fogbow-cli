@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.fogbowcloud.cli.authentication.token.CommandToken;
+import org.fogbowcloud.cli.cloud.CloudsCommand;
 import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.genericrequest.GenericRequestCommand;
 import org.fogbowcloud.cli.image.ImageCommand;
@@ -53,6 +54,7 @@ public class Main {
 	private MemberCommand memberCommand;
 	private FederatedNetworkCommand federatedNetworkCommand;
 	private GenericRequestCommand genericRequestCommand;
+	private CloudsCommand cloudsCommand;
 
 	private JCommander jCommander;
 
@@ -71,6 +73,7 @@ public class Main {
 		main.memberCommand = new MemberCommand();
 		main.federatedNetworkCommand = new FederatedNetworkCommand();
 		main.genericRequestCommand = new GenericRequestCommand();
+		main.cloudsCommand = new CloudsCommand();
 
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.tokenCommand)
@@ -83,6 +86,7 @@ public class Main {
 				.addCommand(MemberCommand.NAME, main.memberCommand)
 				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
 				.addCommand(GenericRequestCommand.NAME, main.genericRequestCommand)
+				.addCommand(CloudsCommand.NAME, main.cloudsCommand)
 				.build();
 
 		StringBuilder a = new StringBuilder();
@@ -142,6 +146,9 @@ public class Main {
 				break;
 			case GenericRequestCommand.NAME:
 				output = this.genericRequestCommand.run();
+				break;
+			case CloudsCommand.NAME:
+				output = this.cloudsCommand.run();
 				break;
 			}
 		}
