@@ -1,5 +1,6 @@
 package org.fogbowcloud.cli.Image;
 
+import java.awt.*;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
@@ -30,7 +31,8 @@ public class ImageCommandTest {
 	private final String token = "my-token";
 	private final String id = "my-id";
 	private final String memberId = "memberId";
-	
+	private String cloudName = "cloudName";
+
 	@Before
 	public void setUp() throws ClientProtocolException, IOException {
 		this.imageCommand = new ImageCommand();
@@ -47,11 +49,12 @@ public class ImageCommandTest {
 					ImageCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 					ImageCommand.URL_COMMAND_KEY, this.url,
 					ImageCommand.ID_COMMAND_KEY, this.id,
-					ImageCommand.MEMBER_ID_COMMAND_KEY, this.memberId);
+					ImageCommand.MEMBER_ID_COMMAND_KEY, this.memberId,
+					ImageCommand.CLOUD_NAME_COMMAND_KEY, this.cloudName);
 
-		HttpGet get = new HttpGet(this.url + ImageCommand.ENDPOINT + '/' + this.id);
+		String expectedUri = this.url + ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.id;
+		HttpGet get = new HttpGet(expectedUri);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
-		get.setHeader(ImageCommand.MEMBER_ID_HEADER_KEY, this.memberId);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.imageCommand.run();
@@ -68,11 +71,12 @@ public class ImageCommandTest {
 						ImageCommand.GET_ALL_COMMAND_KEY,
 						ImageCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 						ImageCommand.URL_COMMAND_KEY, this.url,
-						ImageCommand.MEMBER_ID_COMMAND_KEY, this.memberId);
+						ImageCommand.MEMBER_ID_COMMAND_KEY, this.memberId,
+						ImageCommand.CLOUD_NAME_COMMAND_KEY, this.cloudName);
 
-		HttpGet get = new HttpGet(this.url + ImageCommand.ENDPOINT);
+		String expectedUri = this.url + ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
+		HttpGet get = new HttpGet(expectedUri);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
-		get.setHeader(ImageCommand.MEMBER_ID_HEADER_KEY, this.memberId);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.imageCommand.run();
