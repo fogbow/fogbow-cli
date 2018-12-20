@@ -6,16 +6,13 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class KeyValueReaderUtilTest {
+public class KeyValueUtilTest {
 
     @Test
     public void testConvertKeyValueListToMap() throws FogbowCLIException {
-        List<String> parameters = new ArrayList<>();
-        parameters.add("key1=value1");
-        parameters.add("key2=value2");
-        parameters.add("key3=value3");
+        String parameters = "key1=value1,key2=value2,key3=value3";
 
-        Map<String, String> keyValues = KeyValueReaderUtil.convertKeyValueListToMap(parameters);
+        Map<String, String> keyValues = new KeyValueUtil.KeyValueConverter().convert(parameters);
 
         Assert.assertEquals(3, keyValues.size());
         Assert.assertEquals(Arrays.asList(new String[] {"key1", "key2", "key3"}),
