@@ -24,13 +24,13 @@ public class SecurityGroupRule {
     @Parameter(names = PORT_TO_COMMAND_KEY)
     private int portTo;
 
-    @Parameter(names = DIRECTION_COMMAND_KEY, validateWith = ParameterValidator.class)
+    @Parameter(names = DIRECTION_COMMAND_KEY, validateWith = SecurityGroupRuleParameterValidator.class)
     private String direction;
 
-    @Parameter(names = ETHERTYPE_COMMAND_KEY, validateWith = ParameterValidator.class)
+    @Parameter(names = ETHERTYPE_COMMAND_KEY, validateWith = SecurityGroupRuleParameterValidator.class)
     private String etherType;
 
-    @Parameter(names = PROTOCOL_COMMAND_KEY, validateWith = ParameterValidator.class)
+    @Parameter(names = PROTOCOL_COMMAND_KEY, validateWith = SecurityGroupRuleParameterValidator.class)
     private String protocol;
 
     public SecurityGroupRule() {

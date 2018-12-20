@@ -7,6 +7,7 @@ import java.io.PrintStream;
 
 import org.fogbowcloud.cli.authentication.token.CommandToken;
 import org.fogbowcloud.cli.exceptions.FogbowCLIException;
+import org.fogbowcloud.cli.genericrequest.GenericRequestCommand;
 import org.fogbowcloud.cli.image.ImageCommand;
 import org.fogbowcloud.cli.securitygrouprule.SecurityGroupRuleCommand;
 import org.fogbowcloud.cli.member.MemberCommand;
@@ -51,10 +52,11 @@ public class Main {
 	private SecurityGroupRuleCommand securityGroupRuleCommand;
 	private MemberCommand memberCommand;
 	private FederatedNetworkCommand federatedNetworkCommand;
-	
+	private GenericRequestCommand genericRequestCommand;
+
 	private JCommander jCommander;
-	
-	private static PrintStream outputStream;			
+
+	private static PrintStream outputStream;
 
 	public static void main(String[] args) throws IOException {
 		Main.initDefaultOutput();
@@ -68,6 +70,7 @@ public class Main {
 		main.securityGroupRuleCommand = new SecurityGroupRuleCommand();
 		main.memberCommand = new MemberCommand();
 		main.federatedNetworkCommand = new FederatedNetworkCommand();
+		main.genericRequestCommand = new GenericRequestCommand();
 
 		main.jCommander = JCommander.newBuilder()
 				.addCommand(CommandToken.NAME, main.tokenCommand)
@@ -79,11 +82,11 @@ public class Main {
 				.addCommand(SecurityGroupRuleCommand.NAME, main.securityGroupRuleCommand)
 				.addCommand(MemberCommand.NAME, main.memberCommand)
 				.addCommand(FederatedNetworkCommand.NAME, main.federatedNetworkCommand)
+				.addCommand(GenericRequestCommand.NAME, main.genericRequestCommand)
 				.build();
 
 		StringBuilder a = new StringBuilder();
 		main.jCommander.usage(a);
-		String b = a.toString();
 		try {
 			main.jCommander.parse(args);
 			String output = main.run();
@@ -130,11 +133,15 @@ public class Main {
 				break;
 			case SecurityGroupRuleCommand.NAME:
 				output = this.securityGroupRuleCommand.run();
+				break;
 			case MemberCommand.NAME:
 				output = this.memberCommand.run();
 				break;
 			case FederatedNetworkCommand.NAME:
 				output = this.federatedNetworkCommand.run();
+				break;
+			case GenericRequestCommand.NAME:
+				output = this.genericRequestCommand.run();
 				break;
 			}
 		}
