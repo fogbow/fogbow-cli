@@ -47,10 +47,14 @@ public class OrderCommand {
 	public static final String URL_COMMAND_KEY =  "--url";
 	@Parameter(names = { URL_COMMAND_KEY }, description = "Url", required = true)
 	private String url = null;
-	
+
 	public static final String ID_COMMAND_KEY = "--id";
 	@Parameter(names = { ID_COMMAND_KEY }, description = "id")
 	private String id = null;
+
+	public static final String CLOUD_NAME_COMMAND_KEY = "--cloudName";
+	@Parameter(names = { CLOUD_NAME_COMMAND_KEY }, description = "Cloud Name")
+	private String cloudName = null;
 	
 	private String endpoint;
 	private Object jsonObject;
@@ -147,6 +151,10 @@ public class OrderCommand {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public String getCloudName() {
+		return cloudName;
 	}
 
 	private String jsonToString() {
