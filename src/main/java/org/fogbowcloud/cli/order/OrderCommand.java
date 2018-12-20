@@ -52,7 +52,7 @@ public class OrderCommand {
 	@Parameter(names = { ID_COMMAND_KEY }, description = "id")
 	private String id = null;
 
-	public static final String CLOUD_NAME_COMMAND_KEY = "--cloudName";
+	public static final String CLOUD_NAME_COMMAND_KEY = "--cloud-name";
 	@Parameter(names = { CLOUD_NAME_COMMAND_KEY }, description = "Cloud Name")
 	private String cloudName = null;
 	
