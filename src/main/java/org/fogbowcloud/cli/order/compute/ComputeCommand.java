@@ -30,7 +30,7 @@ public class ComputeCommand {
 	public static final String GET_ALLOCATION_COMMAND_KEY = "--get-allocation";
 	@Parameter(names = { GET_ALLOCATION_COMMAND_KEY }, description = "Get alocation")
 	private Boolean isGetAllocationCommand = false;
-	
+
 	public static final String MEMBER_ID_COMMAND_KEY = "--member-id";
 	@Parameter(names = { MEMBER_ID_COMMAND_KEY }, description = "Member's id")
 	private String memberId = null;
@@ -40,7 +40,8 @@ public class ComputeCommand {
 	
 	@ParametersDelegate
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.compute);
-	
+
+	public static final String URL_SEPARATOR = "/";
 	public static final String QUOTA_ENDPOINT_KEY = "/quota/";
 	public static final String ALLOCATION_ENDPOINT_KEY = "/allocation/";
 	public static final String COMPUTE_ORDER_JSON_KEY = "computeOrder";
@@ -75,20 +76,22 @@ public class ComputeCommand {
 	}
 	
 	private String doGetAllocation() throws FogbowCLIException, IOException {
-		if (this.memberId == null) {
-			throw new ParameterException("No member-id passed as parameter");
+		if (this.memberId == null || orderCommand.getCloudName() == null) {
+			throw new ParameterException("No member-id or cloud-name passed as parameter");
 		} else {
-			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + ALLOCATION_ENDPOINT_KEY + this.memberId;
+			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + ALLOCATION_ENDPOINT_KEY + this.memberId +
+					URL_SEPARATOR + orderCommand.getCloudName();
 			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}
 	}
 
 	private String doGetQuota() throws FogbowCLIException, IOException {
-		if (this.memberId == null) {
-			throw new ParameterException("No member-id passed as parameter");
+		if (this.memberId == null || orderCommand.getCloudName() == null) {
+			throw new ParameterException("No member-id or cloud-name passed as parameter");
 		} else {
-			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + QUOTA_ENDPOINT_KEY + this.memberId;
+			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + QUOTA_ENDPOINT_KEY + this.memberId +
+					URL_SEPARATOR + orderCommand.getCloudName();
 			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}

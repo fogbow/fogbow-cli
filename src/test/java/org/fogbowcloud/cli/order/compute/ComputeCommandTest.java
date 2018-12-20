@@ -36,6 +36,7 @@ public class ComputeCommandTest {
 	private final String token = "my-token";
 	private final String id = "my-id";
 	private final String memberId = "my-member-id";
+	private final String cloudName = "my-cloud";
 	private final String requirementsString = "key1=value1,key2=value2";
 	private Map<String, String> requirements = new HashMap<>();
 
@@ -196,9 +197,11 @@ public class ComputeCommandTest {
 					ComputeCommand.GET_QUOTA_COMMAND_KEY,
 					OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 					OrderCommand.URL_COMMAND_KEY, this.url,
+					OrderCommand.CLOUD_NAME_COMMAND_KEY, this.cloudName,
 					ComputeCommand.MEMBER_ID_COMMAND_KEY, this.memberId);
 
-		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.QUOTA_ENDPOINT_KEY + this.memberId);
+		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.QUOTA_ENDPOINT_KEY +
+				this.memberId + ComputeCommand.URL_SEPARATOR + this.cloudName);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
@@ -217,9 +220,11 @@ public class ComputeCommandTest {
 					ComputeCommand.GET_ALLOCATION_COMMAND_KEY,
 					OrderCommand.FEDERATION_TOKEN_COMMAND_KEY, this.token,
 					OrderCommand.URL_COMMAND_KEY, this.url,
+					OrderCommand.CLOUD_NAME_COMMAND_KEY, this.cloudName,
 					ComputeCommand.MEMBER_ID_COMMAND_KEY, this.memberId);
 
-		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.ALLOCATION_ENDPOINT_KEY + this.memberId);
+		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.ALLOCATION_ENDPOINT_KEY
+				+ this.memberId + ComputeCommand.URL_SEPARATOR + this.cloudName);
 		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
