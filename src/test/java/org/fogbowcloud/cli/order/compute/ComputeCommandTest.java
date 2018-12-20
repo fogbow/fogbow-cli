@@ -1,9 +1,7 @@
 package org.fogbowcloud.cli.order.compute;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
@@ -20,6 +18,7 @@ import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
 import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
+import org.fogbowcloud.cli.utils.KeyValueUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -32,14 +31,17 @@ public class ComputeCommandTest {
 	private Compute compute;
 	private ComputeCommand computeCommand = new ComputeCommand();
 	private HttpClient mockHttpClient;
-	
+
 	private final String url = "my-url";
 	private final String token = "my-token";
 	private final String id = "my-id";
 	private final String memberId = "my-member-id";
+	private final String requirementsString = "key1=value1,key2=value2";
+	private Map<String, String> requirements = new HashMap<>();
 
 	@Before
 	public void setUp() throws FogbowCLIException, IOException {
+		requirements = new KeyValueUtil.KeyValueConverter().convert(requirementsString);
 		this.compute = new Compute(
 				"my-provider",
 				"",
@@ -49,7 +51,8 @@ public class ComputeCommandTest {
 				"my-disk",
 				Arrays.asList(new String[] {"fake-user-data-1", "fake-user-data-2"}),
 				Arrays.asList(new String[] {"fake-network-id-1", "fake-network-id-2"}),
-				"compute-name"
+				"compute-name",
+				requirements
 		);
 		this.computeCommand = new ComputeCommand();
 		initHttpClient();
@@ -71,7 +74,8 @@ public class ComputeCommandTest {
 		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
 		    		Compute.NETWORK_IDS_COMMAND_KEY, separateBy(this.compute.getNetworksId(), ","),
 					Compute.NAME_COMMAND_KEY, this.compute.getName(),
-					Compute.USER_DATA_COMMAND_KEY, separateBy(this.compute.getUserData(), ",")
+					Compute.USER_DATA_COMMAND_KEY, separateBy(this.compute.getUserData(), ","),
+					Compute.REQUIREMENTS, requirementsString
 		    );
 
 		ComputeWrappedWithFedNet computeWrappedWithFedNet = new ComputeWrappedWithFedNet(this.compute);

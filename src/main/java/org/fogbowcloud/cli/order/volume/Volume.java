@@ -1,6 +1,9 @@
 package org.fogbowcloud.cli.order.volume;
 
 import com.beust.jcommander.Parameter;
+import org.fogbowcloud.cli.utils.KeyValueUtil.KeyValueConverter;
+
+import java.util.Map;
 
 public class Volume {
 	
@@ -15,16 +18,20 @@ public class Volume {
 	public static final String NAME_COMMAND_KEY =  "--name";
 	@Parameter(names = {NAME_COMMAND_KEY}, description = "Name")
 	private String name = null;
-	
+
+	public static final String REQUIREMENTS = "--requirements";
+	@Parameter(names = { REQUIREMENTS }, converter = KeyValueConverter.class)
+	private Map<String, String> requirements;
+
 	public Volume() {
 		
 	}
 
-	public Volume(String provider, Integer volumeSize, String name) {
-		super();
+	public Volume(String provider, Integer volumeSize, String name, Map<String, String> requirements) {
 		this.provider = provider;
 		this.volumeSize = volumeSize;
 		this.name = name;
+		this.requirements = requirements;
 	}
 
 	public String getProvider() {
@@ -49,5 +56,13 @@ public class Volume {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Map<String, String> getRequirements() {
+		return requirements;
+	}
+
+	public void setRequirements(Map<String, String> requirements) {
+		this.requirements = requirements;
 	}
 }

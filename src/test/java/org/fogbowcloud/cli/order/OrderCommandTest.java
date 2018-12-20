@@ -18,6 +18,8 @@ import org.mockito.Mockito;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -30,6 +32,7 @@ public class OrderCommandTest {
     private final String url = "my-url";
     private final String token = "my-token";
     private final String id = "my-id";
+    private final Map<String, String> requirements = new HashMap<>();
 
     private final String APP_REPOSITORY_DIRECTORY = System.getProperty("user.dir");
 
@@ -38,7 +41,8 @@ public class OrderCommandTest {
         this.volume = new Volume(
                 "my-provider",
                 1024,
-                "volume-name"
+                "volume-name",
+                requirements
         );
         this.orderCommand = new OrderCommand(VolumeCommand.ENDPOINT, this.volume);
     }

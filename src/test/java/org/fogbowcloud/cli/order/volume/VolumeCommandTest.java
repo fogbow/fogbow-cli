@@ -1,7 +1,7 @@
 package org.fogbowcloud.cli.order.volume;
 
-import java.io.IOException;
-
+import com.beust.jcommander.JCommander;
+import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
@@ -17,12 +17,14 @@ import org.fogbowcloud.cli.HttpRequestMatcher;
 import org.fogbowcloud.cli.HttpUtil;
 import org.fogbowcloud.cli.exceptions.FogbowCLIException;
 import org.fogbowcloud.cli.order.OrderCommand;
+import org.fogbowcloud.cli.utils.KeyValueUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.beust.jcommander.JCommander;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VolumeCommandTest {
 	private Volume volume;
@@ -32,13 +34,17 @@ public class VolumeCommandTest {
 	private final String url = "my-url";
 	private final String token = "my-token";
 	private final String id = "my-id";
-	
+	private final String requirementsString = "key1=value1,key2=value2";
+	private Map<String, String> requirements = new HashMap<>();
+
 	@Before
 	public void setUp() throws FogbowCLIException, IOException {
+		requirements = new KeyValueUtil.KeyValueConverter().convert(requirementsString);
 		this.volume = new Volume(
 				"my-provider",
 				1024,
-                "volume-name"
+				"volume-name",
+				requirements
 		);
 		this.volumeCommand = new VolumeCommand();
 		initHttpClient();
@@ -55,7 +61,8 @@ public class VolumeCommandTest {
 		    		OrderCommand.URL_COMMAND_KEY, this.url,
 					Volume.NAME_COMMAND_KEY, this.volume.getName(),
 					Volume.PROVIDER_COMMAND_KEY, this.volume.getProvider(),
-					Volume.VOLUME_SIZE_COMMAND_KEY, Integer.toString(this.volume.getVolumeSize())
+					Volume.VOLUME_SIZE_COMMAND_KEY, Integer.toString(this.volume.getVolumeSize()),
+					Volume.REQUIREMENTS, requirementsString
 					);
 	
 		String volumeJson = new Gson().toJson(this.volume);

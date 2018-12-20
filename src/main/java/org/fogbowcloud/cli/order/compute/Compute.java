@@ -1,9 +1,10 @@
 package org.fogbowcloud.cli.order.compute;
 
 import com.beust.jcommander.Parameter;
+import org.fogbowcloud.cli.utils.KeyValueUtil.KeyValueConverter;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class Compute {
 
@@ -43,11 +44,16 @@ public class Compute {
 	@Parameter(names = { NAME_COMMAND_KEY }, description = "Name")
 	private String name;
 
+	public static final String REQUIREMENTS = "--requirements";
+	@Parameter(names = { REQUIREMENTS }, converter = KeyValueConverter.class)
+	private Map<String, String> requirements;
+
 	public Compute() {
 		
 	}
 
-	public Compute(String provider, String publicKey, String imageId, String vCPU, String memory, String disk, List<String> userData, List<String> networksId, String name) {
+	public Compute(String provider, String publicKey, String imageId, String vCPU, String memory, String disk,
+				   List<String> userData, List<String> networksId, String name, Map<String, String> requirements) {
 		this.provider = provider;
 		this.publicKey = publicKey;
 		this.imageId = imageId;
@@ -57,6 +63,7 @@ public class Compute {
 		this.userData = userData;
 		this.networksId = networksId;
 		this.name = name;
+		this.requirements = requirements;
 	}
 
 	public String getPublicKey() {
@@ -103,4 +110,7 @@ public class Compute {
 		return name;
 	}
 
+	public Map<String, String> getRequirements() {
+		return requirements;
+	}
 }
