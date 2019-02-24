@@ -19,7 +19,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>org.fogbowcloud.cli.Main</mainClass>
+							<mainClass>cloud.fogbow.cli.Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
