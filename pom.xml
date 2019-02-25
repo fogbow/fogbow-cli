@@ -102,13 +102,17 @@
 		    <version>2.8.2</version>
 		</dependency>
 		
-		
 		<!-- https://mvnrepository.com/artifact/uk.co.jemos.podam/podam -->
 		<dependency>
 		    <groupId>uk.co.jemos.podam</groupId>
 		    <artifactId>podam</artifactId>
 		    <version>7.1.1.RELEASE</version>
 		    <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
 		</dependency>
 
 

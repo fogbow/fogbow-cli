@@ -33,5 +33,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.commons:commons-lang3:3.6" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.5" level="project" />
   </component>
 </module>
