@@ -36,7 +36,7 @@ public class SecurityRuleCommandTest {
     private SecurityRule securityRule;
 
     @Before
-    public void setUp() throws IOException, FogbowCLIException {
+    public void setUp() throws IOException {
         int port = -1;
         String cidr = "test-cidr";
         String direction = "IN";
@@ -56,7 +56,7 @@ public class SecurityRuleCommandTest {
             .build()
             .parse(
                     CliCommonParameters.URL_COMMAND_KEY, VALID_FNS_SERVICE_URL,
-                    CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, A_VALID_TOKEN,
+                    CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, A_VALID_TOKEN,
                     SecurityRuleCommand.CREATE_COMMAND_KEY,
                     SecurityRuleCommand.NETWORK_ID_COMMAND_KEY, A_VALID_NETWORK_ID,
                     SecurityRule.CIDR_COMMAND_KEY, securityRule.getCidr(),
@@ -76,7 +76,7 @@ public class SecurityRuleCommandTest {
 
         HttpPost post = new HttpPost(expectedUri);
         post.setEntity(new StringEntity(expectedJson));
-        post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, A_VALID_TOKEN);
+        post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, A_VALID_TOKEN);
         post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
         HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
@@ -94,7 +94,7 @@ public class SecurityRuleCommandTest {
                 .build()
                 .parse(
                         CliCommonParameters.URL_COMMAND_KEY, VALID_FNS_SERVICE_URL,
-                        CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, A_VALID_TOKEN,
+                        CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, A_VALID_TOKEN,
                         SecurityRuleCommand.DELETE_COMMAND_KEY,
                         SecurityRuleCommand.NETWORK_ID_COMMAND_KEY, A_VALID_NETWORK_ID,
                         SecurityRule.INSTANCE_ID_COMMAND_KEY, A_VALID_RULE_ID
@@ -108,7 +108,7 @@ public class SecurityRuleCommandTest {
                 A_VALID_RULE_ID), "/");
 
         HttpDelete delete = new HttpDelete(deleteRuleUrl);
-        delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, A_VALID_TOKEN);
+        delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, A_VALID_TOKEN);
         HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
 
         securityRuleCommand.run();
@@ -116,7 +116,7 @@ public class SecurityRuleCommandTest {
         Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
     }
 
-    private void initHttpClient() throws FogbowCLIException, IOException {
+    private void initHttpClient() throws IOException {
         mockHttpClient = Mockito.mock(HttpClient.class);
         HttpResponseFactory factory = new DefaultHttpResponseFactory();
         HttpResponse response = factory.newHttpResponse(

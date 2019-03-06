@@ -39,7 +39,7 @@ public class VolumeCommandTest {
 	private Map<String, String> requirements = new HashMap<>();
 
 	@Before
-	public void setUp() throws FogbowCLIException, IOException {
+	public void setUp() throws IOException {
 		requirements = new KeyValueUtil.KeyValueConverter().convert(requirementsString);
 		this.volume = new Volume(
 				"my-provider",
@@ -58,7 +58,7 @@ public class VolumeCommandTest {
 		    .build()
 		    .parse(
 		    		OrderCommand.CREATE_COMMAND_KEY,
-					CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
 					Volume.NAME_COMMAND_KEY, this.volume.getName(),
 					Volume.PROVIDER_COMMAND_KEY, this.volume.getProvider(),
@@ -69,7 +69,7 @@ public class VolumeCommandTest {
 		String volumeJson = new Gson().toJson(this.volume);
 		HttpPost post = new HttpPost(this.url + VolumeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(volumeJson));
-		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
@@ -85,12 +85,12 @@ public class VolumeCommandTest {
 				.build()
 				.parse(
 					OrderCommand.DELETE_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpDelete delete = new HttpDelete(this.url + VolumeCommand.ENDPOINT + '/' + this.id);
-		delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
 
 		this.volumeCommand.run();
@@ -105,12 +105,12 @@ public class VolumeCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + VolumeCommand.ENDPOINT + '/' + this.id);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.volumeCommand.run();
@@ -125,12 +125,12 @@ public class VolumeCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_ALL_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + VolumeCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.volumeCommand.run();

@@ -20,16 +20,16 @@ public class CloudsCommand {
     @Parameter(names = CliCommonParameters.MEMBER_ID_COMMAND_KEY, description = Documentation.CommonParameters.MEMBER_ID, required = true)
     private String memberId = null;
 
-    @Parameter(names = CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN)
-    private String federationTokenValue = null;
+    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN)
+    private String systemUserToken = null;
 
-    @Parameter(names = CliCommonParameters.FEDERATION_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN_PATH)
-    private String federationTokenPath = null;
+    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
+    private String systemUserTokenPath = null;
 
     public String run() throws FogbowCLIException, IOException {
         String fullUrl = this.url + "/" + ENDPOINT + "/" + this.memberId;
-        String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
-        HttpResponse httpResponse = HttpUtil.get(fullUrl, federationToken);
+        String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+        HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken);
         return HttpUtil.getHttpEntityAsString(httpResponse);
     }
 }

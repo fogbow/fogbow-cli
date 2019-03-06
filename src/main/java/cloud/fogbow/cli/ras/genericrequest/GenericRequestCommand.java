@@ -25,19 +25,19 @@ public class GenericRequestCommand {
     @Parameter(names = CliCommonParameters.CLOUD_NAME_COMMAND_KEY, description = Documentation.CommonParameters.CLOUD_NAME, required = true)
     private String cloudName = null;
 
-    @Parameter(names = CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN)
-    private String federationTokenValue = null;
+    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN)
+    private String systemUserToken = null;
 
-    @Parameter(names = CliCommonParameters.FEDERATION_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN_PATH)
-    private String federationTokenPath = null;
+    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
+    private String systemUserTokenPath = null;
 
     @ParametersDelegate
     private GenericRequest genericRequest = new GenericRequest();
 
     public String run() throws FogbowCLIException, IOException {
         String fullUrl = this.url + "/" + ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
-        String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
-        HttpResponse httpResponse = HttpUtil.post(fullUrl, new Gson().toJson(this.genericRequest), federationToken);
+        String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+        HttpResponse httpResponse = HttpUtil.post(fullUrl, new Gson().toJson(this.genericRequest), systemUserToken);
         return HttpUtil.getHttpEntityAsString(httpResponse);
     }
 }

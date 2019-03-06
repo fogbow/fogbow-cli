@@ -24,11 +24,11 @@ public class ImageCommand {
 	@Parameter(names = CliCommonParameters.GET_ALL_COMMAND_KEY, description = Documentation.Image.GET_ALL)
 	protected Boolean isGetAllCommand = false;
 
-	@Parameter(names = CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN)
-	private String federationTokenValue = null;
+	@Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN)
+	private String systemUserToken = null;
 
-	@Parameter(names = CliCommonParameters.FEDERATION_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN_PATH)
-	private String federationTokenPath = null;
+	@Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
+	private String systemUserTokenPath = null;
 
 	@Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL, required = true)
 	protected String url = null;
@@ -56,7 +56,7 @@ public class ImageCommand {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
 			String fullUrl = this.url + ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.imageID;
-			String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
+			String federationToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
 			HttpResponse httpResponse = HttpUtil.get(fullUrl, federationToken, Collections.emptyMap());
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}
@@ -64,8 +64,8 @@ public class ImageCommand {
 	
 	public String doGetAll() throws FogbowCLIException, IOException {
 		String fullUrl = this.url + ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
-		String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, federationToken, Collections.emptyMap());
+		String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken, Collections.emptyMap());
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 }

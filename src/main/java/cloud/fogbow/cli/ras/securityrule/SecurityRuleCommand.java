@@ -43,17 +43,17 @@ public class SecurityRuleCommand {
     @Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL)
     private String url;
 
-    @Parameter(names = CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN)
-    private String federationTokenValue = null;
+    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN)
+    private String systemUserToken = null;
 
-    @Parameter(names = CliCommonParameters.FEDERATION_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN_PATH)
-    private String federationTokenPath = null;
+    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
+    private String systemUserTokenPath = null;
 
     @ParametersDelegate
     private SecurityRule securityRule = new SecurityRule();
 
     public String run() throws FogbowCLIException, IOException {
-        String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
+        String federationToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
         if ((isCreateCommand() ^ isDeleteCommand())) {
             if (isCreateCommand()) {
                 return doCreate(securityRule, federationToken);
