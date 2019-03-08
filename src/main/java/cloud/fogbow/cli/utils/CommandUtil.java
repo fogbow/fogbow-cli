@@ -6,21 +6,30 @@ import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import java.io.IOException;
 
 public class CommandUtil {
+
     public static String getSystemUserToken(String systemUserToken, String systemUserTokenPath) throws FogbowCLIException {
-        String actualSystemUserToken = null;
-        if (actualSystemUserToken == null || actualSystemUserToken.isEmpty()) {
-            if (systemUserToken != null && !systemUserToken.isEmpty()) {
-                actualSystemUserToken = systemUserToken;
-            } else if (systemUserTokenPath != null && !systemUserTokenPath.isEmpty()) {
+        return getGenericValue(systemUserToken, systemUserTokenPath, Messages.Exception.NO_SYSTEM_USER_TOKEN);
+    }
+
+    public static String getApplicationPublicKey(String publicKeyValue, String publicKeyPath) throws FogbowCLIException {
+        return getGenericValue(publicKeyValue, publicKeyPath, Messages.Exception.NO_PUBLIC_KEY_PROVIDED);
+    }
+
+    private static String getGenericValue(String providedRawValue, String providedResourcePath, String NoResourceFoundException) throws FogbowCLIException {
+        String actualvalue = null;
+        if (actualvalue == null || actualvalue.isEmpty()) {
+            if (providedRawValue != null && !providedRawValue.isEmpty()) {
+                actualvalue = providedRawValue;
+            } else if (providedResourcePath != null && !providedResourcePath.isEmpty()) {
                 try {
-                    actualSystemUserToken = FileUtils.readFileToString(systemUserTokenPath);
+                    actualvalue = FileUtils.readFileToString(providedResourcePath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                throw new FogbowCLIException(Messages.Exception.NO_SYSTEM_USER_TOKEN);
+                throw new FogbowCLIException(NoResourceFoundException);
             }
         }
-        return actualSystemUserToken;
+        return actualvalue;
     }
 }

@@ -57,5 +57,8 @@ public class Documentation {
         public static final String COMMAND_DESCRIPTION = "Creates tokens.";
         public static final String CREATE_COMMAND = "Creates a new token.";
         public static final String DYNAMIC_PARAMS = "Dynamic parameters for token command.";
+        public static final String PUBLIC_KEY_PARAMETER = "Public key used to sign the new token.";
+        public static final String PUBLIC_KEY_PATH_PARAMETER = "Path tp the public key used to sign the new token.";
     }
 }
+
