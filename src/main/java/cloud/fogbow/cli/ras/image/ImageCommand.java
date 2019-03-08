@@ -56,8 +56,8 @@ public class ImageCommand {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
 			String fullUrl = this.url + ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.imageID;
-			String federationToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
-			HttpResponse httpResponse = HttpUtil.get(fullUrl, federationToken, Collections.emptyMap());
+			String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken, Collections.emptyMap());
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}
 	}

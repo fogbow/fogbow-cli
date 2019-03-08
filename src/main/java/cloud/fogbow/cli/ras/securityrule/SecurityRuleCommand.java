@@ -53,19 +53,19 @@ public class SecurityRuleCommand {
     private SecurityRule securityRule = new SecurityRule();
 
     public String run() throws FogbowCLIException, IOException {
-        String federationToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+        String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
         if ((isCreateCommand() ^ isDeleteCommand())) {
             if (isCreateCommand()) {
-                return doCreate(securityRule, federationToken);
+                return doCreate(securityRule, systemUserToken);
             } else {
-                return doDelete(securityRule, federationToken);
+                return doDelete(securityRule, systemUserToken);
             }
         } else {
             throw new ParameterException(String.format(Messages.Exception.INCONSISTENT_PARAMS, CREATE_COMMAND_KEY, DELETE_COMMAND_KEY));
         }
     }
 
-    private String doCreate(SecurityRule securityRule, String federationTokenValue) throws IOException {
+    private String doCreate(SecurityRule securityRule, String systemUserToken) throws IOException {
         if (networkId != null ^ publicIpId != null) {
             String completeUrl;
             if (networkId != null) {
@@ -75,7 +75,7 @@ public class SecurityRuleCommand {
             }
 
             String jsonFormattedBody = new Gson().toJson(securityRule);
-            HttpResponse httpResponse = HttpUtil.post(completeUrl, jsonFormattedBody, federationTokenValue);
+            HttpResponse httpResponse = HttpUtil.post(completeUrl, jsonFormattedBody, systemUserToken);
             return HttpUtil.getHttpEntityAsString(httpResponse);
         } else {
             String message = String.format(Messages.Exception.INCONSISTENT_PARAMS, NETWORK_ID_COMMAND_KEY, PUBLIC_IP_COMMAND_KEY);
@@ -83,7 +83,7 @@ public class SecurityRuleCommand {
         }
     }
 
-    private String doDelete(SecurityRule securityRule, String federationTokenValue) throws ClientProtocolException {
+    private String doDelete(SecurityRule securityRule, String systemUserToken) throws ClientProtocolException {
         if (securityRule == null || securityRule.getId() == null) {
             throw new ParameterException(Messages.Exception.NO_RULE_ID_INFORMED);
         }
@@ -103,7 +103,7 @@ public class SecurityRuleCommand {
         }
 
         String completeUrl = StringUtils.join(urlParams, "/");
-        HttpResponse httpResponse = HttpUtil.delete(completeUrl, federationTokenValue);
+        HttpResponse httpResponse = HttpUtil.delete(completeUrl, systemUserToken);
         return httpResponse.getStatusLine().toString();
     }
 
