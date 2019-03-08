@@ -86,7 +86,7 @@ Get detailed information about a single image.
 ```
 --get (required)
 --url (required)
---federation-token-value (required)
+--system-user-token (required)
 --member-id (required)
 --id (required)
 ```
@@ -98,7 +98,7 @@ Get ids of all images.
 ```
 --get-all (required)
 --url (required)
---federation-token-value (required)
+--system-user-token (required)
 --member-id (required)
 ```
 
@@ -109,7 +109,7 @@ Get ids of all images.
 
 ```
 --create
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --url
 
 --provider
@@ -123,7 +123,7 @@ Get ids of all images.
 ```
 --delete
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -134,7 +134,7 @@ Get informationabout a specific instance.
 ```
 --get (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -145,7 +145,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-all-status (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
@@ -155,7 +155,7 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --create
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --url
 
 --provider
@@ -172,7 +172,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --delete
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -181,7 +181,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -190,7 +190,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-all (required)
 --url (required)
---federation-token-value (required)
+--system-user-token (required)
 ```
 
 #### Get all computes status
@@ -198,7 +198,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-all-status (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 #### Get Allocation
@@ -207,7 +207,7 @@ Get status for all instances orders associated to a particular user's token.
 --get-allocation (required)
 --member-id (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 #### Get Quota
@@ -216,7 +216,7 @@ Get status for all instances orders associated to a particular user's token.
 --get-quota (required)
 --member-id (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
@@ -226,7 +226,7 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --create
---federation-token-value or --federation-token-path
+--system-user-token or --system-user-token-path
 --url
 
 --cidrNotation
@@ -239,7 +239,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --delete
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -248,7 +248,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -257,7 +257,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-all-status (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
@@ -267,7 +267,7 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --create
---federation-token-value or --federation-token-path
+--system-user-token or --system-user-token-path
 --url
 ```
 
@@ -283,7 +283,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --delete
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -292,7 +292,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -301,7 +301,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-all-status (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
@@ -311,7 +311,7 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --create
---federation-token-value or --federation-token-path
+--system-user-token or --system-user-token-path
 --url
 
 --provider
@@ -324,7 +324,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --delete
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -333,7 +333,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id
 ```
 
@@ -342,7 +342,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-all-status (required)
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
@@ -353,7 +353,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --create
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 ```
@@ -367,7 +367,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --delete
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 --id (required)
 ```
 
@@ -377,7 +377,7 @@ Get status for all instances orders associated to a particular user's token.
 --get
 --url (required)
 --id (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 #### Get Status of All Public Ips Status
@@ -385,7 +385,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-all-status
 --url (required)
---federation-token-value or --federation-token-path (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
