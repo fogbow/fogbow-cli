@@ -72,7 +72,7 @@ public class ComputeCommand {
 		} else {
 			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + ALLOCATION_ENDPOINT_KEY + this.orderCommand.getMemberId() +
 					"/" + this.orderCommand.getCloudName();
-			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getSystemUserToken());
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}
 	}
@@ -83,7 +83,7 @@ public class ComputeCommand {
 		} else {
 			String fullUrl = this.orderCommand.getUrl() + ENDPOINT + QUOTA_ENDPOINT_KEY + this.orderCommand.getMemberId() +
 					"/" + this.orderCommand.getCloudName();
-			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getFederationToken());
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, this.orderCommand.getSystemUserToken());
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}
 	}

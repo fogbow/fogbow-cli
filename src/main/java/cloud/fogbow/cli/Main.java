@@ -24,7 +24,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
 public class Main {
-
 	public static final String FOGBOW_CLI_PREFIX = "fogbow-cli: ";
 	public static final String LINE_BREAK = System.getProperty("line.separator");
 

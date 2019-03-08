@@ -68,7 +68,7 @@ public class ComputeCommandTest {
 		    .build()
 		    .parse(
 		    		OrderCommand.CREATE_COMMAND_KEY,
-					CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
 		    		Compute.PROVIDER_COMMAND_KEY, this.compute.getProvider(),
 		    		Compute.IMAGE_ID_COMMAND_KEY, this.compute.getImageId(),
@@ -86,7 +86,7 @@ public class ComputeCommandTest {
 		String expectedJson = new Gson().toJson(computeWrappedWithFedNet);
 		HttpPost post = new HttpPost(this.url + ComputeCommand.ENDPOINT);
 		post.setEntity(new StringEntity(expectedJson));
-		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
@@ -117,12 +117,12 @@ public class ComputeCommandTest {
 				.build()
 				.parse(
 					OrderCommand.DELETE_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpDelete delete = new HttpDelete(this.url + ComputeCommand.ENDPOINT + '/' + this.id);
-		delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
 
 		this.computeCommand.run();
@@ -137,12 +137,12 @@ public class ComputeCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + '/' + this.id);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.computeCommand.run();
@@ -157,12 +157,12 @@ public class ComputeCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_ALL_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + "/" +  OrderCommand.STATUS_ENDPOINT_KEY);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.computeCommand.run();
@@ -177,14 +177,14 @@ public class ComputeCommandTest {
 				.build()
 				.parse(
 					ComputeCommand.GET_QUOTA_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName,
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId);
 
 		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.QUOTA_ENDPOINT_KEY +
 				this.memberId + "/" + this.cloudName);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.computeCommand.run();
@@ -200,14 +200,14 @@ public class ComputeCommandTest {
 				.build()
 				.parse(
 					ComputeCommand.GET_ALLOCATION_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName,
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId);
 
 		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.ALLOCATION_ENDPOINT_KEY
 				+ this.memberId + "/" + this.cloudName);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.computeCommand.run();
@@ -215,7 +215,7 @@ public class ComputeCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private void initHttpClient() throws FogbowCLIException, IOException {
+	private void initHttpClient() throws IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(

@@ -54,7 +54,7 @@ public class NetworkCommandTest {
 		    .build()
 		    .parse(
 		    		OrderCommand.CREATE_COMMAND_KEY, 
-		    		CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+		    		CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 		    		CliCommonParameters.URL_COMMAND_KEY, this.url,
 		    		Network.PROVIDER_COMMAND_KEY, this.network.getProvider(),
 		    		Network.GATEWAY_COMMAND_KEY, this.network.getGateway(),
@@ -66,7 +66,7 @@ public class NetworkCommandTest {
 		String computeJson = new Gson().toJson(this.network);
 		HttpPost post = new HttpPost(this.url + NetworkCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
-		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
@@ -82,12 +82,12 @@ public class NetworkCommandTest {
 				.build()
 				.parse(
 					OrderCommand.DELETE_COMMAND_KEY,
-					CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
 					CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpDelete delete = new HttpDelete(this.url + NetworkCommand.ENDPOINT + '/' + this.id);
-		delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
 
 		this.networkCommand.run();
@@ -102,12 +102,12 @@ public class NetworkCommandTest {
 				.build()
 				.parse(
 					CliCommonParameters.GET_COMMAND_KEY,
-					CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
 					CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + NetworkCommand.ENDPOINT + '/' + this.id);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.networkCommand.run();
@@ -122,12 +122,12 @@ public class NetworkCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_ALL_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + NetworkCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.networkCommand.run();
@@ -135,7 +135,7 @@ public class NetworkCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private void initHttpClient() throws FogbowCLIException, IOException {
+	private void initHttpClient() throws IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(

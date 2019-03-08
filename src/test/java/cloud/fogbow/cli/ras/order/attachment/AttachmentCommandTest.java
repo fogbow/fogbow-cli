@@ -53,7 +53,7 @@ public class AttachmentCommandTest {
 		    .build()
 		    .parse(
 		    		OrderCommand.CREATE_COMMAND_KEY,
-					CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
 		    		Attachment.PROVIDER_COMMAND_KEY, attachment.getProvider(),
 		    		Attachment.VOLUME_ID_COMMAND_KEY, attachment.getVolumeId(),
@@ -64,7 +64,7 @@ public class AttachmentCommandTest {
 		String computeJson = new Gson().toJson(this.attachment);
 		HttpPost post = new HttpPost(this.url + AttachmentCommand.ENDPOINT);
 		post.setEntity(new StringEntity(computeJson));
-		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
@@ -80,12 +80,12 @@ public class AttachmentCommandTest {
 				.build()
 				.parse(
 					OrderCommand.DELETE_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpDelete delete = new HttpDelete(this.url + AttachmentCommand.ENDPOINT + '/' + this.id);
-		delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
 
 		this.attachmentCommand.run();
@@ -100,12 +100,12 @@ public class AttachmentCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + AttachmentCommand.ENDPOINT + '/' + this.id);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedPostRequest = new HttpRequestMatcher(get);
 
 		this.attachmentCommand.run();
@@ -120,12 +120,12 @@ public class AttachmentCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_ALL_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + AttachmentCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.attachmentCommand.run();

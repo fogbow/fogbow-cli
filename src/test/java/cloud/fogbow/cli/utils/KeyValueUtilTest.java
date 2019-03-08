@@ -9,7 +9,7 @@ import java.util.*;
 public class KeyValueUtilTest {
 
     @Test
-    public void testConvertKeyValueListToMap() throws FogbowCLIException {
+    public void testConvertKeyValueListToMap() {
         String parameters = "key1=value1,key2=value2,key3=value3";
 
         Map<String, String> keyValues = new KeyValueUtil.KeyValueConverter().convert(parameters);
