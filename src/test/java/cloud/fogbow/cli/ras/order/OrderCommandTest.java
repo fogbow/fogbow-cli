@@ -29,7 +29,7 @@ public class OrderCommandTest {
     private final String APP_REPOSITORY_DIRECTORY = System.getProperty("user.dir");
 
     @Before
-    public void setUp() throws ClientProtocolException, IOException {
+    public void setUp() {
         this.volume = new Volume(
                 "my-provider",
                 1024,
@@ -53,10 +53,10 @@ public class OrderCommandTest {
                 .build()
                 .parse(
                         OrderCommand.CREATE_COMMAND_KEY,
-                        CliCommonParameters.FEDERATION_TOKEN_PATH_COMMAND_KEY, tokenFilePath,
+                        CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, tokenFilePath,
                         CliCommonParameters.URL_COMMAND_KEY, this.url
                 );
 
-        assertEquals(expectedToken, this.orderCommand.getFederationToken());
+        assertEquals(expectedToken, this.orderCommand.getSystemUserToken());
     }
 }

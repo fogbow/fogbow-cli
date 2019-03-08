@@ -29,13 +29,13 @@ public class MemberCommandTest {
 	private final String url = "my-url";
 	
 	@Before
-	public void setUp() throws ClientProtocolException, IOException {
+	public void setUp() throws IOException {
 		this.memberCommand = new MemberCommand();
 		initHttpClient();
 	}
 	
 	@Test
-	public void testRunGetAllCommand() throws ClientProtocolException, IOException {
+	public void testRunGetAllCommand() throws IOException {
 		JCommander.newBuilder()
 			.addObject(this.memberCommand)
 			.build()
@@ -50,7 +50,7 @@ public class MemberCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 	
-	private void initHttpClient() throws ClientProtocolException, IOException {
+	private void initHttpClient() throws IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(

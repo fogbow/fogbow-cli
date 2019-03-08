@@ -34,11 +34,11 @@ public class OrderCommand {
 	@Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL)
 	private String url;
 
-	@Parameter(names = CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN)
-	private String federationTokenValue = null;
+	@Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN)
+	private String systemUserToken = null;
 
-	@Parameter(names = CliCommonParameters.FEDERATION_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.FEDERATION_TOKEN_PATH)
-	private String federationTokenPath = null;
+	@Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
+	private String systemUserTokenPath = null;
 
 	@Parameter(names = CliCommonParameters.ID_COMMAND_KEY, description = Documentation.Order.ID)
 	protected String id = null;
@@ -63,8 +63,8 @@ public class OrderCommand {
 	
 	public String doCreate(String json) throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint;
-		String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
-		HttpResponse httpResponse = HttpUtil.post(fullUrl, json, federationToken);
+		String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+		HttpResponse httpResponse = HttpUtil.post(fullUrl, json, systemUserToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 	
@@ -73,8 +73,8 @@ public class OrderCommand {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
 			String fullUrl = this.url + this.endpoint + "/" + this.id;
-			String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
-			HttpResponse httpResponse = HttpUtil.delete(fullUrl, federationToken);
+			String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+			HttpResponse httpResponse = HttpUtil.delete(fullUrl, systemUserToken);
 			return httpResponse.getStatusLine().toString();
 		}
 	}
@@ -84,21 +84,21 @@ public class OrderCommand {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
 			String fullUrl = this.url + this.endpoint + "/" + this.id;
-			String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
-			HttpResponse httpResponse = HttpUtil.get(fullUrl, federationToken);
+			String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+			HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken);
 			return HttpUtil.getHttpEntityAsString(httpResponse);
 		}
 	}
 
 	public String doGetAll() throws IOException, FogbowCLIException {
 		String fullUrl = this.url + this.endpoint + "/" + STATUS_ENDPOINT_KEY;
-		String federationToken = CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, federationToken);
+		String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+		HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken);
 		return HttpUtil.getHttpEntityAsString(httpResponse);
 	}
 
-	public String getFederationToken() throws FogbowCLIException {
-		return CommandUtil.getFederationToken(this.federationTokenValue, this.federationTokenPath);
+	public String getSystemUserToken() throws FogbowCLIException {
+		return CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
 	}
 
 	public String getMemberId() {

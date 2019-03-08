@@ -8,7 +8,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -35,7 +34,7 @@ public class ImageCommandTest {
 	private String cloudName = "cloudName";
 
 	@Before
-	public void setUp() throws ClientProtocolException, IOException {
+	public void setUp() throws IOException {
 		this.imageCommand = new ImageCommand();
 		initHttpClient();
 	}
@@ -47,7 +46,7 @@ public class ImageCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id,
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId,
@@ -55,7 +54,7 @@ public class ImageCommandTest {
 
 		String expectedUri = this.url + ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.id;
 		HttpGet get = new HttpGet(expectedUri);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.imageCommand.run();
@@ -70,14 +69,14 @@ public class ImageCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_ALL_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId,
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName);
 
 		String expectedUri = this.url + ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
 		HttpGet get = new HttpGet(expectedUri);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.imageCommand.run();
@@ -85,7 +84,7 @@ public class ImageCommandTest {
 		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
 	}
 
-	private void initHttpClient() throws ClientProtocolException, IOException {
+	private void initHttpClient() throws IOException {
 		this.mockHttpClient = Mockito.mock(HttpClient.class);
 		HttpResponseFactory factory = new DefaultHttpResponseFactory();
 		HttpResponse response = factory.newHttpResponse(

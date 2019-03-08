@@ -18,7 +18,7 @@ import org.apache.http.util.EntityUtils;
 public class HttpUtil {
 
 	private static HttpClient httpClient;
-	public static final String FEDERATION_TOKEN_VALUE_HEADER_KEY = "federationTokenValue";
+	public static final String SYSTEM_USER_TOKEN_HEADER_KEY = "systemUserToken";
 
 	public static final String CONTENT_TYPE_KEY = "Content-Type";
 	public static final String JSON_CONTENT_TYPE_KEY = "application/json";
@@ -39,14 +39,14 @@ public class HttpUtil {
 		return post(url, json, null);
 	}
 
-	public static HttpResponse post(String url, String json, String federatedToken) throws IOException {
+	public static HttpResponse post(String url, String json, String systemUserToken) throws IOException {
 		HttpPost request = new HttpPost(url);
 		try {
 			request.setEntity(new StringEntity(json));
 		} catch (UnsupportedEncodingException e) {
 			throw new IOException("Invalid json" + json, e);
 		}
-		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
+		request.setHeader(SYSTEM_USER_TOKEN_HEADER_KEY, systemUserToken);
 		request.setHeader(CONTENT_TYPE_KEY, JSON_CONTENT_TYPE_KEY);
 		HttpResponse response;
 		try {
@@ -68,9 +68,9 @@ public class HttpUtil {
 		return response;
 	}
 	
-	public static HttpResponse get(String url, String federatedToken) throws ClientProtocolException {
+	public static HttpResponse get(String url, String systemUserToken) throws ClientProtocolException {
 		HttpGet request = new HttpGet(url);
-		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
+		request.setHeader(SYSTEM_USER_TOKEN_HEADER_KEY, systemUserToken);
 		HttpResponse response;
 		try {
 			response = HttpUtil.getHttpClient().execute(request);
@@ -80,9 +80,9 @@ public class HttpUtil {
 		return response;
 	}
 	
-	public static HttpResponse get(String url, String federatedToken, Map<String, String> additionalHeaders) throws ClientProtocolException {
+	public static HttpResponse get(String url, String systemUserToken, Map<String, String> additionalHeaders) throws ClientProtocolException {
 		HttpGet request = new HttpGet(url);
-		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
+		request.setHeader(SYSTEM_USER_TOKEN_HEADER_KEY, systemUserToken);
 		for (Map.Entry<String, String> entry: additionalHeaders.entrySet()) {
 			request.setHeader(entry.getKey(), entry.getValue());
 		}
@@ -95,9 +95,9 @@ public class HttpUtil {
 		return response;
 	}
 
-	public static HttpResponse delete(String url, String federatedToken) throws ClientProtocolException {
+	public static HttpResponse delete(String url, String systemUserToken) throws ClientProtocolException {
 		HttpDelete request = new HttpDelete(url);
-		request.setHeader(FEDERATION_TOKEN_VALUE_HEADER_KEY, federatedToken);
+		request.setHeader(SYSTEM_USER_TOKEN_HEADER_KEY, systemUserToken);
 		HttpResponse response;
 		try {
 			response = HttpUtil.getHttpClient().execute(request);

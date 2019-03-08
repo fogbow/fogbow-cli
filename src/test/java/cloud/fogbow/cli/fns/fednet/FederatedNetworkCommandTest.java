@@ -60,7 +60,7 @@ public class FederatedNetworkCommandTest {
 		    .build()
 		    .parse(
 		    		OrderCommand.CREATE_COMMAND_KEY,
-					CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
 		    		FederatedNetwork.CIDR_NOTATION_COMMAND_KEY, this.federatedNetwork.getCidrNotation(),
 		    		FederatedNetwork.NAME_COMMAND_KEY, this.federatedNetwork.getName(),
@@ -72,7 +72,7 @@ public class FederatedNetworkCommandTest {
 		String federatedNetworkJson = new Gson().toJson(this.federatedNetwork);
 		HttpPost post = new HttpPost(this.url + FederatedNetworkCommand.ENDPOINT);
 		post.setEntity(new StringEntity(federatedNetworkJson));
-		post.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
 
@@ -88,12 +88,12 @@ public class FederatedNetworkCommandTest {
 				.build()
 				.parse(
 					OrderCommand.DELETE_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpDelete delete = new HttpDelete(this.url + FederatedNetworkCommand.ENDPOINT + '/' + this.id);
-		delete.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
 
 		this.federatedNetworkCommand.run();
@@ -108,12 +108,12 @@ public class FederatedNetworkCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + FederatedNetworkCommand.ENDPOINT + '/' + this.id);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.federatedNetworkCommand.run();
@@ -128,12 +128,12 @@ public class FederatedNetworkCommandTest {
 				.build()
 				.parse(
 						CliCommonParameters.GET_ALL_COMMAND_KEY,
-						CliCommonParameters.FEDERATION_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		HttpGet get = new HttpGet(this.url + FederatedNetworkCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY);
-		get.setHeader(HttpUtil.FEDERATION_TOKEN_VALUE_HEADER_KEY, token);
+		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
 		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.federatedNetworkCommand.run();
