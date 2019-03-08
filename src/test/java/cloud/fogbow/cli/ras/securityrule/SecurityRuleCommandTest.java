@@ -4,7 +4,7 @@ import cloud.fogbow.cli.HttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import com.beust.jcommander.JCommander;
 import com.google.gson.Gson;
-import com.sun.deploy.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
