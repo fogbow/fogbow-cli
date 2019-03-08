@@ -62,14 +62,8 @@ public class TokenCommand {
 			throw new ParameterException(Messages.Exception.NO_FOGBOW_URL_PARAMS);
 		}
 
-        HashMap<String, String> headers = new HashMap<String, String>();
-		headers.put(HttpConstants.CONTENT_TYPE_KEY, HttpConstants.JSON_CONTENT_TYPE_KEY);
-
-		String publicKey = CommandUtil.getApplicationPublicKey(this.publicKey, this.publicKeyPath);
-		HashMap body = new HashMap<>();
-
-		body.put(CREDENTIALS_JSON_FIELD, credentials);
-		body.put(PUBLIC_KEY_JSON_FIELD, publicKey);
+        HashMap headers = getHeaders();
+		HashMap body = getBody();
 
 		String fullUrl = this.url + ENDPOINT;
         HttpResponse httpResponse = null;
@@ -80,7 +74,23 @@ public class TokenCommand {
 			throw new FogbowCLIException(String.format(Messages.Exception.UNABLE_TO_AUTHENTICATE_S, e.getMessage()));
 		}
 
-		return httpResponse.getContent();
+		Token token = Token.fromJson(httpResponse.getContent());
+		return token.getTokenValue();
+	}
+
+	private HashMap getHeaders(){
+		HashMap<String, String> headers = new HashMap<String, String>();
+		headers.put(HttpConstants.CONTENT_TYPE_KEY, HttpConstants.JSON_CONTENT_TYPE_KEY);
+		return headers;
+	}
+
+	private HashMap getBody() throws FogbowCLIException {
+		HashMap body = new HashMap<>();
+		String publicKey = CommandUtil.getApplicationPublicKey(this.publicKey, this.publicKeyPath);
+
+		body.put(CREDENTIALS_JSON_FIELD, credentials);
+		body.put(PUBLIC_KEY_JSON_FIELD, publicKey);
+		return body;
 	}
 }
 
