@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.BaseCommand;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
 
@@ -13,16 +13,13 @@ import cloud.fogbow.cli.utils.CommandUtil;
 import cloud.fogbow.common.constants.HttpConstants;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
-import cloud.fogbow.common.util.GsonHolder;
 import cloud.fogbow.common.util.connectivity.HttpRequestClient;
 import cloud.fogbow.common.util.connectivity.HttpResponse;
 import com.beust.jcommander.*;
-import com.google.gson.Gson;
-import org.apache.log4j.Logger;
 
 
 @Parameters(separators = "=", commandDescription = Documentation.Token.COMMAND_DESCRIPTION)
-public class TokenCommand {
+public class TokenCommand extends BaseCommand {
 	public static final String CREATE_COMMAND_KEY =  "--create";
 	public static final String CREDENTIALS_JSON_FIELD = "credentials";
 	public static final String DYNAMIC_PARAMS_COMMAND_KEY =  "-D";
@@ -37,9 +34,6 @@ public class TokenCommand {
 
 	@DynamicParameter(names = DYNAMIC_PARAMS_COMMAND_KEY, description = Documentation.Token.DYNAMIC_PARAMS)
 	private Map<String, String> credentials = new HashMap<>();
-
-	@Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL, required = true)
-	private String url = null;
 
 	@Parameter(names = PUBLIC_KEY_COMMAND_KEY, description = Documentation.Token.PUBLIC_KEY_PARAMETER)
 	private String publicKey = null;
