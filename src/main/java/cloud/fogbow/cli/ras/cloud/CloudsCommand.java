@@ -1,12 +1,17 @@
 package cloud.fogbow.cli.ras.cloud;
 
+import cloud.fogbow.cli.FogwbowHttpUtil;
+import cloud.fogbow.cli.HttpCliConstants;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
+import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.common.constants.HttpMethod;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.ParametersDelegate;
 import org.apache.http.HttpResponse;
-import cloud.fogbow.cli.HttpUtil;
 
 import java.io.IOException;
 
@@ -14,22 +19,45 @@ public class CloudsCommand {
     public static final String NAME = "clouds";
     public static final String ENDPOINT = "clouds";
 
-    @Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL, required = true)
-    private String url = null;
+    @Parameter(names = CliCommonParameters.GET_COMMAND_KEY, description = Documentation.Order.GET)
+    private Boolean isGetCommand = false;
 
-    @Parameter(names = CliCommonParameters.MEMBER_ID_COMMAND_KEY, description = Documentation.CommonParameters.MEMBER_ID, required = true)
+    @Parameter(names = CliCommonParameters.GET_ALL_COMMAND_KEY, description = Documentation.Order.GET_ALL)
+    private Boolean isGetAllCommand = false;
+
+    @Parameter(names = CliCommonParameters.MEMBER_ID_COMMAND_KEY, description = Documentation.CommonParameters.MEMBER_ID)
     private String memberId = null;
 
-    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN)
-    private String systemUserToken = null;
+    @ParametersDelegate
+    private FogwbowHttpUtil authenticatedRequest = new FogwbowHttpUtil();
 
-    @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
-    private String systemUserTokenPath = null;
+    public String run() throws FogbowCLIException {
+        if(this.getIsGetCommand()){
+            return this.doGet();
+        } else if(this.getIsGetAllCommand()){
+            return this.doGetAll();
+        }
+        throw new ParameterException(Messages.Exception.INCOMPLETE_COMMAND);
+    }
 
-    public String run() throws FogbowCLIException, IOException {
-        String fullUrl = this.url + "/" + ENDPOINT + "/" + this.memberId;
-        String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
-        HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken);
-        return HttpUtil.getHttpEntityAsString(httpResponse);
+    public String doGetAll() throws FogbowCLIException {
+        String fullPath = ENDPOINT;
+        return authenticatedRequest.doAuthenticatedGET(fullPath);
+    }
+
+    public String doGet() throws FogbowCLIException {
+        if(this.memberId == null || this.memberId.isEmpty()){
+            throw new FogbowCLIException(Messages.Exception.INCOMPLETE_COMMAND);
+        }
+        String fullPath = ENDPOINT + "/" + this.memberId;
+        return authenticatedRequest.doAuthenticatedGET(fullPath);
+    }
+
+    public Boolean getIsGetCommand() {
+        return isGetCommand;
+    }
+
+    public Boolean getIsGetAllCommand() {
+        return isGetAllCommand;
     }
 }
