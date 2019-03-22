@@ -12,7 +12,7 @@ import com.beust.jcommander.Parameter;
 
 import java.util.HashMap;
 
-public class AuthenticatedGETResource extends BaseCommand {
+public class FogwbowHttpUtil {
 
     @Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL, required = true)
     private String url = null;
@@ -23,7 +23,7 @@ public class AuthenticatedGETResource extends BaseCommand {
     @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
     private String systemUserTokenPath = null;
 
-    public String doAuthenticatedRequest(String endpoint) throws FogbowCLIException {
+    public String doAuthenticatedGET(String endpoint) throws FogbowCLIException {
         String fullUrl = this.url + '/' + endpoint;
 
         HashMap headers = new HashMap<>();
