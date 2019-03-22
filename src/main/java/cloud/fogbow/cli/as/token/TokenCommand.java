@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import cloud.fogbow.cli.BaseCommand;
+import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
 
@@ -19,7 +19,7 @@ import com.beust.jcommander.*;
 
 
 @Parameters(separators = "=", commandDescription = Documentation.Token.COMMAND_DESCRIPTION)
-public class TokenCommand extends BaseCommand {
+public class TokenCommand {
 	public static final String CREATE_COMMAND_KEY =  "--create";
 	public static final String CREDENTIALS_JSON_FIELD = "credentials";
 	public static final String DYNAMIC_PARAMS_COMMAND_KEY =  "-D";
@@ -28,6 +28,9 @@ public class TokenCommand extends BaseCommand {
 	public static final String PUBLIC_KEY_COMMAND_KEY = "--public-key";
 	public static final String PUBLIC_KEY_JSON_FIELD = "publicKey";
 	public static final String PUBLIC_KEY_PATH_COMMAND_KEY = "--public-key-path";
+
+	@Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL, required = true)
+	private String url = null;
 
 	@Parameter(names = CREATE_COMMAND_KEY, description = Documentation.Token.CREATE_COMMAND, required = true)
 	private Boolean isCreate = false;
@@ -42,6 +45,7 @@ public class TokenCommand extends BaseCommand {
 	private String publicKeyPath = null;
 
 	public String run() throws IOException, FogbowCLIException {
+		System.out.println("KLJkdhvkdfvjklfdhkvjh");
 		if (this.isCreate) {
 			return createToken(this.credentials);
 		}
