@@ -23,6 +23,7 @@ public class CommandUtil {
             } else if (providedResourcePath != null && !providedResourcePath.isEmpty()) {
                 try {
                     actualvalue = FileUtils.readFileToString(providedResourcePath);
+                    actualvalue = actualvalue.replace("\n", "");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
