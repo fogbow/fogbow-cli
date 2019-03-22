@@ -1,19 +1,13 @@
 package cloud.fogbow.cli.ras.cloud;
 
-import cloud.fogbow.cli.FogwbowHttpUtil;
-import cloud.fogbow.cli.HttpCliConstants;
+import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import cloud.fogbow.cli.utils.CommandUtil;
-import cloud.fogbow.common.constants.HttpMethod;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
-import org.apache.http.HttpResponse;
-
-import java.io.IOException;
 
 public class CloudsCommand {
     public static final String NAME = "clouds";
@@ -29,7 +23,7 @@ public class CloudsCommand {
     private String memberId = null;
 
     @ParametersDelegate
-    private FogwbowHttpUtil authenticatedRequest = new FogwbowHttpUtil();
+    private FogbowCliHttpUtil authenticatedRequest = new FogbowCliHttpUtil();
 
     public String run() throws FogbowCLIException {
         if(this.getIsGetCommand()){

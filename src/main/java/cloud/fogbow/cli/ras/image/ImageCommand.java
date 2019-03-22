@@ -1,6 +1,6 @@
 package cloud.fogbow.cli.ras.image;
 
-import cloud.fogbow.cli.FogwbowHttpUtil;
+import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
@@ -31,7 +31,7 @@ public class ImageCommand  {
 	private String cloudName = null;
 
 	@ParametersDelegate
-	private FogwbowHttpUtil authenticatedRequest = new FogwbowHttpUtil();
+	private FogbowCliHttpUtil authenticatedRequest = new FogbowCliHttpUtil();
 
 	public String run() throws FogbowCLIException{
 		try {
