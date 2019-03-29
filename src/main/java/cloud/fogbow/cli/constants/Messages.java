@@ -14,7 +14,7 @@ public class Messages {
         public static final String NO_CREDENTIALS_PARAMS = "No auth parameters passed.";
         public static final String NO_FOGBOW_URL_PARAMS = "No fogbow url passed as parameter.";
         public static final String NO_ID_INFORMED = "No resource identification passed as parameter.";
-        public static final String NO_MEMBER_ID_OR_CLOUD_NAME = "No member-id or cloud-ame passed as parameter.";
+        public static final String NO_MEMBER_ID_OR_CLOUD_NAME = "No member-id or cloud-name passed as parameter.";
         public static final String NO_MEMBERSHIP_SERVICE_URL = "No Membership Service API URL passed as parameter.";
         public static final String NO_PUBLIC_KEY_PROVIDED = "No application public key informed";
         public static final String NO_RULE_ID_INFORMED = "No rule identification informed.";

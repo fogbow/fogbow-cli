@@ -1,24 +1,30 @@
 package cloud.fogbow.cli.ras.order;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.ParametersDelegate;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import com.google.gson.Gson;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import com.sun.xml.bind.v2.model.core.ID;
 
 public class OrderCommand {
 	public static final String CREATE_COMMAND_KEY = "--create";
 	public static final String DELETE_COMMAND_KEY = "--delete";
 	public static final String STATUS_ENDPOINT_KEY = "status";
+
+	public static final String CLOUD_NAME_KEY = "cloudName";
+	public static final String MEMBER_ID_KEY = "memberId";
+	public static final String ID_KEY = "id";
 
 	@Parameter(names = CREATE_COMMAND_KEY, description = Documentation.Order.CREATE)
 	private Boolean isCreateCommand = false;
@@ -45,20 +51,25 @@ public class OrderCommand {
 	private FogbowCliHttpUtil fogbowCliHttpUtil = new FogbowCliHttpUtil();
 
 	private String endpoint;
-	private Object jsonObject;
+	private FogbowCliResource fogbowCliResource;
 
-	public OrderCommand(String endpoint, Object jsonObject) {
+	public OrderCommand(String endpoint, FogbowCliResource fogbowCliResource) {
 		this.endpoint = endpoint;
-		this.jsonObject = jsonObject;
+		this.fogbowCliResource = fogbowCliResource;
 	}
-	
+
 	public String doCreate() throws FogbowException {
-		return doCreate(this.jsonObject);
+		return doCreate(this.fogbowCliResource);
 	}
 	
-	public String doCreate(Object json) throws FogbowException {
+	public String doCreate(FogbowCliResource fogbowCliResource) throws FogbowException {
 		String fullPath = this.endpoint;
-		return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, fullPath, (HashMap) json);
+
+		HashMap body = fogbowCliResource.getHTTPHashMap();
+		HashMap commonParameters = getCommonParameters();
+
+
+		return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, fullPath, body);
 	}
 	
 	public String doDelete() throws FogbowException {
@@ -122,10 +133,14 @@ public class OrderCommand {
 		return fogbowCliHttpUtil;
 	}
 
-	private String jsonToString() {
-	    Gson gson = new Gson();
-		System.out.println(this.jsonObject);
-	    String computeJson = gson.toJson(this.jsonObject);
-	    return computeJson;
-    }
+	private HashMap getCommonParameters(){
+		HashMap body = new HashMap();
+
+		body.put(CLOUD_NAME_KEY, this.cloudName);
+		body.put(MEMBER_ID_KEY, this.memberId);
+		body.put(ID_KEY, this.id);
+
+		return body;
+	}
+
 }

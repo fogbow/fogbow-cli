@@ -1,11 +1,13 @@
 package cloud.fogbow.cli.ras.order.volume;
 
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class Volume {
+public class Volume implements FogbowCliResource {
 	
 	public static final String PROVIDER_COMMAND_KEY =  "--provider";
 	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
@@ -64,5 +66,10 @@ public class Volume {
 
 	public void setRequirements(Map<String, String> requirements) {
 		this.requirements = requirements;
+	}
+
+	@Override
+	public HashMap getHTTPHashMap() {
+		return null;
 	}
 }

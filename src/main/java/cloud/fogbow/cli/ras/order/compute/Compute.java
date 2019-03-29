@@ -1,15 +1,17 @@
 package cloud.fogbow.cli.ras.order.compute;
 
 import cloud.fogbow.cli.constants.Documentation;
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
 import com.beust.jcommander.converters.CommaParameterSplitter;
 import com.beust.jcommander.converters.StringConverter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Compute {
+public class Compute implements FogbowCliResource {
 
 	public static final String PROVIDER_COMMAND_KEY =  "--provider";
 	@Parameter(names = { PROVIDER_COMMAND_KEY }, description = "Provider")
@@ -118,5 +120,10 @@ public class Compute {
 
 	public void setPublicKeyPath(String publicKeyPath) {
 		this.publicKeyPath = publicKeyPath;
+	}
+
+	@Override
+	public HashMap getHTTPHashMap() {
+		return null;
 	}
 }

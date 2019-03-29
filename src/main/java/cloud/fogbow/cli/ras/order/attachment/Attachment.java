@@ -1,8 +1,11 @@
 package cloud.fogbow.cli.ras.order.attachment;
 
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 
-public class Attachment {
+import java.util.HashMap;
+
+public class Attachment implements FogbowCliResource {
 	
 	public static final String PROVIDER_COMMAND_KEY =  "--provider";
 	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
@@ -46,5 +49,10 @@ public class Attachment {
 	
 	public String getDevice() {
 		return device;
+	}
+
+	@Override
+	public HashMap getHTTPHashMap() {
+		return null;
 	}
 }

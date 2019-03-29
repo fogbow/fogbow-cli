@@ -1,12 +1,14 @@
 package cloud.fogbow.cli.fns.fednet;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 
-public class FederatedNetwork {
+public class FederatedNetwork implements FogbowCliResource {
 
 	public static final String PROVIDER_COMMAND_KEY =  "--provider";
 	@Parameter(names = { PROVIDER_COMMAND_KEY }, description = "Provider")
@@ -76,5 +78,10 @@ public class FederatedNetwork {
 
 	public void setProvider(String provider) {
 		this.provider = provider;
+	}
+
+	@Override
+	public HashMap getHTTPHashMap() {
+		return null;
 	}
 }

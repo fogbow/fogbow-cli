@@ -1,8 +1,11 @@
 package cloud.fogbow.cli.ras.order.publicip;
 
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 
-public class PublicIp {
+import java.util.HashMap;
+
+public class PublicIp implements FogbowCliResource {
 
     public static final String PROVIDER_COMMAND_KEY =  "--provider";
     @Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
@@ -27,5 +30,10 @@ public class PublicIp {
 
     public String getComputeOrderId() {
         return computeOrderId;
+    }
+
+    @Override
+    public HashMap getHTTPHashMap() {
+        return null;
     }
 }
