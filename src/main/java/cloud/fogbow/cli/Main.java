@@ -42,9 +42,11 @@ public class Main {
 			"  * image" + LINE_BREAK +
 			"  * member" + LINE_BREAK +
 			"  * network" + LINE_BREAK +
+			"  * public-key" + LINE_BREAK +
 			"  * public-ip" + LINE_BREAK +
 			"  * security-rule" + LINE_BREAK +
 			"  * token" + LINE_BREAK +
+			"  * version" + LINE_BREAK +
 			"  * volume" + LINE_BREAK +
 			LINE_BREAK +
 			LINE_BREAK +

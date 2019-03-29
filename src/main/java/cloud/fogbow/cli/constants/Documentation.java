@@ -16,6 +16,10 @@ public class Documentation {
         public static final String URL = "URL of the Fogbow service.";
     }
 
+    public class Compute {
+        public static final String USER_DATA = "User data option. in the format <path/to/cloudinit/file>:<file_format>. type --list-cloudinit to see available formats.";
+    }
+
     public class FederatedNetwork {
         public static final String ID = "Federated network identification.";
     }

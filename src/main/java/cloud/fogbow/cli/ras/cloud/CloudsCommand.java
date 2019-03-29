@@ -5,6 +5,7 @@ import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
@@ -25,22 +26,22 @@ public class CloudsCommand {
     @ParametersDelegate
     private FogbowCliHttpUtil authenticatedRequest = new FogbowCliHttpUtil();
 
-    public String run() throws FogbowCLIException {
-        if(this.getIsGetCommand()){
+    public String run() throws FogbowCLIException, FogbowException {
+        if (this.getIsGetCommand()){
             return this.doGet();
-        } else if(this.getIsGetAllCommand()){
+        } else if (this.getIsGetAllCommand()){
             return this.doGetAll();
         }
         throw new ParameterException(Messages.Exception.INCOMPLETE_COMMAND);
     }
 
-    public String doGetAll() throws FogbowCLIException {
+    public String doGetAll() throws FogbowException {
         String fullPath = ENDPOINT;
         return authenticatedRequest.doAuthenticatedGET(fullPath);
     }
 
-    public String doGet() throws FogbowCLIException {
-        if(this.memberId == null || this.memberId.isEmpty()){
+    public String doGet() throws FogbowCLIException, FogbowException {
+        if (this.memberId == null || this.memberId.isEmpty()){
             throw new FogbowCLIException(Messages.Exception.INCOMPLETE_COMMAND);
         }
         String fullPath = ENDPOINT + "/" + this.memberId;

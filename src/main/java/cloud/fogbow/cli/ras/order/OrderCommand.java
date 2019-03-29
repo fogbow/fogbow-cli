@@ -1,13 +1,14 @@
 package cloud.fogbow.cli.ras.order;
 
-import java.io.IOException;
+import java.util.HashMap;
 
+import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
-import cloud.fogbow.cli.utils.CommandUtil;
-import org.apache.http.HttpResponse;
-import cloud.fogbow.cli.HttpUtil;
+import cloud.fogbow.common.constants.HttpMethod;
+import cloud.fogbow.common.exceptions.FogbowException;
+import com.beust.jcommander.ParametersDelegate;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -31,15 +32,6 @@ public class OrderCommand {
 	@Parameter(names = CliCommonParameters.GET_ALL_COMMAND_KEY, description = Documentation.Order.GET_ALL)
 	private Boolean isGetAllCommand = false;
 
-	@Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL)
-	private String url;
-
-	@Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN)
-	private String systemUserToken = null;
-
-	@Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
-	private String systemUserTokenPath = null;
-
 	@Parameter(names = CliCommonParameters.ID_COMMAND_KEY, description = Documentation.Order.ID)
 	protected String id = null;
 
@@ -49,6 +41,9 @@ public class OrderCommand {
 	@Parameter(names = CliCommonParameters.CLOUD_NAME_COMMAND_KEY, description = Documentation.CommonParameters.CLOUD_NAME)
 	private String cloudName = null;
 
+	@ParametersDelegate
+	private FogbowCliHttpUtil fogbowCliHttpUtil = new FogbowCliHttpUtil();
+
 	private String endpoint;
 	private Object jsonObject;
 
@@ -57,48 +52,42 @@ public class OrderCommand {
 		this.jsonObject = jsonObject;
 	}
 	
-	public String doCreate() throws IOException, FogbowCLIException {
-		return doCreate(jsonToString());
+	public String doCreate() throws FogbowException {
+		return doCreate(this.jsonObject);
 	}
 	
-	public String doCreate(String json) throws IOException, FogbowCLIException {
-		String fullUrl = this.url + this.endpoint;
-		String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
-		HttpResponse httpResponse = HttpUtil.post(fullUrl, json, systemUserToken);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
+	public String doCreate(Object json) throws FogbowException {
+		String fullPath = this.endpoint;
+		return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, fullPath, (HashMap) json);
 	}
 	
-	public String doDelete() throws IOException, FogbowCLIException {
+	public String doDelete() throws FogbowException {
 		if (this.id == null) {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
-			String fullUrl = this.url + this.endpoint + "/" + this.id;
-			String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
-			HttpResponse httpResponse = HttpUtil.delete(fullUrl, systemUserToken);
-			return httpResponse.getStatusLine().toString();
+			String fullPath = this.endpoint + "/" + this.id;
+			return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.DELETE, fullPath);
 		}
 	}
 
-	public String doGet() throws IOException, FogbowCLIException {
+	public String doGet() throws FogbowException {
 		if (this.id == null) {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
-			String fullUrl = this.url + this.endpoint + "/" + this.id;
-			String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
-			HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken);
-			return HttpUtil.getHttpEntityAsString(httpResponse);
+			String fullPath = this.endpoint + "/" + this.id;
+			return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.GET, fullPath);
 		}
 	}
 
-	public String doGetAll() throws IOException, FogbowCLIException {
-		String fullUrl = this.url + this.endpoint + "/" + STATUS_ENDPOINT_KEY;
-		String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
-		HttpResponse httpResponse = HttpUtil.get(fullUrl, systemUserToken);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
+	public String doGetAll() throws FogbowException {
+		String fullPath = this.endpoint + "/" + STATUS_ENDPOINT_KEY;
+		return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.GET, fullPath);
 	}
 
 	public String getSystemUserToken() throws FogbowCLIException {
-		return CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+		// TODO: remove this method
+		return "Remove me later";
+//		return CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
 	}
 
 	public String getMemberId() {
@@ -129,12 +118,13 @@ public class OrderCommand {
 		return id;
 	}
 
-	public String getUrl() {
-		return url;
+	public FogbowCliHttpUtil getFogbowCliHttpUtil() {
+		return fogbowCliHttpUtil;
 	}
 
 	private String jsonToString() {
 	    Gson gson = new Gson();
+		System.out.println(this.jsonObject);
 	    String computeJson = gson.toJson(this.jsonObject);
 	    return computeJson;
     }

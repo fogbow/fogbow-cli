@@ -45,7 +45,6 @@ public class TokenCommand {
 	private String publicKeyPath = null;
 
 	public String run() throws IOException, FogbowCLIException {
-		System.out.println("KLJkdhvkdfvjklfdhkvjh");
 		if (this.isCreate) {
 			return createToken(this.credentials);
 		}

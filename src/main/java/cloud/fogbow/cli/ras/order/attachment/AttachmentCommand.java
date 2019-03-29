@@ -6,6 +6,7 @@ import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import cloud.fogbow.cli.ras.order.OrderCommand;
 
+import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
 
@@ -20,7 +21,7 @@ public class AttachmentCommand {
 	@ParametersDelegate
 	private OrderCommand orderCommand = new OrderCommand(ENDPOINT, this.attachment);
 	
-	public String run() throws FogbowCLIException, IOException {
+	public String run() throws FogbowException {
 		if (this.orderCommand.getIsCreateCommand()) {
 			return orderCommand.doCreate();
 		} else if (this.orderCommand.getIsDeleteCommand()) {
