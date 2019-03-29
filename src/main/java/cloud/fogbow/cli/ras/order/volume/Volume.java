@@ -3,11 +3,17 @@ package cloud.fogbow.cli.ras.order.volume;
 import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
+import org.opensaml.xml.signature.P;
+import sun.misc.ClassLoaderUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Volume implements FogbowCliResource {
+	public static final String NAME_KEY = "name";
+	public static final String PROVIDER_KEY = "provider";
+	public static final String REQUIREMENTS_KEY = "requirements";
+	public static final String VOLUME_SIZE_KEY = "volumeSize";
 	
 	public static final String PROVIDER_COMMAND_KEY =  "--provider";
 	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
@@ -70,6 +76,14 @@ public class Volume implements FogbowCliResource {
 
 	@Override
 	public HashMap getHTTPHashMap() {
-		return null;
+		HashMap body = new HashMap();
+
+		body.put(NAME_KEY, this.name);
+		body.put(PROVIDER_KEY, this.provider);
+		body.put(REQUIREMENTS_KEY, this.requirements);
+		body.put(VOLUME_SIZE_KEY, this.volumeSize);
+
+		return body;
 	}
 }
+
