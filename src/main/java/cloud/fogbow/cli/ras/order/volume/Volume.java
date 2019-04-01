@@ -1,5 +1,7 @@
 package cloud.fogbow.cli.ras.order.volume;
 
+import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
@@ -14,9 +16,9 @@ public class Volume implements FogbowCliResource {
 	public static final String PROVIDER_KEY = "provider";
 	public static final String REQUIREMENTS_KEY = "requirements";
 	public static final String VOLUME_SIZE_KEY = "volumeSize";
-	
-	public static final String PROVIDER_COMMAND_KEY =  "--provider";
-	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
+
+	@Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
+			description = Documentation.CommonParameters.PROVIDER)
 	private String provider = null;
 	
 	public static final String VOLUME_SIZE_COMMAND_KEY =  "--volume-size";

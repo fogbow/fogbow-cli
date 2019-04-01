@@ -1,6 +1,6 @@
 package cloud.fogbow.cli.ras.genericrequest;
 
-import cloud.fogbow.cli.HttpUtil;
+import cloud.fogbow.cli.HttpCliConstants;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.utils.CommandUtil;
@@ -37,7 +37,7 @@ public class GenericRequestCommand {
     public String run() throws FogbowCLIException, IOException {
         String fullUrl = this.url + "/" + ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
         String systemUserToken = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
-        HttpResponse httpResponse = HttpUtil.post(fullUrl, new Gson().toJson(this.genericRequest), systemUserToken);
-        return HttpUtil.getHttpEntityAsString(httpResponse);
+        HttpResponse httpResponse = HttpCliConstants.post(fullUrl, new Gson().toJson(this.genericRequest), systemUserToken);
+        return HttpCliConstants.getHttpEntityAsString(httpResponse);
     }
 }

@@ -2,7 +2,7 @@ package cloud.fogbow.cli.ms.member;
 
 import java.io.IOException;
 
-import cloud.fogbow.cli.HttpUtil;
+import cloud.fogbow.cli.HttpCliConstants;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import org.apache.http.HttpResponse;
@@ -36,7 +36,7 @@ public class MemberCommand {
 	
 	private String doGetAll() throws ParseException, IOException {
 		String fullUrl = this.url + ENDPOINT;
-		HttpResponse httpResponse = HttpUtil.get(fullUrl);
-		return HttpUtil.getHttpEntityAsString(httpResponse);
+		HttpResponse httpResponse = HttpCliConstants.get(fullUrl);
+		return HttpCliConstants.getHttpEntityAsString(httpResponse);
 	}
 }

@@ -5,13 +5,15 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 
 public class FederatedNetwork implements FogbowCliResource {
 
-	public static final String PROVIDER_COMMAND_KEY =  "--provider";
-	@Parameter(names = { PROVIDER_COMMAND_KEY }, description = "Provider")
+	@Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
+			description = Documentation.CommonParameters.PROVIDER)
 	private String provider = null;
 
 	public static final String CIDR_NOTATION_COMMAND_KEY =  "--cidr-notation";

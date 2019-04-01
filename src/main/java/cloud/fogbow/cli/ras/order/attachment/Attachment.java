@@ -1,5 +1,7 @@
 package cloud.fogbow.cli.ras.order.attachment;
 
+import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 
@@ -10,9 +12,9 @@ public class Attachment implements FogbowCliResource {
 	public static final String DEVICE_KEY = "device";
 	public static final String PROVIDER_KEY = "provider";
 	public static final String VOLUME_ID_KEY = "volumeId";
-	
-	public static final String PROVIDER_COMMAND_KEY =  "--provider";
-	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
+
+	@Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
+			description = Documentation.CommonParameters.PROVIDER)
 	private String provider = null;
 	
 	public static final String VOLUME_ID_COMMAND_KEY =  "--volume-id";

@@ -1,5 +1,6 @@
 package cloud.fogbow.cli.ras.order.compute;
 
+import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
@@ -13,8 +14,8 @@ import java.util.Map;
 
 public class Compute implements FogbowCliResource {
 
-	public static final String PROVIDER_COMMAND_KEY =  "--provider";
-	@Parameter(names = { PROVIDER_COMMAND_KEY }, description = "Provider")
+	@Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
+			description = Documentation.CommonParameters.PROVIDER)
 	private String provider = null;
 
 	public static final String PUBLIC_KEY_COMMMAND_KEY = "--public-key-path";
