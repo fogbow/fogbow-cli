@@ -31,7 +31,7 @@ public class ImageCommand  {
 	private String cloudName = null;
 
 	@ParametersDelegate
-	private FogbowCliHttpUtil authenticatedRequest = new FogbowCliHttpUtil();
+	private FogbowCliHttpUtil fogbowCliHttpUtil = new FogbowCliHttpUtil();
 
 	public String run() throws FogbowCLIException{
 		try {
@@ -51,7 +51,7 @@ public class ImageCommand  {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
 			String path = ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.imageID;
-			String imageData = authenticatedRequest.doAuthenticatedGET(path);
+			String imageData = fogbowCliHttpUtil.doAuthenticatedGET(path);
 			return imageData;
 		}
 	}
@@ -59,7 +59,7 @@ public class ImageCommand  {
 	public String doGetAll() throws FogbowCLIException, FogbowException {
 		String path = ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
 
-		String allImages = authenticatedRequest.doAuthenticatedGET(path);
+		String allImages = fogbowCliHttpUtil.doAuthenticatedGET(path);
 
 		return allImages;
 	}

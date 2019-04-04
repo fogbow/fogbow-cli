@@ -42,6 +42,14 @@ public class FogbowCliHttpUtil {
             throws FogbowException {
         String fullUrl = this.url + '/' + fullPath;
 
+        if(customHeaders == null){
+            customHeaders = new HashMap();
+        }
+
+        if(body == null){
+            body = new HashMap();
+        }
+
         HashMap headers = getHeaders();
 
         String systemUserTokenValue = getSystemUserTokenValue();
@@ -69,5 +77,9 @@ public class FogbowCliHttpUtil {
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put(HttpConstants.CONTENT_TYPE_KEY, HttpConstants.JSON_CONTENT_TYPE_KEY);
         return headers;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
