@@ -16,45 +16,45 @@ public class Compute implements FogbowCliResource {
 
 	@Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
 			description = Documentation.CommonParameters.PROVIDER)
-	private String provider = null;
+	protected String provider = null;
 
 	public static final String PUBLIC_KEY_COMMMAND_KEY = "--public-key-path";
 	@Parameter(names = { PUBLIC_KEY_COMMMAND_KEY}, description = "Public key")
-	private String publicKeyPath = null;
+	protected String publicKeyPath = null;
 	
 	public static final String IMAGE_ID_COMMAND_KEY = "--image-id";
 	@Parameter(names = { IMAGE_ID_COMMAND_KEY }, description = "Image id")
-	private String imageId = null;
+	protected String imageId = null;
 	
 	public static final String VCPU_COMMAND_KEY = "--vcpu";
 	@Parameter(names = { VCPU_COMMAND_KEY }, description = "Vcpu")
-	private String vCPU = null;
+	protected String vCPU = null;
 	
 	public static final String MEMORY_COMMAND_KEY = "--memory";
 	@Parameter(names = { MEMORY_COMMAND_KEY }, description = "Memory")
-	private String memory = null;
+	protected String memory = null;
 	
 	public static final String DISC_COMMAND_KEY = "--disk";
 	@Parameter(names = { DISC_COMMAND_KEY }, description = "Disk")
-	private String disk = null;
+	protected String disk = null;
 
 	// naming this command key as "--user-data" results in a unaccountable crash of JCommander
 	public static final String USER_DATA_COMMAND_KEY = "--extra-data";
 	@Parameter(names = { USER_DATA_COMMAND_KEY }, description = "User Data")
-	private List<String> userData = null;
+	protected List<String> userData = null;
 
 	public static final String NETWORK_IDS_COMMAND_KEY = "--networks-id";
 	@Parameter(names = {NETWORK_IDS_COMMAND_KEY}, description = "Network Ids", splitter = CommaParameterSplitter.class)
-	private List<String> networksId = null;
+	protected List<String> networksId = null;
 
 	public static final String NAME_COMMAND_KEY = "--name";
 
 	@Parameter(names = { NAME_COMMAND_KEY }, description = "Name")
-	private String name;
+	protected String name;
 
 	public static final String REQUIREMENTS_COMMAND_KEY = "--requirements";
 	@Parameter(names = { REQUIREMENTS_COMMAND_KEY }, converter = KeyValueConverter.class)
-	private Map<String, String> requirements;
+	protected Map<String, String> requirements;
 
 	public Compute() {
 		

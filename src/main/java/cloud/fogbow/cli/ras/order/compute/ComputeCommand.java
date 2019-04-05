@@ -27,10 +27,10 @@ import java.util.List;
 public class ComputeCommand {
     public static final String ALLOCATION_ENDPOINT_KEY = "/allocation/";
     public static final String CLOUD_NAME_KEY = "cloudName";
+    public static final String COMPUTE_ORDER_JSON_KEY = "compute";
     public static final String ENDPOINT = '/' + "computes";
     public static final String GET_QUOTA_COMMAND_KEY = "--get-quota";
     public static final String GET_ALLOCATION_COMMAND_KEY = "--get-allocation";
-    public static final String LIST_CLOUDINIT_FORMATS_COMMAND_KEY = "--list-cloudinit";
     public static final String NAME = "compute";
     public static final String NAME_KEY = "name";
     public static final String NETWORK_IDS_KEY = "networkIds";
@@ -81,8 +81,24 @@ public class ComputeCommand {
     }
 
     private String doCreate() throws FogbowException, FogbowCLIException {
+        HashMap computeOrder = null;
+
+        if(compute.getFederatedNetworkId() != null){
+            computeOrder = compute.getHTTPHashMap();
+            computeOrder.put(COMPUTE_ORDER_JSON_KEY, getNormalComputer());
+        } else {
+            computeOrder = getNormalComputer();
+        }
+
+        FogbowCliHttpUtil fogbowCliHttpUtil = orderCommand.getFogbowCliHttpUtil();
+        String createComputeResponse = fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, ENDPOINT, computeOrder);
+
+        return createComputeResponse;
+    }
+
+    private HashMap getNormalComputer() throws FogbowException, FogbowCLIException {
         HashMap body = new HashMap();
-        Compute simpleCompute = compute.getCompute();
+        ComputeWrappedWithFedNet simpleCompute = compute;
 
         HashMap requiredParams = getRequiredParams(simpleCompute);
         HashMap optionalParams = getOptionalParams(simpleCompute);
@@ -90,10 +106,7 @@ public class ComputeCommand {
         CommandUtil.extendMap(body, requiredParams);
         CommandUtil.extendMap(body, optionalParams);
 
-        FogbowCliHttpUtil fogbowCliHttpUtil = orderCommand.getFogbowCliHttpUtil();
-        String createComputeResponse = fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, ENDPOINT, body);
-
-        return createComputeResponse;
+        return body;
     }
 
     private HashMap getRequiredParams(Compute simpleCompute) throws InvalidParameterException {
@@ -114,14 +127,14 @@ public class ComputeCommand {
         return body;
     }
 
-    private HashMap getOptionalParams(Compute simpleCompute) throws InvalidParameterException, FogbowCLIException {
+    private HashMap getOptionalParams(ComputeWrappedWithFedNet simpleCompute) throws InvalidParameterException, FogbowCLIException {
         HashMap body = new HashMap();
 
+        body.put(CLOUD_NAME_KEY, orderCommand.getCloudName());
         body.put(NETWORK_IDS_KEY, simpleCompute.getNetworkIds());
         body.put(NAME_KEY, simpleCompute.getName());
         body.put(PUBLIC_KEY_KEY, getPublicKeyFileContent(simpleCompute));
         body.put(PROVIDER_KEY, orderCommand.getMemberId());
-        body.put(CLOUD_NAME_KEY, orderCommand.getCloudName());
         body.put(USER_DATA_KEY, getUserDataList(simpleCompute));
         body.put(REQUIREMENTS_KEY, simpleCompute.getRequirements());
 
@@ -207,19 +220,19 @@ public class ComputeCommand {
         return userDataList;
     }
 
-    private String getPublicKeyFileContent(Compute simpleCompute) throws FogbowCLIException, InvalidParameterException {
+    private String getPublicKeyFileContent(Compute simpleCompute) {
         String providedPath = simpleCompute.getPublicKeyPath();
 
         String publicKeyContent = null;
 
-        publicKeyContent = CommandUtil.getFileContent(providedPath, Messages.Exception.PUBLIC_KEY_FILE_NOT_FOUND);
-
-        if (publicKeyContent == null){
-            publicKeyContent = CommandUtil.getFileContent(DEFAULT_PUBLIC_KEY_PATH_FILE, Messages.Exception.PUBLIC_KEY_FILE_NOT_FOUND);
-        }
-
-        if (publicKeyContent == null){
-            throw new InvalidParameterException(Messages.Exception.PUBLIC_KEY_FILE_NOT_FOUND);
+        try {
+            publicKeyContent = CommandUtil.getFileContent(providedPath, Messages.Exception.PUBLIC_KEY_FILE_NOT_FOUND);
+        } catch (FogbowCLIException e){
+            try {
+                publicKeyContent = CommandUtil.getFileContent(DEFAULT_PUBLIC_KEY_PATH_FILE, Messages.Exception.PUBLIC_KEY_FILE_NOT_FOUND);
+            } catch (FogbowCLIException f){
+                e.printStackTrace();
+            }
         }
 
         return publicKeyContent;

@@ -32,7 +32,7 @@ public class CommandUtil {
                 try {
                     actualvalue = FileUtils.readFileToString(providedResourcePath);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new FogbowCLIException(NoResourceFoundException);
                 }
             } else {
                 throw new FogbowCLIException(NoResourceFoundException);
@@ -53,6 +53,9 @@ public class CommandUtil {
     }
 
     private static String parsePath(String path){
+        if(path == null){
+            path = "";
+        }
         String homePath = System.getProperty("user.home");
         return path.replace("~", homePath);
     }

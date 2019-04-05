@@ -61,13 +61,13 @@ public class FogbowCliHttpUtil {
         return httpResponse.getContent();
     }
 
-    private String getSystemUserTokenValue(){
+    private String getSystemUserTokenValue() throws FogbowException {
         String systemUserTokenValue = null;
 
         try {
             systemUserTokenValue = CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
         } catch (FogbowCLIException e) {
-            e.printStackTrace();
+            throw new FogbowException(e.getMessage());
         }
 
         return systemUserTokenValue;

@@ -8,6 +8,7 @@ import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.ras.FogbowCliResource;
+import cloud.fogbow.cli.utils.CommandUtil;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.ParametersDelegate;
@@ -65,9 +66,9 @@ public class OrderCommand {
 	public String doCreate(FogbowCliResource fogbowCliResource) throws FogbowException {
 		String fullPath = this.endpoint;
 
-		HashMap body = fogbowCliResource.getHTTPHashMap();
-		HashMap commonParameters = getCommonParameters();
-
+		HashMap body = getCommonParameters();
+		HashMap resourceSpecificParams = fogbowCliResource.getHTTPHashMap();
+		CommandUtil.extendMap(body, resourceSpecificParams);
 
 		return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, fullPath, body);
 	}
