@@ -1,50 +1,50 @@
 package cloud.fogbow.cli.as.token;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import cloud.fogbow.cli.HttpUtil;
+import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.common.constants.HttpMethod;
+import cloud.fogbow.common.exceptions.FogbowException;
+import cloud.fogbow.common.util.connectivity.HttpResponse;
 import com.beust.jcommander.JCommander;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseFactory;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.DefaultHttpResponseFactory;
-import org.apache.http.message.BasicStatusLine;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
 
-public class TokenCommandTest {
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-	private TokenCommand tokenCommand;
-    private HttpClient mockHttpClient;
+import static org.junit.Assert.assertEquals;
+
+public class TokenCommandTest {
+    private TokenCommand tokenCommand;
+
+    private final int HTTP_OK_CODE = 200;
+    private final HashMap FAKE_HEADERS = new HashMap<>();
+    private final String FAKE_TOKEN_RESPONSE = "{\"token\": \"fake-token\"}";
+
+    private final String MOCKED_PUBLIC_KEY = "fake-public-key";
     private final String URL = "my-url";
     private final String MOCKED_TOKEN = "fake-token";
+    private FogbowCliHttpUtil fogbowCliHttpUtil;
 
-	@Before
-	public void setUp() throws IOException {
-		this.tokenCommand = new TokenCommand();
-		MockitoAnnotations.initMocks(this);
-        initHttpClient();
-	}
+    @Before
+    public void setUp() throws FogbowException {
+        this.tokenCommand = new TokenCommand();
+        MockitoAnnotations.initMocks(this);
+        initHttpClient(FAKE_TOKEN_RESPONSE, HTTP_OK_CODE, FAKE_HEADERS);
+    }
 
-	@Test
-    @Ignore
-	public void testCreateToken() throws IOException, FogbowCLIException {
+    @Test
+    public void testCreateToken() throws IOException, FogbowCLIException, FogbowException {
         TokenCommand spyCommand = getCommandTokenWithMockedDynamicParams();
-	    JCommander.newBuilder()
+        JCommander.newBuilder()
                 .addObject(spyCommand)
                 .build()
                 .parse(
@@ -53,17 +53,20 @@ public class TokenCommandTest {
 
         Whitebox.setInternalState(spyCommand, "isCreate", true);
         String token = spyCommand.run();
+        System.out.println(token);
         assertEquals(MOCKED_TOKEN, token);
-	}
+    }
 
-	public TokenCommand getCommandTokenWithMockedDynamicParams() {
+    public TokenCommand getCommandTokenWithMockedDynamicParams() {
         Map<String, String> credentials = getMockedCredentials();
-		TokenCommand spyTokenCommand = Mockito.spy(new TokenCommand());
-		Whitebox.setInternalState(spyTokenCommand, "credentials", credentials);
-		return spyTokenCommand;
-	}
+        TokenCommand spyTokenCommand = Mockito.spy(new TokenCommand());
+        Whitebox.setInternalState(spyTokenCommand, "credentials", credentials);
+        Whitebox.setInternalState(spyTokenCommand, "publicKey", MOCKED_PUBLIC_KEY);
+        Whitebox.setInternalState(spyTokenCommand, "fogbowCliHttpUtil", this.fogbowCliHttpUtil);
+        return spyTokenCommand;
+    }
 
-	private Map<String, String> getMockedCredentials() {
+    private Map<String, String> getMockedCredentials() {
         Map<String, String> credentials = new HashMap<String, String>();
 
         String password = "12345678";
@@ -79,21 +82,26 @@ public class TokenCommandTest {
         credentials.put("base", base);
 
         String privateKey = "/home/ordan/private_key.pem";
-        credentials.put("privateKey", privateKey);
+        credentials.put("private-key", privateKey);
 
         String publicKey = "/home/ordan/public_key.pem";
-        credentials.put("publicKey", publicKey);
+        credentials.put("public-key", publicKey);
 
         return credentials;
     }
 
-    private void initHttpClient() throws IOException {
-        this.mockHttpClient = Mockito.mock(HttpClient.class);
-        HttpResponseFactory factory = new DefaultHttpResponseFactory();
-        HttpResponse response = factory.newHttpResponse(
-                new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_CREATED, "Return Irrelevant"), null);
-        response.setEntity(new StringEntity(MOCKED_TOKEN));
-        Mockito.when(this.mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
-        HttpUtil.setHttpClient(this.mockHttpClient);
+    private void initHttpClient() throws FogbowException {
+        initHttpClient("some text", 200, new HashMap<>());
+    }
+
+    private void initHttpClient(String httpReturnContent, int httpStatusCode, Map<String, List<String>> headers) throws FogbowException {
+        FogbowCliHttpUtil mockedCliFogbowHttpUtil = Mockito.mock(FogbowCliHttpUtil.class);
+
+        HttpResponse httpResponse = new HttpResponse(httpReturnContent, httpStatusCode, headers);
+
+        Mockito.when(mockedCliFogbowHttpUtil.doGenericRequest(
+                Mockito.any(HttpMethod.class), Mockito.anyString(), Mockito.any(HashMap.class), Mockito.any(HashMap.class)))
+                .thenReturn(httpResponse);
+        this.fogbowCliHttpUtil = mockedCliFogbowHttpUtil;
     }
 }

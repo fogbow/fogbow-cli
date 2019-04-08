@@ -25,6 +25,11 @@ public class FogbowCliHttpUtil {
     @Parameter(names = CliCommonParameters.SYSTEM_USER_TOKEN_PATH_COMMAND_KEY, description = Documentation.CommonParameters.SYSTEM_USER_TOKEN_PATH)
     private String systemUserTokenPath = null;
 
+    public HttpResponse doGenericRequest(HttpMethod method, String endpoint, HashMap<String, String> headers,
+                                                HashMap<String, String> body) throws FogbowException {
+        return HttpRequestClient.doGenericRequest(method, endpoint, headers, body);
+    }
+
     public String doAuthenticatedGET(String fullPath)
             throws FogbowException {
         return doGenericAuthenticatedRequest(HttpMethod.GET, fullPath, new HashMap(), new HashMap());
@@ -52,7 +57,7 @@ public class FogbowCliHttpUtil {
 
         HashMap headers = getHeaders();
 
-        String systemUserTokenValue = getSystemUserTokenValue();
+        String systemUserTokenValue = getSystemUserToken();
 
         headers.put(HttpConstants.FOGBOW_USER_TOKEN_KEY, systemUserTokenValue);
         CommandUtil.extendMap(headers, customHeaders);
@@ -61,7 +66,7 @@ public class FogbowCliHttpUtil {
         return httpResponse.getContent();
     }
 
-    private String getSystemUserTokenValue() throws FogbowException {
+    public String getSystemUserToken() throws FogbowException {
         String systemUserTokenValue = null;
 
         try {
@@ -82,4 +87,6 @@ public class FogbowCliHttpUtil {
     public String getUrl() {
         return url;
     }
+
+
 }

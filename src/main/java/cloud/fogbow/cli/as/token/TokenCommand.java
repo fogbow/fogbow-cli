@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
@@ -29,9 +30,6 @@ public class TokenCommand {
 	public static final String PUBLIC_KEY_JSON_FIELD = "publicKey";
 	public static final String PUBLIC_KEY_PATH_COMMAND_KEY = "--public-key-path";
 
-	@Parameter(names = CliCommonParameters.URL_COMMAND_KEY, description = Documentation.CommonParameters.URL, required = true)
-	private String url = null;
-
 	@Parameter(names = CREATE_COMMAND_KEY, description = Documentation.Token.CREATE_COMMAND, required = true)
 	private Boolean isCreate = false;
 
@@ -44,6 +42,9 @@ public class TokenCommand {
 	@Parameter(names = PUBLIC_KEY_PATH_COMMAND_KEY, description = Documentation.Token.PUBLIC_KEY_PATH_PARAMETER)
 	private String publicKeyPath = null;
 
+	@ParametersDelegate
+	private FogbowCliHttpUtil fogbowCliHttpUtil = new FogbowCliHttpUtil();
+
 	public String run() throws IOException, FogbowCLIException {
 		if (this.isCreate) {
 			return createToken(this.credentials);
@@ -55,18 +56,15 @@ public class TokenCommand {
 		if (credentials == null || credentials.isEmpty()) {
 			throw new ParameterException(Messages.Exception.NO_CREDENTIALS_PARAMS);
 		}
-		if (this.url == null || this.url.isEmpty()) {
-			throw new ParameterException(Messages.Exception.NO_FOGBOW_URL_PARAMS);
-		}
 
         HashMap headers = getHeaders();
 		HashMap body = getBody();
 
-		String fullUrl = this.url + ENDPOINT;
+		String fullUrl = this.fogbowCliHttpUtil.getUrl() + ENDPOINT;
         HttpResponse httpResponse = null;
 
 		try {
-			httpResponse = HttpRequestClient.doGenericRequest(HttpMethod.POST, fullUrl, headers, body);
+			httpResponse = fogbowCliHttpUtil.doGenericRequest(HttpMethod.POST, fullUrl, headers, body);
 		} catch (FogbowException e) {
 			throw new FogbowCLIException(String.format(Messages.Exception.UNABLE_TO_AUTHENTICATE_S, e.getMessage()));
 		}
@@ -88,6 +86,10 @@ public class TokenCommand {
 		body.put(CREDENTIALS_JSON_FIELD, credentials);
 		body.put(PUBLIC_KEY_JSON_FIELD, publicKey);
 		return body;
+	}
+
+	public void setFogbowCliHttpUtil(FogbowCliHttpUtil fogbowCliHttpUtil) {
+		this.fogbowCliHttpUtil = fogbowCliHttpUtil;
 	}
 }
 
