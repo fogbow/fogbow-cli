@@ -87,6 +87,4 @@ public class FogbowCliHttpUtil {
     public String getUrl() {
         return url;
     }
-
-
 }
