@@ -63,4 +63,8 @@ public class ImageCommand  {
 
 		return allImages;
 	}
+
+	public void setFogbowCliHttpUtil(FogbowCliHttpUtil fogbowCliHttpUtil) {
+		this.fogbowCliHttpUtil = fogbowCliHttpUtil;
+	}
 }

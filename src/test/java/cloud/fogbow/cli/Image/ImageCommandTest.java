@@ -2,8 +2,13 @@ package cloud.fogbow.cli.Image;
 
 import java.io.IOException;
 
+import cloud.fogbow.cli.FogbowCliHttpUtil;
+import cloud.fogbow.cli.HttpCliConstants;
+import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.common.constants.HttpConstants;
+import cloud.fogbow.common.exceptions.FogbowException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
 import org.apache.http.HttpStatus;
@@ -15,7 +20,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 import cloud.fogbow.cli.HttpRequestMatcher;
-import cloud.fogbow.cli.HttpUtil;
 import cloud.fogbow.cli.ras.image.ImageCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,22 +29,23 @@ import com.beust.jcommander.JCommander;
 
 public class ImageCommandTest {
 	private ImageCommand imageCommand = new ImageCommand();
-	private HttpClient mockHttpClient;
 	
 	private final String url = "my-url";
 	private final String token = "my-token";
 	private final String id = "my-id";
 	private final String memberId = "memberId";
 	private String cloudName = "cloudName";
+	private FogbowCliHttpUtil fogbowCliHttpUtil;
 
 	@Before
-	public void setUp() throws IOException {
+	public void setUp() throws IOException, FogbowException {
 		this.imageCommand = new ImageCommand();
-		initHttpClient();
+		this.fogbowCliHttpUtil = HttpClientMocker.init();
+		imageCommand.setFogbowCliHttpUtil(this.fogbowCliHttpUtil);
 	}
 	
 	@Test
-	public void testRunGetCommand() throws IOException, FogbowCLIException {
+	public void testRunGetCommand() throws FogbowCLIException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.imageCommand)
 				.build()
@@ -52,18 +57,14 @@ public class ImageCommandTest {
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId,
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName);
 
-		String expectedUri = this.url + ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.id;
-		HttpGet get = new HttpGet(expectedUri);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
+		String expectedUri = ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.id;
 
 		this.imageCommand.run();
-
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		Mockito.verify(this.fogbowCliHttpUtil).doAuthenticatedGET(Mockito.eq(expectedUri));
 	}
 	
 	@Test
-	public void testRunGetAllCommand() throws IOException, FogbowCLIException {
+	public void testRunGetAllCommand() throws FogbowCLIException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.imageCommand)
 				.build()
@@ -75,22 +76,9 @@ public class ImageCommandTest {
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName);
 
 		String expectedUri = this.url + ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
-		HttpGet get = new HttpGet(expectedUri);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
 
 		this.imageCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
-	}
-
-	private void initHttpClient() throws IOException {
-		this.mockHttpClient = Mockito.mock(HttpClient.class);
-		HttpResponseFactory factory = new DefaultHttpResponseFactory();
-		HttpResponse response = factory.newHttpResponse(
-				new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_CREATED, "Return Irrelevant"), null);
-		response.setEntity(new StringEntity("{}"));
-		Mockito.when(this.mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
-		HttpUtil.setHttpClient(this.mockHttpClient);
+		Mockito.verify(this.fogbowCliHttpUtil).doAuthenticatedGET(Mockito.eq(expectedUri));
 	}
 }
