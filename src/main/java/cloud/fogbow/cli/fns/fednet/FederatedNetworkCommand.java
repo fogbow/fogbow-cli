@@ -2,6 +2,7 @@ package cloud.fogbow.cli.fns.fednet;
 
 import java.io.IOException;
 
+import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.ras.order.OrderCommand;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
@@ -36,5 +37,13 @@ public class FederatedNetworkCommand {
 			return this.orderCommand.doGetAll();
 		}
 		throw new ParameterException(Messages.Exception.INCOMPLETE_COMMAND);
+	}
+
+	public void setFogbowCliHttpUtil(FogbowCliHttpUtil fogbowCliHttpUtil) {
+		orderCommand.setFogbowCliHttpUtil(fogbowCliHttpUtil);
+	}
+
+	public FogbowCliHttpUtil getFogbowCliHttpUtil() {
+		return orderCommand.getFogbowCliHttpUtil();
 	}
 }

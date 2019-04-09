@@ -13,8 +13,12 @@ import static org.mockito.Mockito.*;
 
 public class HttpClientMocker {
 
+    public static final String DEFAULT_HTTP_BODY_RETURN = "Return Irrelevant";
+    public static final int DEFAULT_HTTP_STATUS_CODE = 200;
+    public static final HashMap DEFAULT_HTTP_HEADERS = new HashMap<>();
+
     public static FogbowCliHttpUtil init() throws FogbowException {
-        return init("some text", 200, new HashMap<>());
+        return init(DEFAULT_HTTP_BODY_RETURN, DEFAULT_HTTP_STATUS_CODE, DEFAULT_HTTP_HEADERS);
     }
 
     public static FogbowCliHttpUtil init(String httpReturnContent, int httpStatusCode, Map<String, List<String>> headers) throws FogbowException {
@@ -22,8 +26,19 @@ public class HttpClientMocker {
 
         HttpResponse httpResponse = new HttpResponse(httpReturnContent, httpStatusCode, headers);
 
+        // Mock genericRequest
         doReturn(httpResponse).when(mockedCliFogbowHttpUtil).doGenericRequest(
                 any(HttpMethod.class), anyString(), any(HashMap.class), any(HashMap.class));
+
+        // Mock all methods for genericAuthenticatedRequest
+        doReturn(httpReturnContent).when(mockedCliFogbowHttpUtil).doGenericAuthenticatedRequest(
+                any(HttpMethod.class), anyString(), any(HashMap.class), any(HashMap.class));
+
+        doReturn(httpReturnContent).when(mockedCliFogbowHttpUtil).doGenericAuthenticatedRequest(
+                any(HttpMethod.class), anyString(), any(HashMap.class));
+
+        doReturn(httpReturnContent).when(mockedCliFogbowHttpUtil).doGenericAuthenticatedRequest(
+                any(HttpMethod.class), anyString());
 
 
         return mockedCliFogbowHttpUtil;

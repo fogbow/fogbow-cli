@@ -52,6 +52,21 @@ public class CommandUtil {
         }
     }
 
+
+    public static HashMap removeNullEntries(HashMap<String, Object> entries) {
+        HashMap clearedHashMap = new HashMap();
+
+        for(Map.Entry<String, Object> entry : entries.entrySet()){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(value != null){
+                clearedHashMap.put(key, value);
+            }
+        }
+
+        return clearedHashMap;
+    }
+
     private static String parsePath(String path){
         if(path == null){
             path = "";

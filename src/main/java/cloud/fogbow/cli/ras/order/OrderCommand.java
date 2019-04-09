@@ -70,6 +70,8 @@ public class OrderCommand {
 		HashMap resourceSpecificParams = fogbowCliResource.getHTTPHashMap();
 		CommandUtil.extendMap(body, resourceSpecificParams);
 
+		body = CommandUtil.removeNullEntries(body);
+
 		return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, fullPath, body);
 	}
 	
@@ -96,10 +98,8 @@ public class OrderCommand {
 		return fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.GET, fullPath);
 	}
 
-	public String getSystemUserToken() throws FogbowCLIException {
-		// TODO: remove this method
-		return "Remove me later";
-//		return CommandUtil.getSystemUserToken(this.systemUserToken, this.systemUserTokenPath);
+	public String getSystemUserToken() throws FogbowException {
+		return fogbowCliHttpUtil.getSystemUserToken();
 	}
 
 	public String getMemberId() {
@@ -132,6 +132,10 @@ public class OrderCommand {
 
 	public FogbowCliHttpUtil getFogbowCliHttpUtil() {
 		return fogbowCliHttpUtil;
+	}
+
+	public void setFogbowCliHttpUtil(FogbowCliHttpUtil fogbowCliHttpUtil) {
+		this.fogbowCliHttpUtil = fogbowCliHttpUtil;
 	}
 
 	private HashMap getCommonParameters(){
