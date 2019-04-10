@@ -2,17 +2,38 @@ package cloud.fogbow.cli.ras.order.compute;
 
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
+import cloud.fogbow.cli.constants.Messages;
+import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.cli.fns.compute.ComputeWrappedWithFedNet;
 import cloud.fogbow.cli.ras.FogbowCliResource;
+import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.common.exceptions.InvalidParameterException;
+import cloud.fogbow.common.util.CloudInitUserDataBuilder;
 import com.beust.jcommander.Parameter;
 import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
 import com.beust.jcommander.converters.CommaParameterSplitter;
 import com.beust.jcommander.converters.StringConverter;
+import com.google.common.base.Preconditions;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Compute implements FogbowCliResource {
+
+	public static final String DEFAULT_PUBLIC_KEY_PATH_FILE = "~/.ssh/id_rsa.pub";
+	public static final String DISK_KEY = "disk";
+	public static final String IMAGE_ID_KEY = "imageId";
+	public static final String MEMORY_KEY = "memory";
+	public static final String NAME_KEY = "name";
+	public static final String NETWORK_IDS_KEY = "networkIds";
+	public static final String PROVIDER_KEY = "provider";
+	public static final String PUBLIC_KEY_KEY = "publicKey";
+	public static final String REQUIREMENTS_KEY = "requirements";
+	public static final String USER_DATA_KEY = "userData";
+	public static final String USER_DATA_SEPARATOR = ":";
+	public static final String USER_DATAFILE_CONTENT_KEY = "extraUserDataFileContent";
+	public static final String USER_DATAfILE_FILE_TYPE_KEY = "extraUserDataFileType";
+	public static final String USER_DATAfILE_TAG_KEY = "tag";
+	public static final String VCPU_KEY = "vCPU";
 
 	@Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
 			description = Documentation.CommonParameters.PROVIDER)
@@ -124,7 +145,134 @@ public class Compute implements FogbowCliResource {
 	}
 
 	@Override
-	public HashMap getHTTPHashMap() {
-		return null;
+	public HashMap getHTTPHashMap() throws InvalidParameterException {
+		HashMap body = new HashMap();
+
+		HashMap requiredParams = getRequiredParams();
+		HashMap optionalParams = getOptionalParams();
+
+		CommandUtil.extendMap(body, requiredParams);
+		CommandUtil.extendMap(body, optionalParams);
+
+		return body;
 	}
+
+	private HashMap getRequiredParams() throws InvalidParameterException {
+		HashMap body = new HashMap();
+
+		String vCpu = getvCPU();
+		String memory = getMemory();
+		String disk = getDisk();
+		String imageId = getImageId();
+
+		checkComputeValues(vCpu, memory, disk, imageId);
+
+		body.put(VCPU_KEY, vCpu);
+		body.put(MEMORY_KEY, memory);
+		body.put(DISK_KEY, disk);
+		body.put(IMAGE_ID_KEY, imageId);
+
+		return body;
+	}
+
+	private HashMap getOptionalParams() throws InvalidParameterException{
+		HashMap body = new HashMap();
+
+		body.put(NETWORK_IDS_KEY, getNetworkIds());
+		body.put(NAME_KEY, getName());
+		body.put(PUBLIC_KEY_KEY, getPublicKeyFileContent());
+		body.put(PROVIDER_KEY, getProvider());
+		body.put(USER_DATA_KEY, getUserDataList());
+		body.put(REQUIREMENTS_KEY, getRequirements());
+
+		return body;
+	}
+
+	private void checkComputeValues(String vCpu, String memory, String disk, String imageId) {
+		try {
+			Preconditions.checkNotNull(vCpu);
+			Preconditions.checkNotNull(memory);
+			Preconditions.checkNotNull(disk);
+			Preconditions.checkNotNull(imageId);
+		} catch (NullPointerException e) {
+			throw new NullPointerException(Messages.Exception.MISSING_CREATE_COMPUTE_PARAMS);
+		}
+	}
+
+
+	private List getUserDataList() throws InvalidParameterException {
+		List userDataList = new ArrayList();
+
+		List<String> userDataValues = getUserData();
+		if (userDataValues != null) {
+			for (int i = 0; i < userDataValues.size(); i++) {
+				String userData = userDataValues.get(i);
+				String data[] = userData.split(USER_DATA_SEPARATOR);
+
+				if (data.length != 2) {
+					throw new InvalidParameterException(Messages.Exception.MALFORMED_USER_DATA);
+				}
+
+				String filePath = data[0];
+				String fileFormat = data[1];
+
+				String userDataFileContent = null;
+
+				try {
+
+					userDataFileContent = CommandUtil.getFileContent(filePath, Messages.Exception.NO_USER_DATA);
+				} catch (FogbowCLIException e) {
+
+					throw new InvalidParameterException(e.getMessage());
+				}
+				String fileType = getUserDataFileType(fileFormat);
+
+				String encodedUserDataFileContent = Base64.getEncoder().encodeToString(userDataFileContent.getBytes());
+				String tag = getFileName(filePath);
+
+				HashMap userDataMap = new HashMap<String, String>();
+				userDataMap.put(USER_DATAFILE_CONTENT_KEY, encodedUserDataFileContent);
+				userDataMap.put(USER_DATAfILE_FILE_TYPE_KEY, fileType);
+				userDataMap.put(USER_DATAfILE_TAG_KEY, tag);
+
+				userDataList.add(userDataMap);
+			}
+		}
+
+		return userDataList;
+	}
+
+	private String getPublicKeyFileContent() {
+		String providedPath = getPublicKeyPath();
+
+		String publicKeyContent = null;
+
+		try {
+			publicKeyContent = CommandUtil.getFileContent(providedPath, Messages.Exception.PUBLIC_KEY_FILE_NOT_FOUND);
+		} catch (FogbowCLIException e){
+			try {
+				publicKeyContent = CommandUtil.getFileContent(DEFAULT_PUBLIC_KEY_PATH_FILE, Messages.Exception.PUBLIC_KEY_FILE_NOT_FOUND);
+			} catch (FogbowCLIException f){
+				e.printStackTrace();
+			}
+		}
+
+		return publicKeyContent;
+	}
+
+	private String getFileName(String path) {
+		String[] paths = path.split("/");
+		return paths[paths.length - 1];
+	}
+
+
+	private String getUserDataFileType(String fileType) throws InvalidParameterException {
+		try {
+			CloudInitUserDataBuilder.FileType.valueOf(fileType);
+		} catch (Exception e) {
+			throw new InvalidParameterException(Messages.Exception.INCONSISTENT_PARAMS);
+		}
+		return fileType;
+	}
+
 }

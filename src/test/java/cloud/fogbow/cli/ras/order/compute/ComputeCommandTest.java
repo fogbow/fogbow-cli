@@ -3,36 +3,27 @@ package cloud.fogbow.cli.ras.order.compute;
 import java.io.IOException;
 import java.util.*;
 
+import cloud.fogbow.cli.FogbowCliHttpUtil;
+import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.fns.compute.ComputeWrappedWithFedNet;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseFactory;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.DefaultHttpResponseFactory;
-import org.apache.http.message.BasicStatusLine;
-import cloud.fogbow.cli.HttpRequestMatcher;
-import cloud.fogbow.cli.HttpUtil;
+import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.common.constants.HttpMethod;
+import cloud.fogbow.common.exceptions.FogbowException;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import cloud.fogbow.cli.ras.order.OrderCommand;
 import cloud.fogbow.cli.utils.KeyValueUtil;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.beust.jcommander.JCommander;
-import com.google.gson.Gson;
+
+import static org.mockito.Mockito.verify;
 
 public class ComputeCommandTest {
 	
 	private Compute compute;
 	private ComputeCommand computeCommand = new ComputeCommand();
-	private HttpClient mockHttpClient;
 
 	private final String url = "my-url";
 	private final String token = "my-token";
@@ -40,10 +31,15 @@ public class ComputeCommandTest {
 	private final String memberId = "my-member-id";
 	private final String cloudName = "my-cloud";
 	private final String requirementsString = "key1=value1,key2=value2";
+	private final String TEST_RESOURCES_PATH = "src/test/resource/";
+
+
 	private Map<String, String> requirements = new HashMap<>();
 
+	private FogbowCliHttpUtil fogbowCliHttpUtil;
+
 	@Before
-	public void setUp() throws FogbowCLIException, IOException {
+	public void setUp() throws FogbowException {
 		requirements = new KeyValueUtil.KeyValueConverter().convert(requirementsString);
 		this.compute = new Compute(
 				"my-provider",
@@ -52,17 +48,18 @@ public class ComputeCommandTest {
 				"my-vcpu-count",
 				"my-memory", 
 				"my-disk",
-				Arrays.asList(new String[] {"fake-user-data-1", "fake-user-data-2"}),
+				Arrays.asList(new String[] {TEST_RESOURCES_PATH + "fake-user-data-1:CLOUD_BOOTHOOK", TEST_RESOURCES_PATH + "fake-user-data-2:CLOUD_CONFIG"}),
 				Arrays.asList(new String[] {"fake-network-id-1", "fake-network-id-2"}),
 				"compute-name",
 				requirements
 		);
 		this.computeCommand = new ComputeCommand();
-		initHttpClient();
+		this.fogbowCliHttpUtil = HttpClientMocker.init();
+		computeCommand.setFogbowCliHttpUtil(fogbowCliHttpUtil);
 	}
 	
 	@Test
-	public void testRunCreateCommand() throws FogbowCLIException, IOException {
+	public void testRunCreateCommand() throws FogbowCLIException, IOException, FogbowException {
 		JCommander.newBuilder()
 		    .addObject(this.computeCommand)
 		    .build()
@@ -70,29 +67,24 @@ public class ComputeCommandTest {
 		    		OrderCommand.CREATE_COMMAND_KEY,
 					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
-		    		Compute.PROVIDER_COMMAND_KEY, this.compute.getProvider(),
+					CliCommonParameters.PROVIDER_COMMAND_KEY, this.compute.getProvider(),
 		    		Compute.IMAGE_ID_COMMAND_KEY, this.compute.getImageId(),
 		    		Compute.VCPU_COMMAND_KEY, this.compute.getvCPU(),
 		    		Compute.MEMORY_COMMAND_KEY, this.compute.getMemory(),
 		    		Compute.DISC_COMMAND_KEY, this.compute.getDisk(),
-		    		Compute.NETWORK_IDS_COMMAND_KEY, separateBy(this.compute.getNetworksId(), ","),
+		    		Compute.NETWORK_IDS_COMMAND_KEY, separateBy(this.compute.getNetworkIds(), ","),
 					Compute.NAME_COMMAND_KEY, this.compute.getName(),
 					Compute.USER_DATA_COMMAND_KEY, separateBy(this.compute.getUserData(), ","),
-					Compute.REQUIREMENTS, requirementsString
+					Compute.REQUIREMENTS_COMMAND_KEY, requirementsString
 		    );
 
 		ComputeWrappedWithFedNet computeWrappedWithFedNet = new ComputeWrappedWithFedNet(this.compute);
-
-		String expectedJson = new Gson().toJson(computeWrappedWithFedNet);
-		HttpPost post = new HttpPost(this.url + ComputeCommand.ENDPOINT);
-		post.setEntity(new StringEntity(expectedJson));
-		post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
+		HashMap expectedBody = CommandUtil.removeNullEntries(this.compute.getHTTPHashMap());
+		String path = ComputeCommand.ENDPOINT;
 
 		this.computeCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.POST, path, expectedBody);
 	}
 
 	private String separateBy(Collection<String> networkIds, String separator) {
@@ -111,7 +103,7 @@ public class ComputeCommandTest {
 	}
 
 	@Test
-	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
+	public void testRunDeleteCommand() throws FogbowCLIException, IOException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -121,17 +113,14 @@ public class ComputeCommandTest {
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
-		HttpDelete delete = new HttpDelete(this.url + ComputeCommand.ENDPOINT + '/' + this.id);
-		delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
-
+		String path = ComputeCommand.ENDPOINT + '/' + this.id;
 		this.computeCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.DELETE, path);
 	}
-	
+
 	@Test
-	public void testRunGetCommand() throws FogbowCLIException, IOException {
+	public void testRunGetCommand() throws FogbowCLIException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -141,17 +130,15 @@ public class ComputeCommandTest {
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
-		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + '/' + this.id);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
+		String path = ComputeCommand.ENDPOINT + '/' + this.id;
 
 		this.computeCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
 	}
 
 	@Test
-	public void testRunGetAllStatusCommand() throws FogbowCLIException, IOException {
+	public void testRunGetAllStatusCommand() throws FogbowCLIException, IOException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -161,17 +148,15 @@ public class ComputeCommandTest {
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
-		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + "/" +  OrderCommand.STATUS_ENDPOINT_KEY);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
+		String path = ComputeCommand.ENDPOINT + "/" +  OrderCommand.STATUS_ENDPOINT_KEY;
 
 		this.computeCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
 	}
-	
+
 	@Test
-	public void testRunGetQuota() throws FogbowCLIException, IOException {
+	public void testRunGetQuota() throws FogbowCLIException, IOException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -182,19 +167,17 @@ public class ComputeCommandTest {
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName,
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId);
 
-		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.QUOTA_ENDPOINT_KEY +
-				this.memberId + "/" + this.cloudName);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
+		String path = ComputeCommand.ENDPOINT + ComputeCommand.QUOTA_ENDPOINT_KEY +
+				this.memberId + "/" + this.cloudName;
 
 		this.computeCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
 	}
-	
-	
+
+
 	@Test
-	public void testRunGetAllocation() throws FogbowCLIException, IOException {
+	public void testRunGetAllocation() throws FogbowCLIException, IOException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.computeCommand)
 				.build()
@@ -205,24 +188,11 @@ public class ComputeCommandTest {
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName,
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId);
 
-		HttpGet get = new HttpGet(this.url + ComputeCommand.ENDPOINT + ComputeCommand.ALLOCATION_ENDPOINT_KEY
-				+ this.memberId + "/" + this.cloudName);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
+		String path = ComputeCommand.ENDPOINT + ComputeCommand.ALLOCATION_ENDPOINT_KEY
+				+ this.memberId + "/" + this.cloudName;
 
 		this.computeCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
 	}
-
-	private void initHttpClient() throws IOException {
-		this.mockHttpClient = Mockito.mock(HttpClient.class);
-		HttpResponseFactory factory = new DefaultHttpResponseFactory();
-		HttpResponse response = factory.newHttpResponse(
-				new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_CREATED, "Return Irrelevant"), null);
-		response.setEntity(new StringEntity("{}"));
-		Mockito.when(this.mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
-		HttpUtil.setHttpClient(this.mockHttpClient);
-	}
-
 }

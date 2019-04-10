@@ -3,6 +3,7 @@ package cloud.fogbow.cli.fns.compute;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.ras.FogbowCliResource;
 import cloud.fogbow.cli.ras.order.compute.Compute;
+import cloud.fogbow.common.exceptions.InvalidParameterException;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
 import com.google.gson.annotations.SerializedName;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 public class ComputeWrappedWithFedNet extends Compute implements FogbowCliResource {
     public static final String FEDERATED_NETWORK_ID_COMMAND_KEY = "--federated-network-id";
 
+    public static final String COMPUTE_ORDER_JSON_KEY = "compute";
     public static final String FEDNET_ID_JSON_KEY = "federatedNetworkId";
 
     @Parameter(names = { FEDERATED_NETWORK_ID_COMMAND_KEY }, description = Documentation.FederatedNetwork.ID)
@@ -25,15 +27,17 @@ public class ComputeWrappedWithFedNet extends Compute implements FogbowCliResour
     }
 
     @Override
-    public HashMap getHTTPHashMap() {
-        HashMap body = new HashMap();
+    public HashMap getHTTPHashMap() throws InvalidParameterException {
+        HashMap computeOrder = null;
 
-        body.put(FEDNET_ID_JSON_KEY, federatedNetworkId);
+        if(federatedNetworkId != null){
+            computeOrder = new HashMap();
+            computeOrder.put(FEDNET_ID_JSON_KEY, federatedNetworkId);
+            computeOrder.put(COMPUTE_ORDER_JSON_KEY, super.getHTTPHashMap());
+        } else {
+            computeOrder = super.getHTTPHashMap();
+        }
 
-        return body;
-    }
-
-    public String getFederatedNetworkId() {
-        return federatedNetworkId;
+        return computeOrder;
     }
 }
