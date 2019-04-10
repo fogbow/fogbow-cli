@@ -1,32 +1,16 @@
 package cloud.fogbow.cli.ras.securityrule;
 
 import cloud.fogbow.cli.FogbowCliHttpUtil;
-import cloud.fogbow.cli.HttpCliConstants;
 import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
-import cloud.fogbow.cli.utils.CommandUtil;
-import cloud.fogbow.common.constants.HttpConstants;
+import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.cli.ras.order.network.NetworkCommand;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.JCommander;
-import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseFactory;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.DefaultHttpResponseFactory;
-import org.apache.http.message.BasicStatusLine;
-import cloud.fogbow.cli.HttpRequestMatcher;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import cloud.fogbow.cli.ras.order.network.NetworkCommand;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Arrays;

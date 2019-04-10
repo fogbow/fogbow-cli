@@ -9,7 +9,6 @@ import cloud.fogbow.cli.ras.order.OrderCommand;
 import cloud.fogbow.cli.utils.CommandUtil;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
-
 import cloud.fogbow.common.exceptions.InvalidParameterException;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;

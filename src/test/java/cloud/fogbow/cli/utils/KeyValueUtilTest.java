@@ -1,10 +1,11 @@
 package cloud.fogbow.cli.utils;
 
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 public class KeyValueUtilTest {
 

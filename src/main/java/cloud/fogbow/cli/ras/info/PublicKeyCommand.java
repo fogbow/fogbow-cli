@@ -1,12 +1,9 @@
 package cloud.fogbow.cli.ras.info;
 
 import cloud.fogbow.cli.FogbowCliHttpUtil;
-import cloud.fogbow.cli.constants.CliCommonParameters;
-import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
 import cloud.fogbow.common.util.connectivity.HttpResponse;
-import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
 
 import java.util.HashMap;

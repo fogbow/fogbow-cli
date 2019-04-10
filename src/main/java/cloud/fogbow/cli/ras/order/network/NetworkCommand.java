@@ -1,12 +1,8 @@
 package cloud.fogbow.cli.ras.order.network;
 
-import java.io.IOException;
-
 import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.Messages;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import cloud.fogbow.cli.ras.order.OrderCommand;
-
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;

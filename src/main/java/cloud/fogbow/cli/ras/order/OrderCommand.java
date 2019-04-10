@@ -1,7 +1,5 @@
 package cloud.fogbow.cli.ras.order;
 
-import java.util.HashMap;
-
 import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
@@ -10,10 +8,11 @@ import cloud.fogbow.cli.ras.FogbowCliResource;
 import cloud.fogbow.cli.utils.CommandUtil;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
-import com.beust.jcommander.ParametersDelegate;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.ParametersDelegate;
+
+import java.util.HashMap;
 
 public class OrderCommand {
 	public static final String CREATE_COMMAND_KEY = "--create";

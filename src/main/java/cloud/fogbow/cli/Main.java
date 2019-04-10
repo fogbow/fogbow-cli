@@ -1,31 +1,29 @@
 package cloud.fogbow.cli;
 
+import cloud.fogbow.cli.as.token.TokenCommand;
+import cloud.fogbow.cli.constants.Messages;
+import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.cli.fns.fednet.FederatedNetworkCommand;
+import cloud.fogbow.cli.ms.member.MemberCommand;
+import cloud.fogbow.cli.ras.cloud.CloudsCommand;
+import cloud.fogbow.cli.ras.genericrequest.GenericRequestCommand;
+import cloud.fogbow.cli.ras.image.ImageCommand;
+import cloud.fogbow.cli.ras.info.PublicKeyCommand;
+import cloud.fogbow.cli.ras.info.VersionCommand;
+import cloud.fogbow.cli.ras.order.attachment.AttachmentCommand;
+import cloud.fogbow.cli.ras.order.compute.ComputeCommand;
+import cloud.fogbow.cli.ras.order.network.NetworkCommand;
+import cloud.fogbow.cli.ras.order.publicip.PublicIpCommand;
+import cloud.fogbow.cli.ras.order.volume.VolumeCommand;
+import cloud.fogbow.cli.ras.securityrule.SecurityRuleCommand;
+import cloud.fogbow.common.exceptions.FogbowException;
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
+
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.security.PublicKey;
-
-import cloud.fogbow.cli.constants.Messages;
-import cloud.fogbow.cli.ras.cloud.CloudsCommand;
-import cloud.fogbow.cli.ms.member.MemberCommand;
-import cloud.fogbow.cli.ras.info.PublicKeyCommand;
-import cloud.fogbow.cli.ras.info.VersionCommand;
-import cloud.fogbow.cli.ras.order.compute.ComputeCommand;
-import cloud.fogbow.cli.as.token.TokenCommand;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import cloud.fogbow.cli.ras.genericrequest.GenericRequestCommand;
-import cloud.fogbow.cli.ras.image.ImageCommand;
-import cloud.fogbow.cli.ras.order.publicip.PublicIpCommand;
-import cloud.fogbow.cli.ras.securityrule.SecurityRuleCommand;
-import cloud.fogbow.cli.ras.order.attachment.AttachmentCommand;
-import cloud.fogbow.cli.fns.fednet.FederatedNetworkCommand;
-import cloud.fogbow.cli.ras.order.network.NetworkCommand;
-import cloud.fogbow.cli.ras.order.volume.VolumeCommand;
-
-import cloud.fogbow.common.exceptions.FogbowException;
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
 
 public class Main {
 	public static final String FOGBOW_CLI_PREFIX = "fogbow-cli: ";

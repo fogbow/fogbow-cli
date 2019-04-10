@@ -1,31 +1,17 @@
 package cloud.fogbow.cli.Image;
 
-import java.io.IOException;
-
 import cloud.fogbow.cli.FogbowCliHttpUtil;
-import cloud.fogbow.cli.HttpCliConstants;
 import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import cloud.fogbow.common.constants.HttpConstants;
-import cloud.fogbow.common.exceptions.FogbowException;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseFactory;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.DefaultHttpResponseFactory;
-import org.apache.http.message.BasicStatusLine;
-import cloud.fogbow.cli.HttpRequestMatcher;
 import cloud.fogbow.cli.ras.image.ImageCommand;
+import cloud.fogbow.common.exceptions.FogbowException;
+import com.beust.jcommander.JCommander;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.beust.jcommander.JCommander;
+import java.io.IOException;
 
 public class ImageCommandTest {
 	private ImageCommand imageCommand = new ImageCommand();

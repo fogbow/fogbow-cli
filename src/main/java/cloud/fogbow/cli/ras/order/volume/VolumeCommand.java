@@ -1,15 +1,11 @@
-	package cloud.fogbow.cli.ras.order.volume;
-
-import java.io.IOException;
+package cloud.fogbow.cli.ras.order.volume;
 
 import cloud.fogbow.cli.FogbowCliHttpUtil;
-import cloud.fogbow.cli.constants.Messages;
-import cloud.fogbow.cli.ras.order.OrderCommand;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
-
-import cloud.fogbow.common.exceptions.FogbowException;
-import com.beust.jcommander.ParameterException;
-import com.beust.jcommander.ParametersDelegate;
+	import cloud.fogbow.cli.constants.Messages;
+	import cloud.fogbow.cli.ras.order.OrderCommand;
+	import cloud.fogbow.common.exceptions.FogbowException;
+	import com.beust.jcommander.ParameterException;
+	import com.beust.jcommander.ParametersDelegate;
 
 public class VolumeCommand {
 	

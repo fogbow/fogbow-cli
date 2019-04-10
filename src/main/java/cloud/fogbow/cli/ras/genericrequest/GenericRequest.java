@@ -2,12 +2,10 @@ package cloud.fogbow.cli.ras.genericrequest;
 
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.ras.FogbowCliResource;
-import com.beust.jcommander.Parameter;
 import cloud.fogbow.cli.utils.KeyValueUtil;
-import com.sun.mail.imap.protocol.BODY;
+import com.beust.jcommander.Parameter;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class GenericRequest implements FogbowCliResource {
     private static final String METHOD_COMMAND_KEY = "--method";

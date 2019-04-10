@@ -4,15 +4,13 @@ import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import cloud.fogbow.cli.fns.compute.ComputeWrappedWithFedNet;
 import cloud.fogbow.cli.ras.FogbowCliResource;
 import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
 import cloud.fogbow.common.exceptions.InvalidParameterException;
 import cloud.fogbow.common.util.CloudInitUserDataBuilder;
 import com.beust.jcommander.Parameter;
-import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
 import com.beust.jcommander.converters.CommaParameterSplitter;
-import com.beust.jcommander.converters.StringConverter;
 import com.google.common.base.Preconditions;
 
 import java.util.*;

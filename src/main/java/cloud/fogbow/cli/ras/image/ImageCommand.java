@@ -5,7 +5,6 @@ import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
-
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;

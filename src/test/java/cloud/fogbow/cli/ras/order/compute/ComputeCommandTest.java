@@ -1,22 +1,24 @@
 package cloud.fogbow.cli.ras.order.compute;
 
-import java.io.IOException;
-import java.util.*;
-
 import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import cloud.fogbow.cli.fns.compute.ComputeWrappedWithFedNet;
+import cloud.fogbow.cli.ras.order.OrderCommand;
 import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.cli.utils.KeyValueUtil;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import cloud.fogbow.cli.ras.order.OrderCommand;
-import cloud.fogbow.cli.utils.KeyValueUtil;
+import com.beust.jcommander.JCommander;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.beust.jcommander.JCommander;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.Mockito.verify;
 

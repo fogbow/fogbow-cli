@@ -20,7 +20,6 @@ public class Documentation {
     }
 
     public class Compute {
-        public static final String USER_DATA = "User data option. in the format <path/to/cloudinit/file>:<file_format>. type --list-cloudinit to see available formats.";
     }
 
     public class FederatedNetwork {

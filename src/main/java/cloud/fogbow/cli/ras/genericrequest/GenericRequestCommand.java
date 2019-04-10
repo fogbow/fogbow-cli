@@ -1,21 +1,13 @@
 package cloud.fogbow.cli.ras.genericrequest;
 
 import cloud.fogbow.cli.FogbowCliHttpUtil;
-import cloud.fogbow.cli.HttpCliConstants;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
-import cloud.fogbow.cli.utils.CommandUtil;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
-import cloud.fogbow.common.util.GsonHolder;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
-import com.google.gson.Gson;
-import org.apache.http.HttpResponse;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import org.apache.http.client.methods.RequestBuilder;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 public class GenericRequestCommand {

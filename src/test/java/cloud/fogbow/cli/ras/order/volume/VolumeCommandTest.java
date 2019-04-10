@@ -3,13 +3,13 @@ package cloud.fogbow.cli.ras.order.volume;
 import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.ras.order.OrderCommand;
 import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.cli.utils.KeyValueUtil;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.JCommander;
 import org.apache.http.client.HttpClient;
-import cloud.fogbow.cli.ras.order.OrderCommand;
-import cloud.fogbow.cli.utils.KeyValueUtil;
 import org.junit.Before;
 import org.junit.Test;
 

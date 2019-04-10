@@ -1,20 +1,20 @@
 package cloud.fogbow.cli.fns.fednet;
 
-import java.io.IOException;
-import java.util.*;
-
 import cloud.fogbow.cli.FogbowCliHttpUtil;
-
 import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.ras.order.OrderCommand;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
-import cloud.fogbow.cli.ras.order.OrderCommand;
+import com.beust.jcommander.JCommander;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
-import com.beust.jcommander.JCommander;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.mockito.Mockito.verify;
 
 public class FederatedNetworkCommandTest {
 	private FederatedNetwork federatedNetwork;

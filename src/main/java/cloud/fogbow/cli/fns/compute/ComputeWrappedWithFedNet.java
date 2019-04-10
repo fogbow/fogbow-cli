@@ -5,8 +5,6 @@ import cloud.fogbow.cli.ras.FogbowCliResource;
 import cloud.fogbow.cli.ras.order.compute.Compute;
 import cloud.fogbow.common.exceptions.InvalidParameterException;
 import com.beust.jcommander.Parameter;
-import com.beust.jcommander.ParametersDelegate;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 

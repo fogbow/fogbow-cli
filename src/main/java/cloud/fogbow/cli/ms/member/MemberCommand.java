@@ -1,22 +1,17 @@
 package cloud.fogbow.cli.ms.member;
 
-import java.io.IOException;
-import java.util.HashMap;
-
 import cloud.fogbow.cli.FogbowCliHttpUtil;
-import cloud.fogbow.cli.HttpCliConstants;
 import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Documentation;
+import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
-import cloud.fogbow.common.util.connectivity.HttpRequestClient;
 import cloud.fogbow.common.util.connectivity.HttpResponse;
-import com.beust.jcommander.ParametersDelegate;
-import org.apache.http.ParseException;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import cloud.fogbow.cli.constants.Messages;
+import com.beust.jcommander.ParametersDelegate;
+
+import java.util.HashMap;
 
 public class MemberCommand {
 	public static final String NAME = "member";

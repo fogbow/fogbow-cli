@@ -2,15 +2,14 @@ package cloud.fogbow.cli.ras.securityrule;
 
 import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.constants.Messages;
+import cloud.fogbow.cli.ras.order.network.NetworkCommand;
+import cloud.fogbow.cli.ras.order.publicip.PublicIpCommand;
 import cloud.fogbow.common.constants.HttpMethod;
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.ParametersDelegate;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.ClientProtocolException;
-import cloud.fogbow.cli.ras.order.network.NetworkCommand;
-import cloud.fogbow.cli.ras.order.publicip.PublicIpCommand;
 
 import java.io.IOException;
 import java.util.Arrays;
