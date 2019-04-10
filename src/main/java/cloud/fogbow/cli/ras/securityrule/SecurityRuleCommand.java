@@ -129,4 +129,12 @@ public class SecurityRuleCommand {
     public Boolean isGetCommand() {
         return this.isGetCommand;
     }
+
+    public void setFogbowCliHttpUtil(FogbowCliHttpUtil fogbowCliHttpUtil) {
+        this.authenticatedRequest = fogbowCliHttpUtil;
+    }
+
+    public FogbowCliHttpUtil getFogbowCliHttpUtil() {
+        return authenticatedRequest;
+    }
 }

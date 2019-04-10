@@ -75,10 +75,10 @@ public class ImageCommandTest {
 						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId,
 						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName);
 
-		String expectedUri = this.url + ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
+		String expectedUri = ImageCommand.ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
 
 		this.imageCommand.run();
 
-		Mockito.verify(this.fogbowCliHttpUtil).doAuthenticatedGET(Mockito.eq(expectedUri));
+		Mockito.verify(this.fogbowCliHttpUtil).doAuthenticatedGET(expectedUri);
 	}
 }

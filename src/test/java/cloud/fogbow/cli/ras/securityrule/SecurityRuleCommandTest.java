@@ -1,7 +1,13 @@
 package cloud.fogbow.cli.ras.securityrule;
 
-import cloud.fogbow.cli.HttpUtil;
+import cloud.fogbow.cli.FogbowCliHttpUtil;
+import cloud.fogbow.cli.HttpCliConstants;
+import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.common.constants.HttpConstants;
+import cloud.fogbow.common.constants.HttpMethod;
+import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.JCommander;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +30,9 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+
+import static org.mockito.Mockito.verify;
 
 public class SecurityRuleCommandTest {
 
@@ -31,26 +40,27 @@ public class SecurityRuleCommandTest {
     public static final String A_VALID_NETWORK_ID = "aValidNetworkId";
     public static final String VALID_FNS_SERVICE_URL = "https://valid-fns-service.com";
     public static final String A_VALID_RULE_ID = "aValidRuleId";
-    private HttpClient mockHttpClient;
 
     private SecurityRule securityRule;
+    private SecurityRuleCommand securityRuleCommand;
+    private FogbowCliHttpUtil fogbowCliHttpUtil;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws FogbowException {
         int port = -1;
         String cidr = "test-cidr";
         String direction = "IN";
         String etherType = "IPv4";
         String icmp = "ICMP";
         securityRule = new SecurityRule(null, cidr, port, port, direction, etherType, icmp);
+        this.securityRuleCommand = new SecurityRuleCommand();
 
-        initHttpClient();
+        this.fogbowCliHttpUtil = HttpClientMocker.init();
+        securityRuleCommand.setFogbowCliHttpUtil(fogbowCliHttpUtil);
     }
 
     @Test
-    public void testCreateSGRForNetwork() throws IOException, FogbowCLIException {
-        SecurityRuleCommand securityRuleCommand = new SecurityRuleCommand();
-
+    public void testCreateSGRForNetwork() throws IOException, FogbowCLIException, FogbowException {
         JCommander.newBuilder()
             .addObject(securityRuleCommand)
             .build()
@@ -67,28 +77,19 @@ public class SecurityRuleCommandTest {
                     SecurityRule.PORT_TO_COMMAND_KEY, new Integer(securityRule.getPortTo()).toString()
             );
 
-        String expectedJson = new Gson().toJson(securityRule);
-        String expectedUri = StringUtils.join(Arrays.asList(
-                VALID_FNS_SERVICE_URL,
+        HashMap expectedBody = securityRule.getHTTPHashMap();
+        String path = StringUtils.join(Arrays.asList(
                 NetworkCommand.ENDPOINT, A_VALID_NETWORK_ID,
                 SecurityRuleCommand.ENDPOINT),
                 "/");
 
-        HttpPost post = new HttpPost(expectedUri);
-        post.setEntity(new StringEntity(expectedJson));
-        post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, A_VALID_TOKEN);
-        post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
-        HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
-
         securityRuleCommand.run();
 
-        Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+        verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.POST, path, expectedBody);
     }
 
     @Test
-    public void testDeleteSGRFromNetwork() throws IOException, FogbowCLIException {
-        SecurityRuleCommand securityRuleCommand = new SecurityRuleCommand();
-
+    public void testDeleteSGRFromNetwork() throws IOException, FogbowCLIException, FogbowException {
         JCommander.newBuilder()
                 .addObject(securityRuleCommand)
                 .build()
@@ -100,30 +101,14 @@ public class SecurityRuleCommandTest {
                         SecurityRule.INSTANCE_ID_COMMAND_KEY, A_VALID_RULE_ID
                 );
 
-        String deleteRuleUrl = StringUtils.join(Arrays.asList(
-                VALID_FNS_SERVICE_URL,
+        String path = StringUtils.join(Arrays.asList(
                 NetworkCommand.ENDPOINT,
                 A_VALID_NETWORK_ID,
                 SecurityRuleCommand.ENDPOINT,
                 A_VALID_RULE_ID), "/");
 
-        HttpDelete delete = new HttpDelete(deleteRuleUrl);
-        delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, A_VALID_TOKEN);
-        HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
-
         securityRuleCommand.run();
 
-        Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+        verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.DELETE, path);
     }
-
-    private void initHttpClient() throws IOException {
-        mockHttpClient = Mockito.mock(HttpClient.class);
-        HttpResponseFactory factory = new DefaultHttpResponseFactory();
-        HttpResponse response = factory.newHttpResponse(
-                new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_CREATED, "Return Irrelevant"), null);
-        response.setEntity(new StringEntity("{}"));
-        Mockito.when(mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
-        HttpUtil.setHttpClient(mockHttpClient);
-    }
-
 }
