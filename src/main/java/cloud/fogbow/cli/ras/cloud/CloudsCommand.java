@@ -37,7 +37,7 @@ public class CloudsCommand {
 
     public String doGetAll() throws FogbowException {
         String fullPath = ENDPOINT;
-        return authenticatedRequest.doAuthenticatedGET(fullPath);
+        return authenticatedRequest.doAuthenticatedGet(fullPath);
     }
 
     public String doGet() throws FogbowCLIException, FogbowException {
@@ -45,7 +45,7 @@ public class CloudsCommand {
             throw new FogbowCLIException(Messages.Exception.INCOMPLETE_COMMAND);
         }
         String fullPath = ENDPOINT + "/" + this.memberId;
-        return authenticatedRequest.doAuthenticatedGET(fullPath);
+        return authenticatedRequest.doAuthenticatedGet(fullPath);
     }
 
     public Boolean getIsGetCommand() {

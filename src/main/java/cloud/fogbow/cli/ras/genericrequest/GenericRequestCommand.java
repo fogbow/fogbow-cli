@@ -28,22 +28,10 @@ public class GenericRequestCommand {
 
     public String run() throws FogbowException {
         String fullUrl = ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
-        HashMap body = genericRequest.getHTTPHashMap();
+        HashMap body = genericRequest.getHttpHashMap();
         String httpResponse = fogbowCliHttpUtil.doGenericAuthenticatedRequest(HttpMethod.POST, fullUrl, body);
 
         return httpResponse;
-    }
-
-    private HttpMethod getHetHttpMethod(String method){
-        switch(method.toUpperCase()){
-            case "GET":
-                return HttpMethod.GET;
-            case "DELlTE":
-                return HttpMethod.DELETE;
-            case "POST":
-                return HttpMethod.POST;
-        }
-        throw new IllegalArgumentException(/**TODO*/);
     }
 }
 

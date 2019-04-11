@@ -30,7 +30,7 @@ public class FogbowCliHttpUtil {
         return HttpRequestClient.doGenericRequest(method, endpoint, headers, body);
     }
 
-    public String doAuthenticatedGET(String fullPath)
+    public String doAuthenticatedGet(String fullPath)
             throws FogbowException {
         return doGenericAuthenticatedRequest(HttpMethod.GET, fullPath, new HashMap(), new HashMap());
     }

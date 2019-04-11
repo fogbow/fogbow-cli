@@ -25,15 +25,15 @@ public class ComputeWrappedWithFedNet extends Compute implements FogbowCliResour
     }
 
     @Override
-    public HashMap getHTTPHashMap() throws InvalidParameterException {
+    public HashMap getHttpHashMap() throws InvalidParameterException {
         HashMap computeOrder = null;
 
         if(federatedNetworkId != null){
             computeOrder = new HashMap();
             computeOrder.put(FEDNET_ID_JSON_KEY, federatedNetworkId);
-            computeOrder.put(COMPUTE_ORDER_JSON_KEY, super.getHTTPHashMap());
+            computeOrder.put(COMPUTE_ORDER_JSON_KEY, super.getHttpHashMap());
         } else {
-            computeOrder = super.getHTTPHashMap();
+            computeOrder = super.getHttpHashMap();
         }
 
         return computeOrder;

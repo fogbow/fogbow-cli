@@ -81,7 +81,7 @@ public class ComputeCommandTest {
 		    );
 
 		ComputeWrappedWithFedNet computeWrappedWithFedNet = new ComputeWrappedWithFedNet(this.compute);
-		HashMap expectedBody = CommandUtil.removeNullEntries(this.compute.getHTTPHashMap());
+		HashMap expectedBody = CommandUtil.removeNullEntries(this.compute.getHttpHashMap());
 		String path = ComputeCommand.ENDPOINT;
 
 		this.computeCommand.run();

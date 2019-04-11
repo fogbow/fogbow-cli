@@ -57,7 +57,7 @@ public class NetworkCommandTest {
 					Network.NAME_COMMAND_KEY, this.network.getName()
 		    );
 
-		HashMap expectedBody = CommandUtil.removeNullEntries(this.network.getHTTPHashMap());
+		HashMap expectedBody = CommandUtil.removeNullEntries(this.network.getHttpHashMap());
 		String path = NetworkCommand.ENDPOINT;
 
 		this.networkCommand.run();

@@ -67,7 +67,7 @@ public class ComputeCommand {
     }
 
     private HashMap getComputeBody() throws InvalidParameterException {
-        HashMap body = compute.getHTTPHashMap();
+        HashMap body = compute.getHttpHashMap();
         body.put(CLOUD_NAME_KEY, orderCommand.getCloudName());
         return body;
     }

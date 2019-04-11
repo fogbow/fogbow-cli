@@ -143,7 +143,7 @@ public class Compute implements FogbowCliResource {
 	}
 
 	@Override
-	public HashMap getHTTPHashMap() throws InvalidParameterException {
+	public HashMap getHttpHashMap() throws InvalidParameterException {
 		HashMap body = new HashMap();
 
 		HashMap requiredParams = getRequiredParams();

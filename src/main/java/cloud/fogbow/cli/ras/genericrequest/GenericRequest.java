@@ -49,7 +49,7 @@ public class GenericRequest implements FogbowCliResource {
     }
 
     @Override
-    public HashMap getHTTPHashMap() {
+    public HashMap getHttpHashMap() {
         HashMap body = new HashMap();
 
         if(this.body == null){

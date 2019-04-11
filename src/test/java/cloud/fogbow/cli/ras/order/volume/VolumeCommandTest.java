@@ -61,7 +61,7 @@ public class VolumeCommandTest {
 					Volume.REQUIREMENTS, requirementsString
 					);
 	
-		HashMap expectedBody = CommandUtil.removeNullEntries(this.volume.getHTTPHashMap());
+		HashMap expectedBody = CommandUtil.removeNullEntries(this.volume.getHttpHashMap());
 		String path = VolumeCommand.ENDPOINT;
 
 		this.volumeCommand.run();

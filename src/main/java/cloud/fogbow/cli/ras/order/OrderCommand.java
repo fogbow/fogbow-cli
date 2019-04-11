@@ -63,7 +63,7 @@ public class OrderCommand {
 		String fullPath = this.endpoint;
 
 		HashMap body = getCommonParameters();
-		HashMap resourceSpecificParams = fogbowCliResource.getHTTPHashMap();
+		HashMap resourceSpecificParams = fogbowCliResource.getHttpHashMap();
 		CommandUtil.extendMap(body, resourceSpecificParams);
 
 		body = CommandUtil.removeNullEntries(body);

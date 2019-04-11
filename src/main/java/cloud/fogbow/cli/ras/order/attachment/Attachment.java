@@ -58,7 +58,7 @@ public class Attachment implements FogbowCliResource {
 	}
 
 	@Override
-	public HashMap getHTTPHashMap() {
+	public HashMap getHttpHashMap() {
 		HashMap body = new HashMap();
 
 		body.put(COMPUTE_ID_KEY, this.computeId);

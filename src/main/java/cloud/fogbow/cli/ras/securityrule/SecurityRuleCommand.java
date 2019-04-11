@@ -67,7 +67,7 @@ public class SecurityRuleCommand {
                 completeUrl = StringUtils.join(Arrays.asList(PublicIpCommand.ENDPOINT, publicIpId, ENDPOINT), "/");
             }
 
-            HashMap body = securityRule.getHTTPHashMap();
+            HashMap body = securityRule.getHttpHashMap();
             String httpResponse = authenticatedRequest.doGenericAuthenticatedRequest(HttpMethod.POST, completeUrl, body);
             return httpResponse;
         } else {

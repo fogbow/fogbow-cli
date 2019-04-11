@@ -75,7 +75,7 @@ public class Volume implements FogbowCliResource {
 	}
 
 	@Override
-	public HashMap getHTTPHashMap() {
+	public HashMap getHttpHashMap() {
 		HashMap body = new HashMap();
 
 		body.put(NAME_KEY, this.name);

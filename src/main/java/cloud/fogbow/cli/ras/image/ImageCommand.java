@@ -50,7 +50,7 @@ public class ImageCommand  {
 			throw new ParameterException(Messages.Exception.NO_ID_INFORMED);
 		} else {
 			String path = ENDPOINT + "/" + this.memberId + "/" + this.cloudName + "/" + this.imageID;
-			String imageData = fogbowCliHttpUtil.doAuthenticatedGET(path);
+			String imageData = fogbowCliHttpUtil.doAuthenticatedGet(path);
 			return imageData;
 		}
 	}
@@ -58,7 +58,7 @@ public class ImageCommand  {
 	public String doGetAll() throws FogbowCLIException, FogbowException {
 		String path = ENDPOINT + "/" + this.memberId + "/" + this.cloudName;
 
-		String allImages = fogbowCliHttpUtil.doAuthenticatedGET(path);
+		String allImages = fogbowCliHttpUtil.doAuthenticatedGet(path);
 
 		return allImages;
 	}

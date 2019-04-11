@@ -67,7 +67,7 @@ public class Network implements FogbowCliResource {
 	}
 
 	@Override
-	public HashMap getHTTPHashMap() {
+	public HashMap getHttpHashMap() {
 		HashMap body = new HashMap();
 
 		body.put(ALLOCATION_MODE_KEY, this.allocation);

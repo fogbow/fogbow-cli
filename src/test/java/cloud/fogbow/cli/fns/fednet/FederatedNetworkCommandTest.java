@@ -62,7 +62,7 @@ public class FederatedNetworkCommandTest {
 		this.federatedNetworkCommand.run();
 
 		String path = FederatedNetworkCommand.ENDPOINT;
-		HashMap expectedBody = federatedNetwork.getHTTPHashMap();
+		HashMap expectedBody = federatedNetwork.getHttpHashMap();
 		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.POST, path, expectedBody);
 	}
 

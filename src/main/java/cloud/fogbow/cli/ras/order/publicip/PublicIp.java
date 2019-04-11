@@ -36,7 +36,7 @@ public class PublicIp implements FogbowCliResource {
     }
 
     @Override
-    public HashMap getHTTPHashMap() {
+    public HashMap getHttpHashMap() {
         HashMap body = new HashMap();
 
         body.put(HttpCommonParameters.PROVIDER, this.provider);

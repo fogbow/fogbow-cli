@@ -55,7 +55,7 @@ public class AttachmentCommandTest {
 		    		Attachment.DEVICE_COMMAND_KEY, attachment.getDevice()
 		    );
 
-		HashMap expectedBody = CommandUtil.removeNullEntries(this.attachment.getHTTPHashMap());
+		HashMap expectedBody = CommandUtil.removeNullEntries(this.attachment.getHttpHashMap());
 		String path = AttachmentCommand.ENDPOINT;
 
 		this.attachmentCommand.run();

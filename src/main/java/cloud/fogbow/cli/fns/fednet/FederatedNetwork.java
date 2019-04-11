@@ -47,7 +47,7 @@ public class FederatedNetwork implements FogbowCliResource {
 	}
 
 	@Override
-	public HashMap getHTTPHashMap() {
+	public HashMap getHttpHashMap() {
 		HashMap body = new HashMap();
 
 		body.put(CIDR_JSON_KEY, this.cidrNotation);

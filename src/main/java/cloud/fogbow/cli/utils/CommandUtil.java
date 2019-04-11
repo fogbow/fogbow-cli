@@ -17,11 +17,11 @@ public class CommandUtil {
         return getFileContent(publicKeyValue, publicKeyPath, Messages.Exception.NO_PUBLIC_KEY_PROVIDED).replace("\n", "");
     }
 
-    public static String getFileContent(String providedResourcePath, String NoResourceFoundException) throws FogbowCLIException {
-        return getFileContent(null, providedResourcePath, NoResourceFoundException);
+    public static String getFileContent(String providedResourcePath, String errorMessage) throws FogbowCLIException {
+        return getFileContent(null, providedResourcePath, errorMessage);
     }
 
-    public static String getFileContent(String providedRawValue, String providedResourcePath, String NoResourceFoundException) throws FogbowCLIException {
+    public static String getFileContent(String providedRawValue, String providedResourcePath, String errorMessage) throws FogbowCLIException {
         providedResourcePath = parsePath(providedResourcePath);
 
         String actualvalue = null;
@@ -32,23 +32,23 @@ public class CommandUtil {
                 try {
                     actualvalue = FileUtils.readFileToString(providedResourcePath);
                 } catch (IOException e) {
-                    throw new FogbowCLIException(NoResourceFoundException);
+                    throw new FogbowCLIException(errorMessage);
                 }
             } else {
-                throw new FogbowCLIException(NoResourceFoundException);
+                throw new FogbowCLIException(errorMessage);
             }
         }
         return actualvalue;
     }
 
-    public static void extendMap(HashMap destiantion, HashMap source){
+    public static void extendMap(HashMap destination, HashMap source){
         for (Object obj: source.entrySet()){
 
             Map.Entry entry = (Map.Entry) obj;
             Object key = entry.getKey();
             Object value = entry.getValue();
 
-            destiantion.put(key, value);
+            destination.put(key, value);
         }
     }
 

@@ -61,7 +61,7 @@ public class SecurityRuleCommandTest {
                     SecurityRule.PORT_TO_COMMAND_KEY, new Integer(securityRule.getPortTo()).toString()
             );
 
-        HashMap expectedBody = securityRule.getHTTPHashMap();
+        HashMap expectedBody = securityRule.getHttpHashMap();
         String path = StringUtils.join(Arrays.asList(
                 NetworkCommand.ENDPOINT, A_VALID_NETWORK_ID,
                 SecurityRuleCommand.ENDPOINT),

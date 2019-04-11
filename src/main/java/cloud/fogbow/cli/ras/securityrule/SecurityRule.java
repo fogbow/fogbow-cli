@@ -86,7 +86,7 @@ public class SecurityRule implements FogbowCliResource {
     }
 
     @Override
-    public HashMap getHTTPHashMap() {
+    public HashMap getHttpHashMap() {
         HashMap body = new HashMap();
 
         body.put(CIDR_HTTP_FIELD, this.cidr);
