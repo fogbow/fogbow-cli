@@ -1,14 +1,22 @@
 package cloud.fogbow.cli.ras.order.volume;
 
-import com.beust.jcommander.Parameter;
+import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.constants.Documentation;
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import cloud.fogbow.cli.utils.KeyValueUtil.KeyValueConverter;
+import com.beust.jcommander.Parameter;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class Volume {
-	
-	public static final String PROVIDER_COMMAND_KEY =  "--provider";
-	@Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
+public class Volume implements FogbowCliResource {
+	public static final String NAME_KEY = "name";
+	public static final String PROVIDER_KEY = "provider";
+	public static final String REQUIREMENTS_KEY = "requirements";
+	public static final String VOLUME_SIZE_KEY = "volumeSize";
+
+	@Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
+			description = Documentation.CommonParameters.PROVIDER)
 	private String provider = null;
 	
 	public static final String VOLUME_SIZE_COMMAND_KEY =  "--volume-size";
@@ -65,4 +73,17 @@ public class Volume {
 	public void setRequirements(Map<String, String> requirements) {
 		this.requirements = requirements;
 	}
+
+	@Override
+	public HashMap getHttpHashMap() {
+		HashMap body = new HashMap();
+
+		body.put(NAME_KEY, this.name);
+		body.put(PROVIDER_KEY, this.provider);
+		body.put(REQUIREMENTS_KEY, this.requirements);
+		body.put(VOLUME_SIZE_KEY, this.volumeSize);
+
+		return body;
+	}
 }
+

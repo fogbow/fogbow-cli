@@ -1,27 +1,29 @@
 package cloud.fogbow.cli;
 
+import cloud.fogbow.cli.as.token.TokenCommand;
+import cloud.fogbow.cli.constants.Messages;
+import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.cli.fns.fednet.FederatedNetworkCommand;
+import cloud.fogbow.cli.ms.member.MemberCommand;
+import cloud.fogbow.cli.ras.cloud.CloudsCommand;
+import cloud.fogbow.cli.ras.genericrequest.GenericRequestCommand;
+import cloud.fogbow.cli.ras.image.ImageCommand;
+import cloud.fogbow.cli.ras.info.PublicKeyCommand;
+import cloud.fogbow.cli.ras.info.VersionCommand;
+import cloud.fogbow.cli.ras.order.attachment.AttachmentCommand;
+import cloud.fogbow.cli.ras.order.compute.ComputeCommand;
+import cloud.fogbow.cli.ras.order.network.NetworkCommand;
+import cloud.fogbow.cli.ras.order.publicip.PublicIpCommand;
+import cloud.fogbow.cli.ras.order.volume.VolumeCommand;
+import cloud.fogbow.cli.ras.securityrule.SecurityRuleCommand;
+import cloud.fogbow.common.exceptions.FogbowException;
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
+
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-
-import cloud.fogbow.cli.constants.Messages;
-import cloud.fogbow.cli.ras.cloud.CloudsCommand;
-import cloud.fogbow.cli.ms.member.MemberCommand;
-import cloud.fogbow.cli.ras.order.compute.ComputeCommand;
-import cloud.fogbow.cli.as.token.TokenCommand;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
-import cloud.fogbow.cli.ras.genericrequest.GenericRequestCommand;
-import cloud.fogbow.cli.ras.image.ImageCommand;
-import cloud.fogbow.cli.ras.order.publicip.PublicIpCommand;
-import cloud.fogbow.cli.ras.securityrule.SecurityRuleCommand;
-import cloud.fogbow.cli.ras.order.attachment.AttachmentCommand;
-import cloud.fogbow.cli.fns.fednet.FederatedNetworkCommand;
-import cloud.fogbow.cli.ras.order.network.NetworkCommand;
-import cloud.fogbow.cli.ras.order.volume.VolumeCommand;
-
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
 
 public class Main {
 	public static final String FOGBOW_CLI_PREFIX = "fogbow-cli: ";
@@ -38,9 +40,11 @@ public class Main {
 			"  * image" + LINE_BREAK +
 			"  * member" + LINE_BREAK +
 			"  * network" + LINE_BREAK +
+			"  * public-key" + LINE_BREAK +
 			"  * public-ip" + LINE_BREAK +
 			"  * security-rule" + LINE_BREAK +
 			"  * token" + LINE_BREAK +
+			"  * version" + LINE_BREAK +
 			"  * volume" + LINE_BREAK +
 			LINE_BREAK +
 			LINE_BREAK +
@@ -56,9 +60,11 @@ public class Main {
 	private ImageCommand imageCommand;
 	private MemberCommand memberCommand;
 	private NetworkCommand networkCommand;
+	private PublicKeyCommand publicKeyCommand;
 	private PublicIpCommand publicIpCommand;
 	private SecurityRuleCommand securityRuleCommand;
 	private TokenCommand tokenCommand;
+	private VersionCommand versionCommand;
 	private VolumeCommand volumeCommand;
 
 	private JCommander jCommander;
@@ -76,9 +82,11 @@ public class Main {
 		main.imageCommand = new ImageCommand();
 		main.memberCommand = new MemberCommand();
 		main.networkCommand = new NetworkCommand();
-		main.publicIpCommand = new PublicIpCommand();
+		main.publicKeyCommand = new PublicKeyCommand();
 		main.securityRuleCommand = new SecurityRuleCommand();
+		main.publicIpCommand = new PublicIpCommand();
 		main.tokenCommand = new TokenCommand();
+		main.versionCommand = new VersionCommand();
 		main.volumeCommand = new VolumeCommand();
 
 		main.jCommander = JCommander.newBuilder()
@@ -90,9 +98,11 @@ public class Main {
 				.addCommand(ImageCommand.NAME, main.imageCommand)
 				.addCommand(MemberCommand.NAME, main.memberCommand)
 				.addCommand(NetworkCommand.NAME, main.networkCommand)
+				.addCommand(PublicKeyCommand.NAME, main.publicKeyCommand)
 				.addCommand(PublicIpCommand.NAME, main.publicIpCommand)
 				.addCommand(SecurityRuleCommand.NAME, main.securityRuleCommand)
 				.addCommand(TokenCommand.NAME, main.tokenCommand)
+				.addCommand(VersionCommand.NAME, main.versionCommand)
 				.addCommand(VolumeCommand.NAME, main.volumeCommand)
 				.build();
 
@@ -102,7 +112,7 @@ public class Main {
 			main.jCommander.parse(args);
 			String output = main.run();
 			Main.printToConsole(output);
-		} catch (FogbowCLIException e) {
+		} catch (FogbowCLIException | FogbowException e) {
 			Main.printToConsole(e);
 			Main.printToConsole(e.getMessage());
 			Main.printToConsole(e.getCause());
@@ -116,7 +126,7 @@ public class Main {
 		}
 	}
 
-	private String run() throws IOException, FogbowCLIException {
+	private String run() throws IOException, FogbowCLIException, FogbowException {
 		String output = null;
 
 		if (this.jCommander.getParsedCommand() == null) {
@@ -147,6 +157,9 @@ public class Main {
 				case NetworkCommand.NAME:
 					output = this.networkCommand.run();
 					break;
+				case PublicKeyCommand.NAME:
+					output = this.publicKeyCommand.run();
+					break;
 				case PublicIpCommand.NAME:
 					output = this.publicIpCommand.run();
 					break;
@@ -155,6 +168,9 @@ public class Main {
 					break;
 				case TokenCommand.NAME:
 					output = this.tokenCommand.run();
+					break;
+				case VersionCommand.NAME:
+					output = this.versionCommand.run();
 					break;
 				case VolumeCommand.NAME:
 					output = this.volumeCommand.run();

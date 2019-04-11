@@ -1,21 +1,27 @@
 package cloud.fogbow.cli.ras.order.publicip;
 
+import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.constants.Documentation;
+import cloud.fogbow.cli.constants.HttpCommonParameters;
+import cloud.fogbow.cli.ras.FogbowCliResource;
 import com.beust.jcommander.Parameter;
 
-public class PublicIp {
+import java.util.HashMap;
 
-    public static final String PROVIDER_COMMAND_KEY =  "--provider";
-    @Parameter(names = {PROVIDER_COMMAND_KEY}, description = "Provider")
-    private String provider;
+public class PublicIp implements FogbowCliResource {
 
-    public static final String COMPUTE_ID_COMMAND_KEY =  "--computeId";
-    @Parameter(names = {COMPUTE_ID_COMMAND_KEY}, description = "Id of the compute to associate this ip with")
-    private String computeOrderId;
+    @Parameter(names = CliCommonParameters.COMPUTE_ID_COMMAND_KEY,
+            description = Documentation.CommonParameters.COMPUTE_ID_PARAMETER, required = true)
+    public String computeId = null;
+
+    @Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},
+            description = Documentation.CommonParameters.PROVIDER)
+    private String provider = null;
 
     public PublicIp(String provider, String computeOrderId) {
         super();
         this.provider = provider;
-        this.computeOrderId = computeOrderId;
+        this.computeId = computeOrderId;
     }
 
     public PublicIp() {
@@ -25,7 +31,17 @@ public class PublicIp {
         return provider;
     }
 
-    public String getComputeOrderId() {
-        return computeOrderId;
+    public String getComputeId() {
+        return computeId;
+    }
+
+    @Override
+    public HashMap getHttpHashMap() {
+        HashMap body = new HashMap();
+
+        body.put(HttpCommonParameters.PROVIDER, this.provider);
+        body.put(HttpCommonParameters.COMPUTE_ID, this.computeId);
+
+        return body;
     }
 }

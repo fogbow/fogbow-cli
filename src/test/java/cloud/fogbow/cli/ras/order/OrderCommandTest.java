@@ -1,19 +1,17 @@
 package cloud.fogbow.cli.ras.order;
 
 import cloud.fogbow.cli.constants.CliCommonParameters;
-import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import cloud.fogbow.cli.ras.order.volume.Volume;
 import cloud.fogbow.cli.ras.order.volume.VolumeCommand;
+import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.JCommander;
-import org.apache.http.client.ClientProtocolException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OrderCommandTest {
 
@@ -40,7 +38,7 @@ public class OrderCommandTest {
     }
 
     @Test
-    public void testGetFederationTokenPassingTokenFilePath() throws FogbowCLIException {
+    public void testGetFederationTokenPassingTokenFilePath() throws FogbowException {
 
         String resourcesPath = "src/test/resource/";
         String fileName = "get_content";

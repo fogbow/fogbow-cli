@@ -1,41 +1,34 @@
 package cloud.fogbow.cli.ras.order.attachment;
 
-import java.io.IOException;
-
-import cloud.fogbow.cli.HttpUtil;
+import cloud.fogbow.cli.FogbowCliHttpUtil;
+import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
-import cloud.fogbow.cli.ras.order.OrderCommand;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseFactory;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.DefaultHttpResponseFactory;
-import org.apache.http.message.BasicStatusLine;
-import cloud.fogbow.cli.HttpRequestMatcher;
 import cloud.fogbow.cli.exceptions.FogbowCLIException;
+import cloud.fogbow.cli.ras.order.OrderCommand;
+import cloud.fogbow.cli.utils.CommandUtil;
+import cloud.fogbow.common.constants.HttpMethod;
+import cloud.fogbow.common.exceptions.FogbowException;
+import com.beust.jcommander.JCommander;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import com.beust.jcommander.JCommander;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.HashMap;
+
+import static org.mockito.Mockito.verify;
 
 public class AttachmentCommandTest {
 	private Attachment attachment;
 	private AttachmentCommand attachmentCommand = new AttachmentCommand();
-	private HttpClient mockHttpClient;
-	
+
 	private final String url = "my-url";
 	private final String token = "my-token";
 	private final String id = "my-id";
+
+	private FogbowCliHttpUtil fogbowCliHttpUtil;
 	
 	@Before
-	public void setUp() throws IOException {
+	public void setUp() throws IOException, FogbowException {
 		this.attachment = new Attachment(
 				"my-provider",
 				"source",
@@ -43,11 +36,12 @@ public class AttachmentCommandTest {
 				"device"
 		);
 		this.attachmentCommand = new AttachmentCommand();
-		initHttpClient();
+		this.fogbowCliHttpUtil = HttpClientMocker.init();
+		attachmentCommand.setFogbowCliHttpUtil(fogbowCliHttpUtil);
 	}
 	
 	@Test
-	public void testRunCreateCommand() throws FogbowCLIException, IOException {
+	public void testRunCreateCommand() throws IOException, FogbowException {
 		JCommander.newBuilder()
 		    .addObject(this.attachmentCommand)
 		    .build()
@@ -55,26 +49,22 @@ public class AttachmentCommandTest {
 		    		OrderCommand.CREATE_COMMAND_KEY,
 					CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
 					CliCommonParameters.URL_COMMAND_KEY, this.url,
-		    		Attachment.PROVIDER_COMMAND_KEY, attachment.getProvider(),
+					CliCommonParameters.PROVIDER_COMMAND_KEY, attachment.getProvider(),
 		    		Attachment.VOLUME_ID_COMMAND_KEY, attachment.getVolumeId(),
 		    		Attachment.COMPUTE_ID_COMMAND_KEY, attachment.getComputeId(),
 		    		Attachment.DEVICE_COMMAND_KEY, attachment.getDevice()
-		    ); 
-	
-		String computeJson = new Gson().toJson(this.attachment);
-		HttpPost post = new HttpPost(this.url + AttachmentCommand.ENDPOINT);
-		post.setEntity(new StringEntity(computeJson));
-		post.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		post.setHeader(HttpUtil.CONTENT_TYPE_KEY, HttpUtil.JSON_CONTENT_TYPE_KEY);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(post);
+		    );
+
+		HashMap expectedBody = CommandUtil.removeNullEntries(this.attachment.getHttpHashMap());
+		String path = AttachmentCommand.ENDPOINT;
 
 		this.attachmentCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.POST, path, expectedBody);
 	}
 	
 	@Test
-	public void testRunDeleteCommand() throws FogbowCLIException, IOException {
+	public void testRunDeleteCommand() throws FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.attachmentCommand)
 				.build()
@@ -84,17 +74,15 @@ public class AttachmentCommandTest {
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
-		HttpDelete delete = new HttpDelete(this.url + AttachmentCommand.ENDPOINT + '/' + this.id);
-		delete.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(delete);
+		String path = AttachmentCommand.ENDPOINT + '/' + this.id;
 
 		this.attachmentCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.DELETE, path);
 	}
 	
 	@Test
-	public void testRunGetCommand() throws FogbowCLIException, IOException {
+	public void testRunGetCommand() throws FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.attachmentCommand)
 				.build()
@@ -104,17 +92,15 @@ public class AttachmentCommandTest {
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
-		HttpGet get = new HttpGet(this.url + AttachmentCommand.ENDPOINT + '/' + this.id);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedPostRequest = new HttpRequestMatcher(get);
+		String path = AttachmentCommand.ENDPOINT + '/' + this.id;
 
 		this.attachmentCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedPostRequest));
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
 	}
 	
 	@Test
-	public void testRunGetStatusCommand() throws FogbowCLIException, IOException {
+	public void testRunGetStatusCommand() throws FogbowCLIException, IOException, FogbowException {
 		JCommander.newBuilder()
 				.addObject(this.attachmentCommand)
 				.build()
@@ -124,22 +110,10 @@ public class AttachmentCommandTest {
 						CliCommonParameters.URL_COMMAND_KEY, this.url,
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
-		HttpGet get = new HttpGet(this.url + AttachmentCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY);
-		get.setHeader(HttpUtil.SYSTEM_USER_TOKEN_HEADER_KEY, token);
-		HttpRequestMatcher expectedRequest = new HttpRequestMatcher(get);
+		String path = AttachmentCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY;
 
 		this.attachmentCommand.run();
 
-		Mockito.verify(this.mockHttpClient).execute(Mockito.argThat(expectedRequest));
-	}
-
-	private void initHttpClient() throws IOException {
-		this.mockHttpClient = Mockito.mock(HttpClient.class);
-		HttpResponseFactory factory = new DefaultHttpResponseFactory();
-		HttpResponse response = factory.newHttpResponse(
-				new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_CREATED, "Return Irrelevant"), null);
-		response.setEntity(new StringEntity("{}"));
-		Mockito.when(this.mockHttpClient.execute(Mockito.any(HttpPost.class))).thenReturn(response);
-		HttpUtil.setHttpClient(this.mockHttpClient);
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
 	}
 }
