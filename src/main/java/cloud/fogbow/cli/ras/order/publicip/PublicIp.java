@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class PublicIp implements FogbowCliResource {
 
     @Parameter(names = CliCommonParameters.COMPUTE_ID_COMMAND_KEY,
-            description = Documentation.CommonParameters.COMPUTE_ID_PARAMETER, required = true)
+            description = Documentation.CommonParameters.COMPUTE_ID_PARAMETER)
     public String computeId = null;
 
     @Parameter(names = {CliCommonParameters.PROVIDER_COMMAND_KEY},

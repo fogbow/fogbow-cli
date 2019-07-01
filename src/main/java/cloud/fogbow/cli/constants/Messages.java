@@ -5,6 +5,7 @@ public class Messages {
         public static final String CLOUD_NAME_NOT_ALLOWED = "No need to specify a cloud name.";
         public static final String EMPTY_COMMAND = "Command is empty.";
         public static final String INCOMPLETE_COMMAND = "Missing manadatory fields in the command.";
+        public static final String INCOMPLETE_COMMAND_S = "Missing manadatory fields in the command. %s required";
         public static final String INCONSISTENT_PARAMS = "Invalid options; use either %s or %s.";
         public static final String INVALID_PARAMETER_S_S = "Parameter <%s> should be one of <%s>.";
         public static final String INVALID_KEY_VALUE_FORMAT = "Key-values should be in the form: " +

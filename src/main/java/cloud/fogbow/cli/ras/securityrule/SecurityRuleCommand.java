@@ -22,6 +22,7 @@ public class SecurityRuleCommand {
     public static final String CREATE_COMMAND_KEY = "--create";
     public static final String DELETE_COMMAND_KEY = "--delete";
     public static final String GET_COMMAND_KEY = "--get";
+    public static final String GET_ALL_COMMAND_KEY = "--get-all";
     public static final String NETWORK_ID_COMMAND_KEY = "--network-id";
     public static final String PUBLIC_IP_COMMAND_KEY = "--public-ip-id";
 
@@ -31,8 +32,8 @@ public class SecurityRuleCommand {
     @Parameter(names = DELETE_COMMAND_KEY)
     private Boolean isDeleteCommand = false;
 
-    @Parameter(names = GET_COMMAND_KEY)
-    private Boolean isGetCommand = false;
+    @Parameter(names = GET_ALL_COMMAND_KEY)
+    private Boolean isGetAllCommand = false;
 
     @Parameter(names = NETWORK_ID_COMMAND_KEY)
     private String networkId;
@@ -51,8 +52,8 @@ public class SecurityRuleCommand {
             return doCreate(securityRule);
         } else if(isDeleteCommand()) {
             return doDelete(securityRule);
-        } else if(isGetCommand()){
-            return doGet(securityRule);
+        } else if(isGetAllCommand()){
+            return doGetAll(securityRule);
         } else {
             throw new ParameterException(String.format(Messages.Exception.INCONSISTENT_PARAMS, CREATE_COMMAND_KEY, DELETE_COMMAND_KEY));
         }
@@ -100,7 +101,7 @@ public class SecurityRuleCommand {
         return httpResponse;
     }
 
-    private String doGet(SecurityRule securityRule) throws FogbowException {
+    private String doGetAll(SecurityRule securityRule) throws FogbowException {
         if (networkId != null ^ publicIpId != null) {
             String completeUrl;
             if (networkId != null) {
@@ -125,8 +126,8 @@ public class SecurityRuleCommand {
         return this.isDeleteCommand;
     }
 
-    public Boolean isGetCommand() {
-        return this.isGetCommand;
+    public Boolean isGetAllCommand() {
+        return this.isGetAllCommand;
     }
 
     public void setFogbowCliHttpUtil(FogbowCliHttpUtil fogbowCliHttpUtil) {

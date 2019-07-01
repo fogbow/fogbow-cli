@@ -1,5 +1,6 @@
 package cloud.fogbow.cli.ras.order.publicip;
 
+import cloud.fogbow.cli.constants.CliCommonParameters;
 import cloud.fogbow.cli.constants.Messages;
 import cloud.fogbow.cli.ras.order.OrderCommand;
 import cloud.fogbow.common.exceptions.FogbowException;
@@ -19,11 +20,12 @@ public class PublicIpCommand {
 
     public String run() throws FogbowException {
         if (this.orderCommand.getIsCreateCommand()) {
+            if (publicIp.getComputeId() == null) {
+                throw new ParameterException(String.format(Messages.Exception.INCOMPLETE_COMMAND_S, CliCommonParameters.COMPUTE_ID_COMMAND_KEY));
+            }
             return orderCommand.doCreate();
         } else if (this.orderCommand.getIsDeleteCommand()) {
             return orderCommand.doDelete();
-        } else if (this.orderCommand.getIsGetCommand()) {
-            return orderCommand.doGet();
         } else if (this.orderCommand.getIsGetAllCommand()) {
             return orderCommand.doGetAll();
         }
