@@ -76,6 +76,23 @@ Get the ids of all federation members.
 --url (required)
 ```
 
+### Cloud operations
+
+#### List all clouds of that RAS instance
+
+```
+--get-all (required)
+--url (required)
+```
+
+#### List clouds of a specific member
+
+```
+--url (required)
+--get (required)
+--member-id (required)
+```
+
 
 ### Images operations (image)
 
@@ -143,7 +160,7 @@ Get informationabout a specific instance.
 Get status for all instances orders associated to a particular user's token.
 
 ```
---get-all-status (required)
+--get-all (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -196,7 +213,7 @@ Get status for all instances orders associated to a particular user's token.
 #### Get all computes status
 
 ```
---get-all-status (required)
+--get-all (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -206,6 +223,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-allocation (required)
 --member-id (required)
+--cloud-name (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -215,6 +233,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --get-quota (required)
 --member-id (required)
+--cloud-name (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -255,7 +274,7 @@ Get status for all instances orders associated to a particular user's token.
 #### Get All Federated Networks Status
 
 ```
---get-all-status (required)
+--get-all (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -299,7 +318,7 @@ Get status for all instances orders associated to a particular user's token.
 #### Get all networks status
 
 ```
---get-all-status (required)
+--get-all (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -340,7 +359,7 @@ Get status for all instances orders associated to a particular user's token.
 #### Get all volumes status
 
 ```
---get-all-status (required)
+--get-all (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -383,18 +402,19 @@ Get status for all instances orders associated to a particular user's token.
 #### Get Status of All Public Ips Status
 
 ```
---get-all-status
+--get-all
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
 
 
-### Security Group Rules (security-group-rules)
+### Security Group Rules (security-rule)
 
 #### Create Security Group Rule
 
 ```
 --create
+--public-ip-id or --network-id (required)
 --direction
 --portFrom
 --portTo
