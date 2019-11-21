@@ -3,4 +3,4 @@ command -v java >/dev/null 2>&1 || { echo >&2 "You need to have java installed."
 SCRIPT_PATH=`readlink -f $0`
 DIRNAME=`dirname $SCRIPT_PATH`
 cd $DIRNAME/..
-java -cp target/fogbow-cli-core-0.0.1-SNAPSHOT-jar-with-dependencies.jar org.fogbowcloud.cli.Main $@
+java -jar /local/anderson/fogbow/fogbow-cli/target/fogbow-cli-core-0.0.1-SNAPSHOT-jar-with-dependencies.jar $@
