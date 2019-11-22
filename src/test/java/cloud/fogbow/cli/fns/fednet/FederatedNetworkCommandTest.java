@@ -36,7 +36,8 @@ public class FederatedNetworkCommandTest {
 		this.federatedNetwork = new FederatedNetwork(
 				"10.150.15.0/28",
 				"testeFedNet",
-				allowedMembers
+				allowedMembers,
+				"vanilla"
 		);
 		this.federatedNetworkCommand = new FederatedNetworkCommand();
 		this.fogbowCliHttpUtil = HttpClientMocker.init();
