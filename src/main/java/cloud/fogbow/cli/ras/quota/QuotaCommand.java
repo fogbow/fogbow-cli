@@ -25,7 +25,6 @@ public class QuotaCommand {
 
     public String run() throws FogbowException {
         String fullUrl = ENDPOINT + '/' + memberId + '/' + cloudName;
-        System.out.println(fullUrl);
         String response = fogbowCliHttpUtil.doAuthenticatedGet(fullUrl);
         return response;
     }
