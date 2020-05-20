@@ -6,6 +6,7 @@ import cloud.fogbow.cli.constants.Documentation;
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
+import com.google.common.annotations.VisibleForTesting;
 
 
 public class QuotaCommand {
@@ -27,5 +28,10 @@ public class QuotaCommand {
         System.out.println(fullUrl);
         String response = fogbowCliHttpUtil.doAuthenticatedGet(fullUrl);
         return response;
+    }
+
+    @VisibleForTesting
+    public void setFogbowCliHttpUtil(FogbowCliHttpUtil fogbowCliHttpUtil) {
+        this.fogbowCliHttpUtil = fogbowCliHttpUtil;
     }
 }
