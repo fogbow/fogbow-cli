@@ -35,7 +35,8 @@ public class QuotaCommandTest {
         quotaCommand.setFogbowCliHttpUtil(fogbowCliHttpUtil);
     }
 
-    // test case: sasaasasas
+    // test case: When calling run method with mocked methods
+    // it must verify if a generic authenticated request is correctly called
     @Test
     public void testRun() throws FogbowException {
         JCommander.newBuilder()
