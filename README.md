@@ -323,6 +323,16 @@ Get status for all instances orders associated to a particular user's token.
 --system-user-token or --system-user-token-path (required)
 ```
 
+#### Get Allocation
+
+```
+--get-allocation (required)
+--member-id (required)
+--cloud-name (required)
+--url (required)
+--system-user-token or --system-user-token-path (required)
+```
+
 
 ### Volume operations (volume)
 
@@ -360,6 +370,16 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --get-all (required)
+--url (required)
+--system-user-token or --system-user-token-path (required)
+```
+
+#### Get Allocation
+
+```
+--get-allocation (required)
+--member-id (required)
+--cloud-name (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -403,6 +423,16 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --get-all
+--url (required)
+--system-user-token or --system-user-token-path (required)
+```
+
+#### Get Allocation
+
+```
+--get-allocation (required)
+--member-id (required)
+--cloud-name (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
