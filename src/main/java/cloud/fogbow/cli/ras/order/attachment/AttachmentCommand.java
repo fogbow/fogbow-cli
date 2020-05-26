@@ -10,7 +10,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class AttachmentCommand {
 
 	public static final String NAME = "attachment";
-	public static final String ENDPOINT = '/' + "attachments";
+	public static final String ENDPOINT = "attachments";
 	
 	@ParametersDelegate
 	private Attachment attachment = new Attachment();

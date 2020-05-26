@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class ComputeCommand {
     public static final String ALLOCATION_ENDPOINT_KEY = "/allocation/";
     public static final String CLOUD_NAME_KEY = "cloudName";
-    public static final String ENDPOINT = '/' + "computes";
+    public static final String ENDPOINT = "computes";
     public static final String GET_QUOTA_COMMAND_KEY = "--get-quota";
     public static final String GET_ALLOCATION_COMMAND_KEY = "--get-allocation";
     public static final String NAME = "compute";

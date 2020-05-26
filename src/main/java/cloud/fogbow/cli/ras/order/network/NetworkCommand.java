@@ -14,7 +14,7 @@ import com.google.common.annotations.VisibleForTesting;
 public class NetworkCommand {
 
 	public static final String NAME = "network";
-	public static final String ENDPOINT = '/' + "networks";
+	public static final String ENDPOINT = "networks";
 	public static final String GET_ALLOCATION_COMMAND_KEY = "--get-allocation";
 	public static final String ALLOCATION_ENDPOINT_KEY = "/allocation/";
 
