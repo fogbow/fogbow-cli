@@ -177,7 +177,8 @@ public class ComputeCommandTest {
 		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
 	}
 
-
+	// test case: When calling run method with mocked methods
+	// it must verify if it call the right methods
 	@Test
 	public void testRunGetAllocation() throws FogbowCLIException, IOException, FogbowException {
 		JCommander.newBuilder()
