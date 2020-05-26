@@ -14,7 +14,7 @@ import com.google.common.annotations.VisibleForTesting;
 public class VolumeCommand {
 	
 	public static final String NAME = "volume";
-	public static final String ENDPOINT = '/' + "volumes";
+	public static final String ENDPOINT = "volumes";
 	public static final String GET_ALLOCATION_COMMAND_KEY = "--get-allocation";
 	public static final String ALLOCATION_ENDPOINT_KEY = "/allocation/";
 
