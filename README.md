@@ -74,6 +74,7 @@ Get the ids of all federation members.
 ```
 --get-all (required)
 --url (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 ### Cloud operations
@@ -83,6 +84,7 @@ Get the ids of all federation members.
 ```
 --get-all (required)
 --url (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 #### List clouds of a specific member
@@ -91,6 +93,7 @@ Get the ids of all federation members.
 --url (required)
 --get (required)
 --member-id (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
@@ -103,7 +106,7 @@ Get detailed information about a single image.
 ```
 --get (required)
 --url (required)
---system-user-token (required)
+--system-user-token or --system-user-token-path (required)
 --member-id (required)
 --id (required)
 ```
@@ -115,7 +118,7 @@ Get ids of all images.
 ```
 --get-all (required)
 --url (required)
---system-user-token (required)
+--system-user-token or --system-user-token-path (required)
 --member-id (required)
 ```
 
@@ -323,6 +326,16 @@ Get status for all instances orders associated to a particular user's token.
 --system-user-token or --system-user-token-path (required)
 ```
 
+#### Get Allocation
+
+```
+--get-allocation (required)
+--member-id (required)
+--cloud-name (required)
+--url (required)
+--system-user-token or --system-user-token-path (required)
+```
+
 
 ### Volume operations (volume)
 
@@ -360,6 +373,16 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --get-all (required)
+--url (required)
+--system-user-token or --system-user-token-path (required)
+```
+
+#### Get Allocation
+
+```
+--get-allocation (required)
+--member-id (required)
+--cloud-name (required)
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
@@ -407,6 +430,16 @@ Get status for all instances orders associated to a particular user's token.
 --system-user-token or --system-user-token-path (required)
 ```
 
+#### Get Allocation
+
+```
+--get-allocation (required)
+--member-id (required)
+--cloud-name (required)
+--url (required)
+--system-user-token or --system-user-token-path (required)
+```
+
 
 ### Security Group Rules (security-rule)
 
@@ -415,6 +448,7 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --create
 --public-ip-id or --network-id (required)
+--system-user-token or --system-user-token-path (required)
 --direction
 --portFrom
 --portTo
@@ -428,4 +462,5 @@ Get status for all instances orders associated to a particular user's token.
 ```
 --delete
 --id
+--system-user-token or --system-user-token-path (required)
 ```
