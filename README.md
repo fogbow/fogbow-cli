@@ -149,7 +149,7 @@ Get ids of all images.
 
 #### Get attachment
 
-Get informationabout a specific instance.
+Get information about a specific instance.
 
 ```
 --get (required)
@@ -179,6 +179,7 @@ Get status for all instances orders associated to a particular user's token.
 --url
 
 --provider
+--cloud-name
 --public-key
 --image-id
 --vcpu
@@ -295,6 +296,7 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --provider
+--cloud-name
 --gateway
 --cidr
 --allocationMode
@@ -347,6 +349,7 @@ Get status for all instances orders associated to a particular user's token.
 --url
 
 --provider
+--cloud-name
 --volume-size
 --name
 ```
@@ -447,8 +450,12 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --create
---public-ip-id or --network-id (required)
+--url
 --system-user-token or --system-user-token-path (required)
+```
+
+```
+--public-ip-id or --network-id (required)
 --direction
 --portFrom
 --portTo
@@ -461,6 +468,10 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --delete
---id
+--url
 --system-user-token or --system-user-token-path (required)
+```
+
+```
+--id
 ```
