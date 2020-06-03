@@ -15,6 +15,7 @@ import cloud.fogbow.cli.ras.order.compute.ComputeCommand;
 import cloud.fogbow.cli.ras.order.network.NetworkCommand;
 import cloud.fogbow.cli.ras.order.publicip.PublicIpCommand;
 import cloud.fogbow.cli.ras.order.volume.VolumeCommand;
+import cloud.fogbow.cli.ras.quota.QuotaCommand;
 import cloud.fogbow.cli.ras.securityrule.SecurityRuleCommand;
 import cloud.fogbow.common.exceptions.FogbowException;
 import com.beust.jcommander.JCommander;
@@ -42,6 +43,7 @@ public class Main {
 			"  * network" + LINE_BREAK +
 			"  * public-key" + LINE_BREAK +
 			"  * public-ip" + LINE_BREAK +
+			"  * quota" + LINE_BREAK +
 			"  * security-rule" + LINE_BREAK +
 			"  * token" + LINE_BREAK +
 			"  * version" + LINE_BREAK +
@@ -62,6 +64,7 @@ public class Main {
 	private NetworkCommand networkCommand;
 	private PublicKeyCommand publicKeyCommand;
 	private PublicIpCommand publicIpCommand;
+	private QuotaCommand quotaCommand;
 	private SecurityRuleCommand securityRuleCommand;
 	private TokenCommand tokenCommand;
 	private VersionCommand versionCommand;
@@ -85,6 +88,7 @@ public class Main {
 		main.publicKeyCommand = new PublicKeyCommand();
 		main.securityRuleCommand = new SecurityRuleCommand();
 		main.publicIpCommand = new PublicIpCommand();
+		main.quotaCommand = new QuotaCommand();
 		main.tokenCommand = new TokenCommand();
 		main.versionCommand = new VersionCommand();
 		main.volumeCommand = new VolumeCommand();
@@ -100,6 +104,7 @@ public class Main {
 				.addCommand(NetworkCommand.NAME, main.networkCommand)
 				.addCommand(PublicKeyCommand.NAME, main.publicKeyCommand)
 				.addCommand(PublicIpCommand.NAME, main.publicIpCommand)
+				.addCommand(QuotaCommand.NAME, main.quotaCommand)
 				.addCommand(SecurityRuleCommand.NAME, main.securityRuleCommand)
 				.addCommand(TokenCommand.NAME, main.tokenCommand)
 				.addCommand(VersionCommand.NAME, main.versionCommand)
@@ -162,6 +167,9 @@ public class Main {
 					break;
 				case PublicIpCommand.NAME:
 					output = this.publicIpCommand.run();
+					break;
+				case QuotaCommand.NAME:
+					output = this.quotaCommand.run();
 					break;
 				case SecurityRuleCommand.NAME:
 					output = this.securityRuleCommand.run();

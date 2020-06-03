@@ -43,6 +43,19 @@ You can use the executable located in the `bin` folder to use Fogbow-CLI:
 
 Obs.: You will notice that most commands specify a `--url` option. This is the URL where the service you are trying to reach is deployed.
 
+### Quota operations (quota)
+
+#### Get quota
+
+Get the quota of a specific member and cloud.
+
+```
+--member-id (required)
+--cloud-name (required)
+--url (required)
+--system-user-token or --system-user-token-path (required)
+```
+
 ### Token operations (token)
 
 #### Create a new Token
@@ -227,17 +240,6 @@ Get status for all instances orders associated to a particular user's token.
 --url (required)
 --system-user-token or --system-user-token-path (required)
 ```
-
-#### Get Quota
-
-```
---get-quota (required)
---member-id (required)
---cloud-name (required)
---url (required)
---system-user-token or --system-user-token-path (required)
-```
-
 
 ### Federated Network Operations (federated-network)
 
