@@ -108,6 +108,7 @@ Get detailed information about a single image.
 --url (required)
 --system-user-token or --system-user-token-path (required)
 --member-id (required)
+--cloud-name (required)
 --id (required)
 ```
 
@@ -120,6 +121,7 @@ Get ids of all images.
 --url (required)
 --system-user-token or --system-user-token-path (required)
 --member-id (required)
+--cloud-nname (required)
 ```
 
 
@@ -131,8 +133,8 @@ Get ids of all images.
 --create
 --system-user-token or --system-user-token-path (required)
 --url
+--member-id
 
---provider
 --volumeId
 --computeId
 --device
@@ -214,14 +216,6 @@ Get status for all instances orders associated to a particular user's token.
 --system-user-token (required)
 ```
 
-#### Get all computes status
-
-```
---get-all (required)
---url (required)
---system-user-token or --system-user-token-path (required)
-```
-
 #### Get Allocation
 
 ```
@@ -298,6 +292,7 @@ Get status for all instances orders associated to a particular user's token.
 --provider
 --cloud-name
 --gateway
+--name
 --cidr
 --allocationMode
 ```
@@ -402,7 +397,6 @@ Get status for all instances orders associated to a particular user's token.
 ```
 
 ```
---provider
 --compute-id (required)
 --name
 ```
@@ -470,8 +464,5 @@ Get status for all instances orders associated to a particular user's token.
 --delete
 --url
 --system-user-token or --system-user-token-path (required)
-```
-
-```
 --id
 ```
