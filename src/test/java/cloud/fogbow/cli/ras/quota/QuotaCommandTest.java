@@ -52,6 +52,6 @@ public class QuotaCommandTest {
         String path = QuotaCommand.ENDPOINT + '/' + this.memberId + '/' + this.cloudName;
         this.quotaCommand.run();
 
-        verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
+        verify(this.fogbowCliHttpUtil).doAuthenticatedGet(path);
     }
 }
