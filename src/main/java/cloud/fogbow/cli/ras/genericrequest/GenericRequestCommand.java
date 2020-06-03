@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class GenericRequestCommand {
     public static final String NAME = "generic-request";
-    private static final String ENDPOINT = "/genericRequest";
+    private static final String ENDPOINT = "genericRequest";
 
     @Parameter(names = CliCommonParameters.MEMBER_ID_COMMAND_KEY, description = Documentation.CommonParameters.MEMBER_ID, required = true)
     private String memberId = null;

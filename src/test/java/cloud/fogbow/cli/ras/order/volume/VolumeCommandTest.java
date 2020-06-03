@@ -3,7 +3,9 @@ package cloud.fogbow.cli.ras.order.volume;
 import cloud.fogbow.cli.FogbowCliHttpUtil;
 import cloud.fogbow.cli.HttpClientMocker;
 import cloud.fogbow.cli.constants.CliCommonParameters;
+import cloud.fogbow.cli.exceptions.FogbowCLIException;
 import cloud.fogbow.cli.ras.order.OrderCommand;
+import cloud.fogbow.cli.ras.order.network.NetworkCommand;
 import cloud.fogbow.cli.utils.CommandUtil;
 import cloud.fogbow.cli.utils.KeyValueUtil;
 import cloud.fogbow.common.constants.HttpMethod;
@@ -27,6 +29,8 @@ public class VolumeCommandTest {
 	private final String url = "my-url";
 	private final String token = "my-token";
 	private final String id = "my-id";
+	private final String memberId = "member-id";
+	private final String cloudName = "cloud-name";
 	private final String requirementsString = "key1=value1,key2=value2";
 	private Map<String, String> requirements = new HashMap<>();
 
@@ -117,6 +121,29 @@ public class VolumeCommandTest {
 						CliCommonParameters.ID_COMMAND_KEY, this.id);
 
 		String path = VolumeCommand.ENDPOINT + "/" + OrderCommand.STATUS_ENDPOINT_KEY;
+
+		this.volumeCommand.run();
+
+		verify(this.fogbowCliHttpUtil).doGenericAuthenticatedRequest(HttpMethod.GET, path);
+	}
+
+
+	// test case: When calling run method with mocked methods
+	// it must verify if it call the right methods
+	@Test
+	public void testRunGetAllocation() throws FogbowCLIException, IOException, FogbowException {
+		JCommander.newBuilder()
+				.addObject(this.volumeCommand)
+				.build()
+				.parse(
+						VolumeCommand.GET_ALLOCATION_COMMAND_KEY,
+						CliCommonParameters.SYSTEM_USER_TOKEN_COMMAND_KEY, this.token,
+						CliCommonParameters.URL_COMMAND_KEY, this.url,
+						CliCommonParameters.CLOUD_NAME_COMMAND_KEY, this.cloudName,
+						CliCommonParameters.MEMBER_ID_COMMAND_KEY, this.memberId);
+
+		String path = VolumeCommand.ENDPOINT + VolumeCommand.ALLOCATION_ENDPOINT_KEY
+				+ this.memberId + "/" + this.cloudName;
 
 		this.volumeCommand.run();
 

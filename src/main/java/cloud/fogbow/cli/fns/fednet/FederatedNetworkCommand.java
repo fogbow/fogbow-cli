@@ -10,7 +10,7 @@ import com.beust.jcommander.ParametersDelegate;
 public class FederatedNetworkCommand {
 	
 	public static final String NAME = "federated-network";
-	public static final String ENDPOINT = '/' + "federatedNetworks";
+	public static final String ENDPOINT = "federatedNetworks";
 
 	@ParametersDelegate
 	private FederatedNetwork federatedNetwork = new FederatedNetwork();
