@@ -87,6 +87,7 @@ Get the ids of all federation members.
 ```
 --get-all (required)
 --url (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 ### Cloud operations
@@ -96,6 +97,7 @@ Get the ids of all federation members.
 ```
 --get-all (required)
 --url (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 #### List clouds of a specific member
@@ -104,6 +106,7 @@ Get the ids of all federation members.
 --url (required)
 --get (required)
 --member-id (required)
+--system-user-token or --system-user-token-path (required)
 ```
 
 
@@ -116,8 +119,9 @@ Get detailed information about a single image.
 ```
 --get (required)
 --url (required)
---system-user-token (required)
+--system-user-token or --system-user-token-path (required)
 --member-id (required)
+--cloud-name (required)
 --id (required)
 ```
 
@@ -128,8 +132,9 @@ Get ids of all images.
 ```
 --get-all (required)
 --url (required)
---system-user-token (required)
+--system-user-token or --system-user-token-path (required)
 --member-id (required)
+--cloud-nname (required)
 ```
 
 
@@ -141,8 +146,8 @@ Get ids of all images.
 --create
 --system-user-token or --system-user-token-path (required)
 --url
+--member-id
 
---provider
 --volumeId
 --computeId
 --device
@@ -159,7 +164,7 @@ Get ids of all images.
 
 #### Get attachment
 
-Get informationabout a specific instance.
+Get information about a specific instance.
 
 ```
 --get (required)
@@ -189,6 +194,7 @@ Get status for all instances orders associated to a particular user's token.
 --url
 
 --provider
+--cloud-name
 --public-key
 --image-id
 --vcpu
@@ -221,14 +227,6 @@ Get status for all instances orders associated to a particular user's token.
 --get-all (required)
 --url (required)
 --system-user-token (required)
-```
-
-#### Get all computes status
-
-```
---get-all (required)
---url (required)
---system-user-token or --system-user-token-path (required)
 ```
 
 #### Get Allocation
@@ -294,7 +292,9 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --provider
+--cloud-name
 --gateway
+--name
 --cidr
 --allocationMode
 ```
@@ -346,6 +346,7 @@ Get status for all instances orders associated to a particular user's token.
 --url
 
 --provider
+--cloud-name
 --volume-size
 --name
 ```
@@ -398,7 +399,6 @@ Get status for all instances orders associated to a particular user's token.
 ```
 
 ```
---provider
 --compute-id (required)
 --name
 ```
@@ -446,6 +446,11 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --create
+--url
+--system-user-token or --system-user-token-path (required)
+```
+
+```
 --public-ip-id or --network-id (required)
 --direction
 --portFrom
@@ -459,5 +464,7 @@ Get status for all instances orders associated to a particular user's token.
 
 ```
 --delete
+--url
+--system-user-token or --system-user-token-path (required)
 --id
 ```
